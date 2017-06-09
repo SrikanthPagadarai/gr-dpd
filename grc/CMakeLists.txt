@@ -18,5 +18,6 @@
 # Boston, MA 02110-1301, USA.
 
 install(FILES
-    dpd_peak_detect.xml DESTINATION share/gnuradio/grc/blocks
+    dpd_peak_detect.xml
+    dpd_sts_blocker.xml DESTINATION share/gnuradio/grc/blocks
 )

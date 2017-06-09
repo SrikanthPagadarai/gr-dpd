@@ -27,6 +27,7 @@ link_directories(${Boost_LIBRARY_DIRS})
 
 list(APPEND dpd_sources
     peak_detect_impl.cc
+    sts_blocker_impl.cc
 )
 
 set(dpd_sources "${dpd_sources}" PARENT_SCOPE)

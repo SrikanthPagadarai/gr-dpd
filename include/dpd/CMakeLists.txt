@@ -22,5 +22,6 @@
 ########################################################################
 install(FILES
     api.h
-    peak_detect.h DESTINATION include/dpd
+    peak_detect.h
+    sts_blocker.h DESTINATION include/dpd
 )
