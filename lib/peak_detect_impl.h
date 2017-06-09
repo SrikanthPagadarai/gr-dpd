@@ -29,7 +29,9 @@ namespace gr {
     class peak_detect_impl : public peak_detect
     {
      private:
-      // Nothing to declare in this block.
+      int d_NFFT;
+      int d_ovx;
+      int d_peak_cond;
 
      public:
       peak_detect_impl(int NFFT, int ovx, int peak_cond);

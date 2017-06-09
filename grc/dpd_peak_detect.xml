@@ -1,38 +1,38 @@
 <?xml version="1.0"?>
 <block>
-  <name>peak_detect</name>
+  <name>Peak Detector</name>
   <key>dpd_peak_detect</key>
-  <category>[dpd]</category>
+  <category>dpd</category>
   <import>import dpd</import>
   <make>dpd.peak_detect($NFFT, $ovx, $peak_cond)</make>
-  <!-- Make one 'param' node for every Parameter you want settable from the GUI.
-       Sub-nodes:
-       * name
-       * key (makes the value accessible as $keyname, e.g. in the make node)
-       * type -->
+
   <param>
-    <name>...</name>
-    <key>...</key>
-    <type>...</type>
+    <name>NFFT</name>
+    <key>NFFT</key>
+    <type>int</type>
+  </param>
+  <param>
+    <name>Oversampling Factor</name>
+    <key>ovx</key>
+    <type>int</type>
+  </param>
+  <param>
+    <name>Peak Present When > </name>
+    <key>peak_cond</key>
+    <type>int</type>
   </param>
 
-  <!-- Make one 'sink' node per input. Sub-nodes:
-       * name (an identifier for the GUI)
-       * type
-       * vlen
-       * optional (set to 1 for optional inputs) -->
   <sink>
-    <name>in</name>
-    <type><!-- e.g. int, float, complex, byte, short, xxx_vector, ...--></type>
+    <name>in1</name>
+    <type>complex</type>
+  </sink>
+  <sink>
+    <name>in2</name>
+    <type>complex</type>
   </sink>
 
-  <!-- Make one 'source' node per output. Sub-nodes:
-       * name (an identifier for the GUI)
-       * type
-       * vlen
-       * optional (set to 1 for optional inputs) -->
   <source>
     <name>out</name>
-    <type><!-- e.g. int, float, complex, byte, short, xxx_vector, ...--></type>
+    <type>complex</type>
   </source>
 </block>

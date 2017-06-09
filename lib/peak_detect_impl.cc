@@ -39,10 +39,17 @@ namespace gr {
      * The private constructor
      */
     peak_detect_impl::peak_detect_impl(int NFFT, int ovx, int peak_cond)
-      : gr::sync_block("peak_detect",
-              gr::io_signature::make(<+MIN_IN+>, <+MAX_IN+>, sizeof(<+ITYPE+>)),
-              gr::io_signature::make(<+MIN_OUT+>, <+MAX_OUT+>, sizeof(<+OTYPE+>)))
-    {}
+    : gr::sync_block("peak_detect",
+    gr::io_signature::make(1, 2, sizeof(gr_complex)),
+    gr::io_signature::make(1, 1, sizeof(gr_complex))),
+    d_NFFT(NFFT),
+    d_ovx(ovx),
+    d_peak_cond(peak_cond)
+    {
+		// don't propagate upstream tags
+		set_tag_propagation_policy(TPP_DONT);
+    }
+
 
     /*
      * Our virtual destructor.
@@ -53,16 +60,40 @@ namespace gr {
 
     int
     peak_detect_impl::work(int noutput_items,
-        gr_vector_const_void_star &input_items,
-        gr_vector_void_star &output_items)
+    	gr_vector_const_void_star &input_items,
+    	gr_vector_void_star &output_items)
     {
-      const <+ITYPE+> *in = (const <+ITYPE+> *) input_items[0];
-      <+OTYPE+> *out = (<+OTYPE+> *) output_items[0];
+		const gr_complex *in_corr = (const gr_complex *) input_items[0];
+        const gr_complex *in = (const gr_complex *) input_items[1];
+        gr_complex *out = (gr_complex *) output_items[0];
 
-      // Do <+signal processing+>
+        // Do <+signal processing+>
+		for (int i = 0; i < noutput_items; i++) 
+		{
+    	    out[i] = in[i];
+ 
+	    	// std::cout << "std::real(in_corr[i]): " << std::real(in_corr[i]) << std::endl;
+	    	static int count = 0;
+   	    	if( (std::real(in_corr[i]) > d_peak_cond ) && (count < 4) )
+	    	{ 
+				std::cout << "std::real(in_corr[i]): " << std::real(in_corr[i]) << std::endl;
+	        	GR_LOG_DEBUG(d_logger, boost::format("Detected peak on sample %1%")%(nitems_written(0)+i));
+ 		
+				count++;
 
-      // Tell runtime system how many output items we produced.
-      return noutput_items;
+				tag_t tag;
+        		tag.offset = nitems_written(0)+i;
+				tag.key = pmt::mp("STS found");
+				tag.value = pmt::from_long(count);
+				add_item_tag(0, tag);
+
+				// std::cout << "count: " << count << std::endl;
+ 	
+  	    	} 
+        }
+
+        // Tell runtime system how many output items we produced.
+        return noutput_items;
     }
 
   } /* namespace dpd */
