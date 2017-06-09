@@ -46,8 +46,8 @@ namespace gr {
     d_ovx(ovx),
     d_peak_cond(peak_cond)
     {
-		// don't propagate upstream tags
-		set_tag_propagation_policy(TPP_DONT);
+      // don't propagate upstream tags
+      set_tag_propagation_policy(TPP_DONT);
     }
 
 
@@ -63,33 +63,33 @@ namespace gr {
     	gr_vector_const_void_star &input_items,
     	gr_vector_void_star &output_items)
     {
-		const gr_complex *in_corr = (const gr_complex *) input_items[0];
+        const gr_complex *in_corr = (const gr_complex *) input_items[0];
         const gr_complex *in = (const gr_complex *) input_items[1];
         gr_complex *out = (gr_complex *) output_items[0];
 
         // Do <+signal processing+>
-		for (int i = 0; i < noutput_items; i++) 
-		{
-    	    out[i] = in[i];
- 
-	    	// std::cout << "std::real(in_corr[i]): " << std::real(in_corr[i]) << std::endl;
-	    	static int count = 0;
-   	    	if( (std::real(in_corr[i]) > d_peak_cond ) && (count < 4) )
-	    	{ 
-				std::cout << "std::real(in_corr[i]): " << std::real(in_corr[i]) << std::endl;
-	        	GR_LOG_DEBUG(d_logger, boost::format("Detected peak on sample %1%")%(nitems_written(0)+i));
- 		
-				count++;
+        for (int i = 0; i < noutput_items; i++) 
+        {
+            out[i] = in[i];
+    
+            // std::cout << "std::real(in_corr[i]): " << std::real(in_corr[i]) << std::endl;
+            static int count = 0;
+            if( (std::real(in_corr[i]) > d_peak_cond ) && (count < 4) )
+            { 
+               std::cout << "std::real(in_corr[i]): " << std::real(in_corr[i]) << std::endl;
+               GR_LOG_DEBUG(d_logger, boost::format("Detected peak on sample %1%")%(nitems_written(0)+i));
 
-				tag_t tag;
-        		tag.offset = nitems_written(0)+i;
-				tag.key = pmt::mp("STS found");
-				tag.value = pmt::from_long(count);
-				add_item_tag(0, tag);
+               count++;
 
-				// std::cout << "count: " << count << std::endl;
- 	
-  	    	} 
+               tag_t tag;
+               tag.offset = nitems_written(0)+i;
+               tag.key = pmt::mp("STS found");
+               tag.value = pmt::from_long(count);
+               add_item_tag(0, tag);
+
+               // std::cout << "count: " << count << std::endl;
+
+            } 
         }
 
         // Tell runtime system how many output items we produced.
