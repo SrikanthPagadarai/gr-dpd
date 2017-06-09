@@ -8,6 +8,9 @@
 %include "dpd_swig_doc.i"
 
 %{
+#include "dpd/peak_detect.h"
 %}
 
 
+%include "dpd/peak_detect.h"
+GR_SWIG_BLOCK_MAGIC2(dpd, peak_detect);
