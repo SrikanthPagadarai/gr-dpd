@@ -19,5 +19,6 @@
 
 install(FILES
     dpd_peak_detect.xml
-    dpd_sts_blocker.xml DESTINATION share/gnuradio/grc/blocks
+    dpd_sts_blocker.xml
+    dpd_predistorter.xml DESTINATION share/gnuradio/grc/blocks
 )

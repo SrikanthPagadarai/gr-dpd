@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<block>
+  <name>predistorter</name>
+  <key>dpd_predistorter</key>
+  <category>[dpd]</category>
+  <import>import dpd</import>
+  <make>dpd.predistorter($NFFT, $cp_len, $ovx, $num_zero_syms, $dpd_params)</make>
+
+  <param>
+    <name>NFFT</name>
+    <key>NFFT</key>
+    <type>int</type>
+  </param>
+  <param>
+    <name>Cyclic-Prefix Length</name>
+    <key>cp_len</key>
+    <type>int</type>
+  </param>
+  <param>
+    <name>Oversampling Factor</name>
+    <key>ovx</key>
+    <type>int</type>
+  </param>
+  <param>
+    <name>Number of Zero Symbols</name>
+    <key>num_zero_syms</key>
+    <type>int</type>
+  </param>
+  <param>
+    <name>DPD Parameters</name>
+    <key>dpd_params</key>
+    <value>(0,0,0,0,0)</value>
+    <type>raw</type>
+  </param>
+
+  <sink>
+    <name>in</name>
+    <type>complex</type>
+    <vlen>($dpd_params)[0]*($dpd_params)[1]+($dpd_params)[2]*($dpd_params)[3]*($dpd_params)[4]</vlen>
+  </sink>
+
+  <sink>
+    <name>taps</name>
+    <type>message</type>
+  </sink>
+
+  <source>
+    <name>out</name>
+    <type>complex</type>
+  </source>
+
+  <source>
+    <name>PA_input</name>
+    <type>message</type>
+  </source>
+</block>

@@ -134,6 +134,9 @@ endif(APPLE)
 ########################################################################
 find_package(CppUnit)
 find_package(Doxygen)
+find_package(BLAS REQUIRED)
+find_package(LAPACK REQUIRED)
+find_package(Armadillo REQUIRED)
 
 # Search for GNU Radio and its components and versions. Add any
 # components required to the list of GR_REQUIRED_COMPONENTS (in all
@@ -147,6 +150,18 @@ include(GrVersion)
 if(NOT CPPUNIT_FOUND)
     message(FATAL_ERROR "CppUnit required to compile dpd")
 endif()
+
+########################################################################
+# Find Armadillo
+########################################################################
+find_package(Armadillo)
+
+if (ARMADILLO_FOUND)
+	include_directories(${ARMADILLO_INCLUDE_DIRS})
+	message(STATUS "Armadillo found!")
+else ()
+	message(STATUS "Armadillo NOT found!")
+endif ()
 
 ########################################################################
 # Setup doxygen option
