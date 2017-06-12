@@ -24,5 +24,6 @@ install(FILES
     api.h
     peak_detect.h
     sts_blocker.h
-    predistorter.h DESTINATION include/dpd
+    predistorter.h
+    stream_to_zero_padded_vector.h DESTINATION include/dpd
 )

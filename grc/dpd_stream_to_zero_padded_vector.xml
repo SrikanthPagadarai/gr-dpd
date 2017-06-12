@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<block>
+  <name>stream_to_zero_padded_vector</name>
+  <key>dpd_stream_to_zero_padded_vector</key>
+  <category>[dpd]</category>
+  <import>import dpd</import>
+  <make>dpd.stream_to_zero_padded_vector($used_sc, $NFFT)</make>
+
+  <param>
+    <name>User Subcarriers</name>
+    <key>used_sc</key>
+    <type>int</type>
+  </param>
+  <param>
+    <name>FFT Size</name>
+    <key>NFFT</key>
+    <type>int</type>
+  </param>  
+
+  <sink>
+    <name>in</name>
+    <type>complex</type>
+  </sink>
+
+  <source>
+    <name>out</name>
+    <type>complex</type>
+    <vlen>$NFFT</vlen>
+  </source>
+</block>
