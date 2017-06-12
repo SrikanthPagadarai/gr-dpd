@@ -30,6 +30,7 @@ list(APPEND dpd_sources
     sts_blocker_impl.cc
     predistorter_impl.cc
     stream_to_zero_padded_vector_impl.cc
+    add_cp_impl.cc
 )
 
 set(dpd_sources "${dpd_sources}" PARENT_SCOPE)
