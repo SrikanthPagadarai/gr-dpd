@@ -2,7 +2,7 @@
 <block>
   <name>Peak Detector</name>
   <key>dpd_peak_detect</key>
-  <category>dpd</category>
+  <category>[dpd]</category>
   <import>import dpd</import>
   <make>dpd.peak_detect($NFFT, $ovx, $peak_cond)</make>
 

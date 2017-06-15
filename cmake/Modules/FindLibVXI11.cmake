@@ -1,0 +1,27 @@
+if(NOT LIBVXI11_FOUND)
+  pkg_check_modules (LIBVXI11_PKG libvxi11)
+  find_path(LIBVXI11_INCLUDE_DIRS NAMES vxi11_user.h
+    PATHS
+    ${LIBVXI11_PKG_INCLUDE_DIRS}
+    /usr/include
+    /usr/local/include
+  )
+
+  find_library(LIBVXI11_LIBRARIES NAMES vxi11
+    PATHS
+    ${LIBVXI11_PKG_LIBRARY_DIRS}
+    /usr/lib
+    /usr/local/lib
+  )
+
+if(LIBVXI11_INCLUDE_DIRS AND LIBVXI11_LIBRARIES)
+  set(LIBVXI11_FOUND TRUE CACHE INTERNAL "libvxi11 found")
+  message(STATUS "Found libvxi11: ${LIBVXI11_INCLUDE_DIRS}, ${LIBVXI11_LIBRARIES}")
+else(LIBVXI11_INCLUDE_DIRS AND LIBVXI11_LIBRARIES)
+  set(LIBVXI11_FOUND FALSE CACHE INTERNAL "libvxi11 found")
+  message(STATUS "libvxi11 not found.")
+endif(LIBVXI11_INCLUDE_DIRS AND LIBVXI11_LIBRARIES)
+
+mark_as_advanced(LIBVXI11_LIBRARIES LIBVXI11_INCLUDE_DIRS)
+
+endif(NOT LIBVXI11_FOUND)

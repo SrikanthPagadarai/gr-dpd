@@ -2,7 +2,7 @@
 <block>
   <name>STS Blocker</name>
   <key>dpd_sts_blocker</key>
-  <category>dpd</category>
+  <category>[dpd]</category>
   <import>import dpd</import>
   <make>dpd.sts_blocker($cp_len)</make>
   

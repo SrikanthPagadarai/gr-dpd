@@ -26,5 +26,6 @@ install(FILES
     sts_blocker.h
     predistorter.h
     stream_to_zero_padded_vector.h
-    add_cp.h DESTINATION include/dpd
+    add_cp.h
+    Agilent_N1996A.h DESTINATION include/dpd
 )

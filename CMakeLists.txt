@@ -137,6 +137,7 @@ find_package(Doxygen)
 find_package(BLAS REQUIRED)
 find_package(LAPACK REQUIRED)
 find_package(Armadillo REQUIRED)
+find_package(LibVXI11 REQUIRED)
 
 # Search for GNU Radio and its components and versions. Add any
 # components required to the list of GR_REQUIRED_COMPONENTS (in all

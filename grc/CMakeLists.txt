@@ -22,5 +22,6 @@ install(FILES
     dpd_sts_blocker.xml
     dpd_predistorter.xml
     dpd_stream_to_zero_padded_vector.xml
-    dpd_add_cp.xml DESTINATION share/gnuradio/grc/blocks
+    dpd_add_cp.xml
+    dpd_Agilent_N1996A.xml DESTINATION share/gnuradio/grc/blocks
 )

@@ -22,7 +22,7 @@
 ########################################################################
 include(GrPlatform) #define LIB_SUFFIX
 
-include_directories(${Boost_INCLUDE_DIR})
+include_directories(${Boost_INCLUDE_DIR} ${LIBVXI11_INCLUDE_DIRS})
 link_directories(${Boost_LIBRARY_DIRS})
 
 list(APPEND dpd_sources
@@ -31,6 +31,7 @@ list(APPEND dpd_sources
     predistorter_impl.cc
     stream_to_zero_padded_vector_impl.cc
     add_cp_impl.cc
+    Agilent_N1996A_impl.cc
 )
 
 set(dpd_sources "${dpd_sources}" PARENT_SCOPE)
@@ -46,7 +47,7 @@ else ()
 endif ()
 
 add_library(gnuradio-dpd SHARED ${dpd_sources})
-target_link_libraries(gnuradio-dpd ${Boost_LIBRARIES} ${GNURADIO_ALL_LIBRARIES} ${ARMADILLO_LIBRARIES})
+target_link_libraries(gnuradio-dpd ${Boost_LIBRARIES} ${GNURADIO_ALL_LIBRARIES} ${ARMADILLO_LIBRARIES} ${LIBVXI11_LIBRARIES})
 set_target_properties(gnuradio-dpd PROPERTIES DEFINE_SYMBOL "gnuradio_dpd_EXPORTS")
 
 if(APPLE)
@@ -80,6 +81,7 @@ target_link_libraries(
   ${GNURADIO_RUNTIME_LIBRARIES}
   ${Boost_LIBRARIES}
   ${CPPUNIT_LIBRARIES}
+  ${LIBVXI11_LIBRARIES}  
   gnuradio-dpd
 )
 
