@@ -41,14 +41,17 @@ namespace gr {
     Agilent_N1996A_impl::Agilent_N1996A_impl(const std::string& ip_addr, float frequency, float span, float resbw, uint32_t nb_points)
       : gr::sync_block("Agilent_N1996A",
               gr::io_signature::make(0, 0, 0),
-              gr::io_signature::make(1, 1, sizeof(gr_complex))),
+              gr::io_signature::make(1, 1, nb_points*sizeof(float))),
               d_ip_addr(ip_addr),
               d_frequency(frequency),
               d_span(span),
               d_resbw(resbw),
-              d_nb_points(nb_points)              
+              d_nb_points(2*nb_points)              
     {
-      int ret = vxi11_open_device(ip_addr.c_str(), &d_vxi_link); // try to establish VXI-11 communication link with E4406A
+      d_n1996a_bufsize = d_nb_points*8;
+      d_n1996a_buf = (char *) malloc(d_n1996a_bufsize);
+
+      int ret = vxi11_open_device(ip_addr.c_str(), &d_vxi_link); // try to establish VXI-11 communication link with N1996A
     
       if (ret != 0) 
       {
@@ -56,15 +59,20 @@ namespace gr {
         throw std::runtime_error("cannot open VXI-11 channel");
       }
       else
+      {
         std::cout << "N1996A: VXI-11 channel opened" << std::endl;
+        std::cout << "Instrument Identification Information: "; 
+        send_command_and_print_message("*IDN?");
+      }
 
-      // send_command(":DISP:ENAB 0"); // inhibit display
-
-      send_command(":SYST:MESS \"In Use by GNU Radio - front panel disabled\""); // send informatory message to N1996A status line
-
-      set_frequency(d_frequency);
-      set_span(d_span);
+      // setup 
+      send_command(":INST:SEL SA");      // set analayzer to SA mode
+      send_command(":INIT:CONT 0");
+      set_frequency(d_frequency);        // set center frequency
+      set_span(d_span);                  // set span
       set_sweep_points(d_nb_points);
+      send_command(":FORM:BORD SWAP");   // set binary byte order to SWAP
+      send_command(":FORM REAL,32");     // set ouput format to a binary 32 bit format
     }
 
     /*
@@ -72,27 +80,38 @@ namespace gr {
      */
     Agilent_N1996A_impl::~Agilent_N1996A_impl()
     {
-      send_command(":DISP:ENAB 1"); // release display
-      send_command(":SYST:KLOC 0"); // release keyboard
-      send_command(":INIT:CONT 1"); // restore continuous measurement
-      send_command(":CAL:AUTO ON"); // restore auto calibration
+      // send_command(":INIT:CONT 1"); // restore continuous measurement
+      // send_command(":CAL:AUTO ON"); // restore auto calibration
     
-      // vxi11_close_device(d_ip_addr.c_str(), &d_vxi_link); // close VXI-11 communication link with N1996A
+      vxi11_close_device(d_ip_addr.c_str(), &d_vxi_link); // close VXI-11 communication link with N1996A
     }
 
 
     // send command to instrument utility
-    void Agilent_N1996A_impl::send_command(const char *command)
+    void Agilent_N1996A_impl::send_command(const char *command, bool protect)
     {
       int ret;
  
-      ret = vxi11_send(&d_vxi_link, command);
-      
+      if (protect)
+      {
+        gr::thread::scoped_lock guard(d_1996a_mutex); // protect communication with N1996A
+        ret = vxi11_send(&d_vxi_link, command);
+      }
+
       if (ret < 0)
       {
         std::cerr << "N1996A: cannot send command \"" << command << "\"" << std::endl;
         throw std::runtime_error("cannot send command to N1996A");
       }    
+    }
+
+    // send command with unsigned integer argument to instrument utility
+    void Agilent_N1996A_impl::send_command_u(const char *command, unsigned int value)
+    {
+      char cmd[64];
+    
+      sprintf(cmd, "%s %u", command, value);
+      send_command(cmd);
     }
 
 
@@ -108,13 +127,16 @@ namespace gr {
 
     // send command and get response from instrument 
     size_t Agilent_N1996A_impl::send_command_and_get_response(const char *command, 
-        char *buf, const size_t bufsize)
+        char *buf, const size_t bufsize, bool protect)
     {
       int ret, bytes_returned;
-    
-      ret = vxi11_send(&d_vxi_link, command);
-      bytes_returned = vxi11_receive(&d_vxi_link, buf, bufsize);
-    
+      if (protect)
+      {
+        gr::thread::scoped_lock guard(d_1996a_mutex); // protect communication with N1996A
+        ret = vxi11_send(&d_vxi_link, command);
+        bytes_returned = vxi11_receive(&d_vxi_link, buf, bufsize);
+      }
+
       if (ret < 0)
       {
         std::cerr << "N1996A: cannot send command \"" << command << "\"" << std::endl;
@@ -131,6 +153,17 @@ namespace gr {
       }    
     }
 
+    // send command and get response from instrument as an unsigned int value
+    void Agilent_N1996A_impl::send_command_and_get_response_int(const char *command, 
+        int *value)
+    {
+      const size_t rcvsize = 64;
+      char rcv[rcvsize];
+    
+      size_t bytes_returned = send_command_and_get_response(command, rcv, rcvsize);
+      rcv[bytes_returned] = '\0';
+      sscanf(rcv, "%d", value);
+    }
 
     // send command and get response from instrument as a double value
     void Agilent_N1996A_impl::send_command_and_get_response_double(const char *command, 
@@ -142,6 +175,16 @@ namespace gr {
       size_t bytes_returned = send_command_and_get_response(command, rcv, rcvsize);
       rcv[bytes_returned] = '\0';
       sscanf(rcv, "%lf", value);
+    }
+
+    // send command and get response from instrument and display message
+    void Agilent_N1996A_impl::send_command_and_print_message(const char *command)
+    {
+      const size_t rcvsize = 64;
+      char rcv[rcvsize];
+    
+      size_t bytes_returned = send_command_and_get_response(command, rcv, rcvsize);
+      printf("%s\n",rcv);
     }
 
     // set center frequency
@@ -186,8 +229,67 @@ namespace gr {
       // Do <+signal processing+>
       for (int i = 0; i < noutput_items; i++)
       {
-          out[i].real() = 0.0;
-          out[i].imag() = 0.0;
+          send_command(":INIT:CONT 0");
+
+          // fetch data from N1996A and do signal processing    
+          size_t bytes_returned = send_command_and_get_response("TRAC:DATA? TRACE1", d_n1996a_buf, d_n1996a_bufsize);
+    
+          if (bytes_returned < 2)
+          {
+             std::cerr << "N1996A: PSD data size less than 2 bytes (" << bytes_returned << " bytes)" << std::endl;
+             throw std::runtime_error("invalid size for PSD data");
+          }
+          else
+          {
+             char counter_str[8];
+        
+             if (d_n1996a_buf[0] != '#')
+             {
+               std::cerr << "N1996A: invalid magic character for PSD data (" << d_n1996a_buf[0] << " bytes)" << std::endl;
+               throw std::runtime_error("invalid magic character for PSD data");
+             }
+        
+             strncpy(counter_str, &d_n1996a_buf[1], 1);
+             counter_str[1] = '\0';
+        
+             unsigned int counter_size = strtoul(counter_str, 0, 10);
+        
+             if (bytes_returned < 2+counter_size)
+             {
+               std::cerr << "N1996A: PSD data size less than header data size (" << bytes_returned << " bytes)" << std::endl;
+               throw std::runtime_error("invalid size for PSD data");
+             }
+             else
+             {
+               strncpy(counter_str, &d_n1996a_buf[2], counter_size);
+               counter_str[counter_size] = '\0';
+            
+               unsigned int  byte_count = strtoul(counter_str, 0, 10);
+            
+               if (bytes_returned < 2+counter_size+byte_count)
+               {
+                 std::cerr << "N1996A: PSD data block truncated to " << bytes_returned-2-counter_size << " bytes" << std::endl;
+                 throw std::runtime_error("invalid size for PSD data");
+               }
+               else
+               {
+                 float *iq_array = (float *) &d_n1996a_buf[2+counter_size];
+                
+                 for (int j = 1; j < d_nb_points; j+=2)                 
+                    out[i*d_nb_points+j] = iq_array[j];
+                
+                 // noutput_items = d_nb_points;
+               }
+
+
+             }
+           
+          }
+
+          /*
+          for (int j = 0; j < d_nb_points; j++)
+             out[i*d_nb_points+j] = 0.0;
+          */
       }
 
       // Tell runtime system how many output items we produced.

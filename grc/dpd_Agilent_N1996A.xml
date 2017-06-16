@@ -38,6 +38,7 @@
 
   <source>
     <name>out</name>
-    <type>complex</type>
+    <type>float</type>
+    <vlen>$nb_points</vlen>
   </source>
 </block>

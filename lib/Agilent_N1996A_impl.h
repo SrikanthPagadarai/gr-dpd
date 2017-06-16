@@ -23,6 +23,7 @@
 
 #include <dpd/Agilent_N1996A.h>
 #include <string>
+#include <gnuradio/thread/thread.h>
 #include "vxi11_user.h"
 
 namespace gr {
@@ -47,27 +48,42 @@ namespace gr {
          gr_vector_void_star &output_items);
 
      protected:
-      unsigned long int d_frequency; //!< Center frequency in Hz
-      unsigned long int d_span;      //!< Span in Hz
-      unsigned int d_resbw;          //!< Resolution bandwidth in Hz
-      unsigned int d_nb_points;      //!< Number of I/Q points per E4406A block
-      std::string d_ip_addr;         //!< E4406A IP Address
-      CLINK  d_vxi_link;             //!< VXI-11 instrument handler
+      unsigned long int d_frequency;    // Center frequency in Hz
+      unsigned long int d_span;         // Span in Hz
+      unsigned int d_resbw;             // Resolution bandwidth in Hz
+      unsigned int d_nb_points;         // Number of x-axis points on PSD plot
+      std::string d_ip_addr;            // N1996A IP Address
+      CLINK  d_vxi_link;                // VXI-11 instrument handler
+      gr::thread::mutex d_1996a_mutex;  // N1996A communication protection
+      char   *d_n1996a_buf;             // Buffer for PSD data block returned by N1996A
+      size_t d_n1996a_bufsize;          // Size of buffer used for wave data retrieval from N1996A
+      
+    
 
  
       // send command to instrument utility
-      void send_command(const char *command);
+      void send_command(const char *command, bool protect = true);
+
+      // send command with unsigned integer argument to instrument utility
+      void send_command_u(const char *command, unsigned int value);
 
       // send command with unsigned long integer argument to instrument utility
       void send_command_ul(const char *command, unsigned long int value);
 
       // send command and get response from instrument 
       size_t send_command_and_get_response(const char *command, char *buf, 
-            const size_t bufsize);
+            const size_t bufsize, bool protect = true);
 
       // send command and get response from instrument as a double value
       void send_command_and_get_response_double(const char *command, 
             double *value);
+
+      // send command and get response from instrument as an unsigned int value
+      void send_command_and_get_response_int(const char *command, 
+            int *value);
+
+      // send command and print response
+      void send_command_and_print_message(const char *command);
 
     };
 
