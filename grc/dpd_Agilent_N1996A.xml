@@ -38,7 +38,7 @@
 
   <source>
     <name>out</name>
-    <type>float</type>
-    <vlen>$nb_points</vlen>
+    <type>byte</type>
+    <vlen>4096</vlen>
   </source>
 </block>

@@ -32,33 +32,37 @@ namespace gr {
     class Agilent_N1996A_impl : public Agilent_N1996A
     {
      private:
-      // Nothing to declare in this block.
-
+      unsigned long int d_frequency;    // Center frequency in Hz
+      unsigned long int d_span;         // Span in Hz
+      unsigned int d_resbw;             // Resolution bandwidth in Hz
+      unsigned int d_nb_points;         // Number of x-axis points on PSD plot
+      std::string d_ip_addr;            // N1996A IP Address
+      CLINK d_vxi_link;                 // VXI-11 instrument handler
+      gr::thread::mutex d_1996a_mutex;  // N1996A communication protection
+      char *d_n1996a_buf;               // Buffer for PSD data block returned by N1996A
+      size_t d_n1996a_bufsize;          // Size of buffer used for wave data retrieval from N1996A
+      FILE *fp_SA_meas;
+      char filename[255];
+      time_t now;   
+      int count, i, j;
+      char counter_str[8]; 
+      unsigned int counter_size;
+      unsigned int byte_count;                    
+      
      public:
       Agilent_N1996A_impl(const std::string& ip_addr, float frequency, float span, float resbw, uint32_t nb_points);
       ~Agilent_N1996A_impl();
 
       void set_frequency(float frequency);
       void set_span(float span);
+      void set_resbw(float resbw);
       void set_sweep_points(unsigned int nb_points);
 
       // Where all the action really happens
       int work(int noutput_items,
          gr_vector_const_void_star &input_items,
          gr_vector_void_star &output_items);
-
-     protected:
-      unsigned long int d_frequency;    // Center frequency in Hz
-      unsigned long int d_span;         // Span in Hz
-      unsigned int d_resbw;             // Resolution bandwidth in Hz
-      unsigned int d_nb_points;         // Number of x-axis points on PSD plot
-      std::string d_ip_addr;            // N1996A IP Address
-      CLINK  d_vxi_link;                // VXI-11 instrument handler
-      gr::thread::mutex d_1996a_mutex;  // N1996A communication protection
-      char   *d_n1996a_buf;             // Buffer for PSD data block returned by N1996A
-      size_t d_n1996a_bufsize;          // Size of buffer used for wave data retrieval from N1996A
       
-    
 
  
       // send command to instrument utility

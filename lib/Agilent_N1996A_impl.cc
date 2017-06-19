@@ -41,15 +41,18 @@ namespace gr {
     Agilent_N1996A_impl::Agilent_N1996A_impl(const std::string& ip_addr, float frequency, float span, float resbw, uint32_t nb_points)
       : gr::sync_block("Agilent_N1996A",
               gr::io_signature::make(0, 0, 0),
-              gr::io_signature::make(1, 1, nb_points*sizeof(float))),
+              gr::io_signature::make(1, 1, 4096*sizeof(char))),
               d_ip_addr(ip_addr),
               d_frequency(frequency),
               d_span(span),
               d_resbw(resbw),
-              d_nb_points(2*nb_points)              
+              d_nb_points(nb_points)              
     {
-      d_n1996a_bufsize = d_nb_points*8;
-      d_n1996a_buf = (char *) malloc(d_n1996a_bufsize);
+      // buffer format will always be #4abcd<abcd bytes>
+      // so, buffer size needs to accomodate 6 extra chars + one terminating char
+      d_n1996a_bufsize = d_nb_points*4+7; 
+      printf("d_n1996a_bufsize: %lu\n", d_n1996a_bufsize);
+      d_n1996a_buf = (char *) calloc(d_n1996a_bufsize, 1);
 
       int ret = vxi11_open_device(ip_addr.c_str(), &d_vxi_link); // try to establish VXI-11 communication link with N1996A
     
@@ -62,17 +65,20 @@ namespace gr {
       {
         std::cout << "N1996A: VXI-11 channel opened" << std::endl;
         std::cout << "Instrument Identification Information: "; 
-        send_command_and_print_message("*IDN?");
+        send_command_and_print_message("*IDN?; *OPC?");        
       }
 
       // setup 
       send_command(":INST:SEL SA");      // set analayzer to SA mode
-      send_command(":INIT:CONT 0");
+      send_command(":INIT:CONT 1");
       set_frequency(d_frequency);        // set center frequency
       set_span(d_span);                  // set span
+      set_resbw(d_resbw);
       set_sweep_points(d_nb_points);
       send_command(":FORM:BORD SWAP");   // set binary byte order to SWAP
-      send_command(":FORM REAL,32");     // set ouput format to a binary 32 bit format
+      send_command(":FORM:DATA REAL,32");     // set ouput format to a binary 32 bit format
+
+      count = 0;
     }
 
     /*
@@ -80,10 +86,11 @@ namespace gr {
      */
     Agilent_N1996A_impl::~Agilent_N1996A_impl()
     {
+
       // send_command(":INIT:CONT 1"); // restore continuous measurement
       // send_command(":CAL:AUTO ON"); // restore auto calibration
     
-      vxi11_close_device(d_ip_addr.c_str(), &d_vxi_link); // close VXI-11 communication link with N1996A
+      vxi11_close_device(d_ip_addr.c_str(), &d_vxi_link); // close VXI-11 communication link with N1996A      
     }
 
 
@@ -97,6 +104,8 @@ namespace gr {
         gr::thread::scoped_lock guard(d_1996a_mutex); // protect communication with N1996A
         ret = vxi11_send(&d_vxi_link, command);
       }
+      else
+        ret = vxi11_send(&d_vxi_link, command);
 
       if (ret < 0)
       {
@@ -136,6 +145,11 @@ namespace gr {
         ret = vxi11_send(&d_vxi_link, command);
         bytes_returned = vxi11_receive(&d_vxi_link, buf, bufsize);
       }
+      else
+      {
+        ret = vxi11_send(&d_vxi_link, command);
+        bytes_returned = vxi11_receive(&d_vxi_link, buf, bufsize);
+      }
 
       if (ret < 0)
       {
@@ -148,6 +162,8 @@ namespace gr {
       }
       else
       {
+        printf("ret: %d\n", ret);
+        printf("bytes_returned: %d\n", bytes_returned);
         std::cerr << "N1996A: no reply to command \"" << command << "\"" << std::endl;
         throw std::runtime_error("cannot get reply from N1996A");
       }    
@@ -209,6 +225,16 @@ namespace gr {
       d_span = n1996a_span; // update with span as set by the N1996A
     }
 
+    // set center frequency
+    void Agilent_N1996A_impl::set_resbw(float resbw)
+    {
+      double n1996a_resbw;
+    
+      d_resbw = resbw;
+      send_command_ul(":BAND:RES", d_resbw); // set center frequency
+      send_command_and_get_response_double(":BAND:RES?", &n1996a_resbw); 
+      d_resbw = n1996a_resbw; // update with resolution bandwidth as set by the N1996A
+    }
 
     // set number of sweep points
     void Agilent_N1996A_impl::set_sweep_points(unsigned int nb_points)
@@ -224,13 +250,11 @@ namespace gr {
         gr_vector_const_void_star &input_items,
         gr_vector_void_star &output_items)
     {
-      gr_complex *out = (gr_complex *) output_items[0];
+      char *out = (char *) output_items[0];
 
       // Do <+signal processing+>
-      for (int i = 0; i < noutput_items; i++)
+      for (i = 0; i < noutput_items; i++)
       {
-          send_command(":INIT:CONT 0");
-
           // fetch data from N1996A and do signal processing    
           size_t bytes_returned = send_command_and_get_response("TRAC:DATA? TRACE1", d_n1996a_buf, d_n1996a_bufsize);
     
@@ -241,8 +265,8 @@ namespace gr {
           }
           else
           {
-             char counter_str[8];
-        
+             // printf("bytes_returned: %lu\n", bytes_returned);
+             
              if (d_n1996a_buf[0] != '#')
              {
                std::cerr << "N1996A: invalid magic character for PSD data (" << d_n1996a_buf[0] << " bytes)" << std::endl;
@@ -252,7 +276,7 @@ namespace gr {
              strncpy(counter_str, &d_n1996a_buf[1], 1);
              counter_str[1] = '\0';
         
-             unsigned int counter_size = strtoul(counter_str, 0, 10);
+             counter_size = strtoul(counter_str, 0, 10);
         
              if (bytes_returned < 2+counter_size)
              {
@@ -264,7 +288,7 @@ namespace gr {
                strncpy(counter_str, &d_n1996a_buf[2], counter_size);
                counter_str[counter_size] = '\0';
             
-               unsigned int  byte_count = strtoul(counter_str, 0, 10);
+               byte_count = strtoul(counter_str, 0, 10);
             
                if (bytes_returned < 2+counter_size+byte_count)
                {
@@ -272,24 +296,25 @@ namespace gr {
                  throw std::runtime_error("invalid size for PSD data");
                }
                else
-               {
-                 float *iq_array = (float *) &d_n1996a_buf[2+counter_size];
-                
-                 for (int j = 1; j < d_nb_points; j+=2)                 
-                    out[i*d_nb_points+j] = iq_array[j];
-                
-                 // noutput_items = d_nb_points;
+               {                 
+                 
+                 printf("%d) byte_count: %u\n", count++, byte_count);
+                 /*
+                 now = time(NULL);
+                 sprintf(filename, "/home/radio1/sa_debug/SA_meas_%d.bin", (int)now);             
+
+                 fp_SA_meas = fopen(filename,"wb");
+                 fwrite(d_n1996a_buf+2+counter_size, byte_count, 1, fp_SA_meas);
+                 fclose(fp_SA_meas); */
+
+                 /*
+                 for (j = 0; j < 4096; j++)                 
+                    out[i*4096+j] = d_n1996a_buf[2+counter_size+j];*/
+                 memcpy(out+i*4096, d_n1996a_buf+2+counter_size, d_nb_points*4);
+                 
                }
-
-
-             }
-           
-          }
-
-          /*
-          for (int j = 0; j < d_nb_points; j++)
-             out[i*d_nb_points+j] = 0.0;
-          */
+             }           
+          }          
       }
 
       // Tell runtime system how many output items we produced.
