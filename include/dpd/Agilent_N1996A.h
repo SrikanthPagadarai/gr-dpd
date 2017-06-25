@@ -47,6 +47,9 @@ namespace gr {
        * creating new instances.
        */
       static sptr make(const std::string& ip_addr, float frequency, float span, float resbw, uint32_t nb_points);
+
+      // set spectrum analyzer center frequency
+      virtual void set_frequency(float frequency) = 0;
     };
 
   } // namespace dpd
