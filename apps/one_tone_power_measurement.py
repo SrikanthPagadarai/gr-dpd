@@ -98,16 +98,29 @@ def main(argv):
        elif opt in ("-a", "--bb_ampl"):
           bb_ampl = float(arg)
 
-    dir = "./power_measurements"
-    if not os.path.exists(dir):
-       os.makedirs(dir)
+    if center_freq < 400e6 or center_freq > 4400e6:
+       print 'Error! Invalid choice of center frequency for SBX.'
+       print int(center_freq)
+       sys.exit()
 
-    filename = "one_tone_power_" + str(int(round(time.time() * 1000))) + ".bin"
-    dir_filename = dir + "/" + filename    
+    if sbx_db_gain < 0.0 or sbx_db_gain > 31.5:
+       print 'Error! Invalid choice of daughterboard gain for SBX.'
+       sys.exit()
+
+    if bb_ampl < 0.0 or bb_ampl > 1.0:
+       print 'Error! Invalid choice of baseband signal scale factor.'
+       sys.exit()
+
+    dir_name = "./power_measurements"
+    if not os.path.exists(dir_name):
+       os.makedirs(dir_name)
+
+    filename = "one_tone_power_f" + str(int(center_freq)) + "_g" + str(int(sbx_db_gain*10)) + "_a" + str(int(bb_ampl*100)) + ".bin"
+    dir_filename = dir_name + "/" + filename    
 
     tb = top_block(center_freq, sbx_db_gain, bb_ampl, dir_filename)    
     tb.start()    
-    time.sleep(5)
+    time.sleep(20)
 
     tb.stop()
     tb.wait()
