@@ -15,6 +15,7 @@
 #include "dpd/add_cp.h"
 #include "dpd/Agilent_N1996A.h"
 #include "dpd/polynomial_regressor_vector.h"
+#include "dpd/signum_func.h"
 %}
 
 
@@ -32,3 +33,5 @@ GR_SWIG_BLOCK_MAGIC2(dpd, add_cp);
 GR_SWIG_BLOCK_MAGIC2(dpd, Agilent_N1996A);
 %include "dpd/polynomial_regressor_vector.h"
 GR_SWIG_BLOCK_MAGIC2(dpd, polynomial_regressor_vector);
+%include "dpd/signum_func.h"
+GR_SWIG_BLOCK_MAGIC2(dpd, signum_func);

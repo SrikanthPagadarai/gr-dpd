@@ -28,5 +28,6 @@ install(FILES
     stream_to_zero_padded_vector.h
     add_cp.h
     Agilent_N1996A.h
-    polynomial_regressor_vector.h DESTINATION include/dpd
+    polynomial_regressor_vector.h
+    signum_func.h DESTINATION include/dpd
 )

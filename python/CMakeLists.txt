@@ -48,3 +48,4 @@ GR_ADD_TEST(qa_stream_to_zero_padded_vector ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT
 GR_ADD_TEST(qa_add_cp ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_add_cp.py)
 GR_ADD_TEST(qa_Agilent_N1996A ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_Agilent_N1996A.py)
 GR_ADD_TEST(qa_polynomial_regressor_vector ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_polynomial_regressor_vector.py)
+GR_ADD_TEST(qa_signum_func ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_signum_func.py)

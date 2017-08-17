@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <?grc format='1' created='3.7.11'?>
 <flow_graph>
-  <timestamp>Wed Mar 23 19:26:54 2016</timestamp>
+  <timestamp>Wed Apr  6 14:27:24 2016</timestamp>
   <block>
     <key>options</key>
     <param>
@@ -46,7 +46,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>hier_basic_ieee80222_tx_withoutCP</value>
+      <value>hier_estimate_integer_delay</value>
     </param>
     <param>
       <key>max_nouts</key>
@@ -78,7 +78,7 @@
     </param>
     <param>
       <key>title</key>
-      <value>Basic Tx without CP</value>
+      <value>Estimate Integer Delay</value>
     </param>
   </block>
   <block>
@@ -97,50 +97,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(832, 35)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>N</value>
-    </param>
-    <param>
-      <key>label</key>
-      <value># of Symbols</value>
-    </param>
-    <param>
-      <key>short_id</key>
-      <value></value>
-    </param>
-    <param>
-      <key>type</key>
-      <value></value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>1</value>
-    </param>
-  </block>
-  <block>
-    <key>parameter</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(288, 27)</value>
+      <value>(240, 27)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -168,7 +125,7 @@
     </param>
   </block>
   <block>
-    <key>analog_random_source_x</key>
+    <key>parameter</key>
     <param>
       <key>alias</key>
       <value></value>
@@ -178,16 +135,12 @@
       <value></value>
     </param>
     <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
       <key>_enabled</key>
       <value>True</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(64, 279)</value>
+      <value>(544, 27)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -195,39 +148,27 @@
     </param>
     <param>
       <key>id</key>
-      <value>analog_random_source_x_0_0</value>
+      <value>STS_len</value>
     </param>
     <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
+      <key>label</key>
+      <value>STS Length</value>
     </param>
     <param>
-      <key>max</key>
-      <value>64</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>min</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>num_samps</key>
-      <value>used_sc*N</value>
+      <key>short_id</key>
+      <value></value>
     </param>
     <param>
       <key>type</key>
-      <value>int</value>
+      <value></value>
     </param>
     <param>
-      <key>repeat</key>
-      <value>False</value>
+      <key>value</key>
+      <value>0</value>
     </param>
   </block>
   <block>
-    <key>digital_chunks_to_symbols_xx</key>
+    <key>parameter</key>
     <param>
       <key>alias</key>
       <value></value>
@@ -237,20 +178,12 @@
       <value></value>
     </param>
     <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>dimension</key>
-      <value>1</value>
-    </param>
-    <param>
       <key>_enabled</key>
       <value>True</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(264, 317)</value>
+      <value>(1072, 27)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -258,11 +191,58 @@
     </param>
     <param>
       <key>id</key>
-      <value>digital_chunks_to_symbols_xx_0_0</value>
+      <value>STS_signed_ampl_diff</value>
     </param>
     <param>
-      <key>in_type</key>
-      <value>int</value>
+      <key>label</key>
+      <value>Reference</value>
+    </param>
+    <param>
+      <key>short_id</key>
+      <value></value>
+    </param>
+    <param>
+      <key>type</key>
+      <value></value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>[-1,-1,-1,-1,1,1,1,1,1,-1]</value>
+    </param>
+  </block>
+  <block>
+    <key>analog_const_source_x</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>const</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(464, 347)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>analog_const_source_x_0</value>
     </param>
     <param>
       <key>maxoutbuf</key>
@@ -273,20 +253,12 @@
       <value>0</value>
     </param>
     <param>
-      <key>num_ports</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>out_type</key>
-      <value>complex</value>
-    </param>
-    <param>
-      <key>symbol_table</key>
-      <value>(-7+7j,-7+5j,-7+1j,-7+3j,-7-7j,-7-5j,-7-1j,-7-3j,-5+7j,-5+5j,-5+1j,-5+3j,-5-7j,-5-5j,-5-1j,-5-3j,-1+7j,-1+5j,-1+1j,-1+3j,-1-7j,-1-5j,-1-1j,-1-3j,-3+7j,-3+5j,-3+1j,-3+3j,-3-7j,-3-5j,-3-1j,-3-3j,7+7j,7+5j,7+1j,7+3j,7-7j,7-5j,7-1j,7-3j,5+7j,5+5j,5+1j,5+3j,5-7j,5-5j,5-1j,5-3j,1+7j,1+5j,1+1j,1+3j,1-7j,1-5j,1-1j,1-3j,3+7j,3+5j,3+1j,3+3j,3-7j,3-5j,3-1j,3-3j)</value>
+      <key>type</key>
+      <value>float</value>
     </param>
   </block>
   <block>
-    <key>dpd_stream_to_zero_padded_vector</key>
+    <key>blocks_float_to_complex</key>
     <param>
       <key>alias</key>
       <value></value>
@@ -302,14 +274,151 @@
     <param>
       <key>_enabled</key>
       <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(656, 280)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>blocks_float_to_complex_0</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>vlen</key>
+      <value>1</value>
+    </param>
+  </block>
+  <block>
+    <key>parameter</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(688, 27)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>corr_len</value>
+    </param>
+    <param>
+      <key>label</key>
+      <value>Correlation Length</value>
+    </param>
+    <param>
+      <key>short_id</key>
+      <value></value>
+    </param>
+    <param>
+      <key>type</key>
+      <value></value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>0</value>
+    </param>
+  </block>
+  <block>
+    <key>digital_predistortion_peak_detect</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(856, 395)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>digital_predistortion_peak_detect_0</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
     </param>
     <param>
       <key>NFFT</key>
       <value>NFFT</value>
     </param>
     <param>
+      <key>ovx</key>
+      <value>ovx</value>
+    </param>
+    <param>
+      <key>peak_cond</key>
+      <value>peak_val</value>
+    </param>
+  </block>
+  <block>
+    <key>fir_filter_xxx</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>decim</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
       <key>_coordinate</key>
-      <value>(528, 468)</value>
+      <value>(432, 267)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -317,7 +426,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>dpd_stream_to_zero_padded_vector_0</value>
+      <value>fir_filter_xxx_0</value>
     </param>
     <param>
       <key>maxoutbuf</key>
@@ -328,12 +437,20 @@
       <value>0</value>
     </param>
     <param>
-      <key>used_sc</key>
-      <value>used_sc</value>
+      <key>samp_delay</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>taps</key>
+      <value>STS_signed_ampl_diff[0:corr_len+1]</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>fff</value>
     </param>
   </block>
   <block>
-    <key>fft_vxx</key>
+    <key>hier_ampl_diff</key>
     <param>
       <key>alias</key>
       <value></value>
@@ -351,16 +468,8 @@
       <value>True</value>
     </param>
     <param>
-      <key>fft_size</key>
-      <value>NFFT</value>
-    </param>
-    <param>
-      <key>forward</key>
-      <value>False</value>
-    </param>
-    <param>
       <key>_coordinate</key>
-      <value>(792, 448)</value>
+      <value>(200, 280)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -368,11 +477,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>fft_vxx_0</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>complex</value>
+      <value>hier_ampl_diff_0</value>
     </param>
     <param>
       <key>maxoutbuf</key>
@@ -382,17 +487,48 @@
       <key>minoutbuf</key>
       <value>0</value>
     </param>
+  </block>
+  <block>
+    <key>parameter</key>
     <param>
-      <key>nthreads</key>
-      <value>1</value>
+      <key>alias</key>
+      <value></value>
     </param>
     <param>
-      <key>shift</key>
-      <value>False</value>
+      <key>comment</key>
+      <value></value>
     </param>
     <param>
-      <key>window</key>
-      <value>window.rectangular(NFFT)</value>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(360, 27)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>ovx</value>
+    </param>
+    <param>
+      <key>label</key>
+      <value>Oversampling Factor</value>
+    </param>
+    <param>
+      <key>short_id</key>
+      <value></value>
+    </param>
+    <param>
+      <key>type</key>
+      <value></value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>6</value>
     </param>
   </block>
   <block>
@@ -407,7 +543,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1088, 469)</value>
+      <value>(1104, 411)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -435,7 +571,50 @@
     </param>
     <param>
       <key>vlen</key>
-      <value>NFFT</value>
+      <value>1</value>
+    </param>
+  </block>
+  <block>
+    <key>pad_source</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(32, 427)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>pad_source_0</value>
+    </param>
+    <param>
+      <key>label</key>
+      <value>in</value>
+    </param>
+    <param>
+      <key>num_streams</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>optional</key>
+      <value>False</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>complex</value>
+    </param>
+    <param>
+      <key>vlen</key>
+      <value>1</value>
     </param>
   </block>
   <block>
@@ -454,7 +633,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(408, 27)</value>
+      <value>(864, 27)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -462,11 +641,11 @@
     </param>
     <param>
       <key>id</key>
-      <value>used_sc</value>
+      <value>peak_val</value>
     </param>
     <param>
       <key>label</key>
-      <value>Used Subcarriers</value>
+      <value>Correlation Peak Value</value>
     </param>
     <param>
       <key>short_id</key>
@@ -478,30 +657,48 @@
     </param>
     <param>
       <key>value</key>
-      <value>1680</value>
+      <value>0</value>
     </param>
   </block>
   <connection>
-    <source_block_id>analog_random_source_x_0_0</source_block_id>
-    <sink_block_id>digital_chunks_to_symbols_xx_0_0</sink_block_id>
+    <source_block_id>analog_const_source_x_0</source_block_id>
+    <sink_block_id>blocks_float_to_complex_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>1</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>blocks_float_to_complex_0</source_block_id>
+    <sink_block_id>digital_predistortion_peak_detect_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>digital_chunks_to_symbols_xx_0_0</source_block_id>
-    <sink_block_id>dpd_stream_to_zero_padded_vector_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>dpd_stream_to_zero_padded_vector_0</source_block_id>
-    <sink_block_id>fft_vxx_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>fft_vxx_0</source_block_id>
+    <source_block_id>digital_predistortion_peak_detect_0</source_block_id>
     <sink_block_id>pad_sink_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>fir_filter_xxx_0</source_block_id>
+    <sink_block_id>blocks_float_to_complex_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>hier_ampl_diff_0</source_block_id>
+    <sink_block_id>fir_filter_xxx_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>pad_source_0</source_block_id>
+    <sink_block_id>digital_predistortion_peak_detect_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>1</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>pad_source_0</source_block_id>
+    <sink_block_id>hier_ampl_diff_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>

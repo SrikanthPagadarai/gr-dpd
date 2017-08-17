@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <?grc format='1' created='3.7.11'?>
 <flow_graph>
-  <timestamp>Wed Mar 23 19:26:54 2016</timestamp>
+  <timestamp>Sat Mar 26 19:41:33 2016</timestamp>
   <block>
     <key>options</key>
     <param>
@@ -46,7 +46,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>hier_basic_ieee80222_tx_withoutCP</value>
+      <value>hier_ampl_diff</value>
     </param>
     <param>
       <key>max_nouts</key>
@@ -78,97 +78,11 @@
     </param>
     <param>
       <key>title</key>
-      <value>Basic Tx without CP</value>
+      <value>Amplitude Difference </value>
     </param>
   </block>
   <block>
-    <key>parameter</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(832, 35)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>N</value>
-    </param>
-    <param>
-      <key>label</key>
-      <value># of Symbols</value>
-    </param>
-    <param>
-      <key>short_id</key>
-      <value></value>
-    </param>
-    <param>
-      <key>type</key>
-      <value></value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>1</value>
-    </param>
-  </block>
-  <block>
-    <key>parameter</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(288, 27)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>NFFT</value>
-    </param>
-    <param>
-      <key>label</key>
-      <value>FFT Size</value>
-    </param>
-    <param>
-      <key>short_id</key>
-      <value></value>
-    </param>
-    <param>
-      <key>type</key>
-      <value></value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>2048</value>
-    </param>
-  </block>
-  <block>
-    <key>analog_random_source_x</key>
+    <key>blocks_complex_to_mag</key>
     <param>
       <key>alias</key>
       <value></value>
@@ -187,7 +101,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(64, 279)</value>
+      <value>(352, 160)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -195,39 +109,23 @@
     </param>
     <param>
       <key>id</key>
-      <value>analog_random_source_x_0_0</value>
+      <value>blocks_complex_to_mag_0</value>
     </param>
     <param>
       <key>maxoutbuf</key>
       <value>0</value>
     </param>
     <param>
-      <key>max</key>
-      <value>64</value>
-    </param>
-    <param>
       <key>minoutbuf</key>
       <value>0</value>
     </param>
     <param>
-      <key>min</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>num_samps</key>
-      <value>used_sc*N</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>int</value>
-    </param>
-    <param>
-      <key>repeat</key>
-      <value>False</value>
+      <key>vlen</key>
+      <value>1</value>
     </param>
   </block>
   <block>
-    <key>digital_chunks_to_symbols_xx</key>
+    <key>blocks_complex_to_mag</key>
     <param>
       <key>alias</key>
       <value></value>
@@ -241,7 +139,50 @@
       <value></value>
     </param>
     <param>
-      <key>dimension</key>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(352, 264)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>blocks_complex_to_mag_0_0</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>vlen</key>
+      <value>1</value>
+    </param>
+  </block>
+  <block>
+    <key>blocks_delay</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>delay</key>
       <value>1</value>
     </param>
     <param>
@@ -250,7 +191,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(264, 317)</value>
+      <value>(240, 259)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -258,11 +199,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>digital_chunks_to_symbols_xx_0_0</value>
-    </param>
-    <param>
-      <key>in_type</key>
-      <value>int</value>
+      <value>blocks_delay_0</value>
     </param>
     <param>
       <key>maxoutbuf</key>
@@ -277,104 +214,49 @@
       <value>1</value>
     </param>
     <param>
-      <key>out_type</key>
-      <value>complex</value>
-    </param>
-    <param>
-      <key>symbol_table</key>
-      <value>(-7+7j,-7+5j,-7+1j,-7+3j,-7-7j,-7-5j,-7-1j,-7-3j,-5+7j,-5+5j,-5+1j,-5+3j,-5-7j,-5-5j,-5-1j,-5-3j,-1+7j,-1+5j,-1+1j,-1+3j,-1-7j,-1-5j,-1-1j,-1-3j,-3+7j,-3+5j,-3+1j,-3+3j,-3-7j,-3-5j,-3-1j,-3-3j,7+7j,7+5j,7+1j,7+3j,7-7j,7-5j,7-1j,7-3j,5+7j,5+5j,5+1j,5+3j,5-7j,5-5j,5-1j,5-3j,1+7j,1+5j,1+1j,1+3j,1-7j,1-5j,1-1j,1-3j,3+7j,3+5j,3+1j,3+3j,3-7j,3-5j,3-1j,3-3j)</value>
-    </param>
-  </block>
-  <block>
-    <key>dpd_stream_to_zero_padded_vector</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>NFFT</key>
-      <value>NFFT</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(528, 468)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>dpd_stream_to_zero_padded_vector_0</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>used_sc</key>
-      <value>used_sc</value>
-    </param>
-  </block>
-  <block>
-    <key>fft_vxx</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>fft_size</key>
-      <value>NFFT</value>
-    </param>
-    <param>
-      <key>forward</key>
-      <value>False</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(792, 448)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>fft_vxx_0</value>
-    </param>
-    <param>
       <key>type</key>
       <value>complex</value>
     </param>
     <param>
+      <key>vlen</key>
+      <value>1</value>
+    </param>
+  </block>
+  <block>
+    <key>blocks_sub_xx</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(552, 160)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>blocks_sub_xx_0</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>float</value>
+    </param>
+    <param>
       <key>maxoutbuf</key>
       <value>0</value>
     </param>
@@ -383,16 +265,51 @@
       <value>0</value>
     </param>
     <param>
-      <key>nthreads</key>
+      <key>num_inputs</key>
+      <value>2</value>
+    </param>
+    <param>
+      <key>vlen</key>
       <value>1</value>
     </param>
+  </block>
+  <block>
+    <key>dpd_signum_func</key>
     <param>
-      <key>shift</key>
-      <value>False</value>
+      <key>alias</key>
+      <value></value>
     </param>
     <param>
-      <key>window</key>
-      <value>window.rectangular(NFFT)</value>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(688, 176)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>dpd_signum_func_0</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
     </param>
   </block>
   <block>
@@ -407,7 +324,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1088, 469)</value>
+      <value>(920, 171)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -419,7 +336,7 @@
     </param>
     <param>
       <key>type</key>
-      <value>complex</value>
+      <value>float</value>
     </param>
     <param>
       <key>label</key>
@@ -435,15 +352,11 @@
     </param>
     <param>
       <key>vlen</key>
-      <value>NFFT</value>
+      <value>1</value>
     </param>
   </block>
   <block>
-    <key>parameter</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
+    <key>pad_source</key>
     <param>
       <key>comment</key>
       <value></value>
@@ -454,7 +367,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(408, 27)</value>
+      <value>(40, 155)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -462,46 +375,68 @@
     </param>
     <param>
       <key>id</key>
-      <value>used_sc</value>
+      <value>pad_source_0</value>
     </param>
     <param>
       <key>label</key>
-      <value>Used Subcarriers</value>
+      <value>in</value>
     </param>
     <param>
-      <key>short_id</key>
-      <value></value>
+      <key>num_streams</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>optional</key>
+      <value>False</value>
     </param>
     <param>
       <key>type</key>
-      <value></value>
+      <value>complex</value>
     </param>
     <param>
-      <key>value</key>
-      <value>1680</value>
+      <key>vlen</key>
+      <value>1</value>
     </param>
   </block>
   <connection>
-    <source_block_id>analog_random_source_x_0_0</source_block_id>
-    <sink_block_id>digital_chunks_to_symbols_xx_0_0</sink_block_id>
+    <source_block_id>blocks_complex_to_mag_0</source_block_id>
+    <sink_block_id>blocks_sub_xx_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>digital_chunks_to_symbols_xx_0_0</source_block_id>
-    <sink_block_id>dpd_stream_to_zero_padded_vector_0</sink_block_id>
+    <source_block_id>blocks_complex_to_mag_0_0</source_block_id>
+    <sink_block_id>blocks_sub_xx_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>1</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>blocks_delay_0</source_block_id>
+    <sink_block_id>blocks_complex_to_mag_0_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>dpd_stream_to_zero_padded_vector_0</source_block_id>
-    <sink_block_id>fft_vxx_0</sink_block_id>
+    <source_block_id>blocks_sub_xx_0</source_block_id>
+    <sink_block_id>dpd_signum_func_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>fft_vxx_0</source_block_id>
+    <source_block_id>dpd_signum_func_0</source_block_id>
     <sink_block_id>pad_sink_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>pad_source_0</source_block_id>
+    <sink_block_id>blocks_complex_to_mag_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>pad_source_0</source_block_id>
+    <sink_block_id>blocks_delay_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
