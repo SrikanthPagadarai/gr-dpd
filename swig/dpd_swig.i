@@ -16,6 +16,7 @@
 #include "dpd/Agilent_N1996A.h"
 #include "dpd/polynomial_regressor_vector.h"
 #include "dpd/signum_func.h"
+#include "dpd/gain_phase_calibrate.h"
 %}
 
 
@@ -35,3 +36,5 @@ GR_SWIG_BLOCK_MAGIC2(dpd, Agilent_N1996A);
 GR_SWIG_BLOCK_MAGIC2(dpd, polynomial_regressor_vector);
 %include "dpd/signum_func.h"
 GR_SWIG_BLOCK_MAGIC2(dpd, signum_func);
+%include "dpd/gain_phase_calibrate.h"
+GR_SWIG_BLOCK_MAGIC2(dpd, gain_phase_calibrate);

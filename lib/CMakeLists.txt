@@ -34,6 +34,7 @@ list(APPEND dpd_sources
     Agilent_N1996A_impl.cc
     polynomial_regressor_vector_impl.cc
     signum_func_impl.cc
+    gain_phase_calibrate_impl.cc
 )
 
 set(dpd_sources "${dpd_sources}" PARENT_SCOPE)

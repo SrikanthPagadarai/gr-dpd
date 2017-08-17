@@ -25,5 +25,6 @@ install(FILES
     dpd_add_cp.xml
     dpd_Agilent_N1996A.xml
     dpd_polynomial_regressor_vector.xml
-    dpd_signum_func.xml DESTINATION share/gnuradio/grc/blocks
+    dpd_signum_func.xml
+    dpd_gain_phase_calibrate.xml DESTINATION share/gnuradio/grc/blocks
 )
