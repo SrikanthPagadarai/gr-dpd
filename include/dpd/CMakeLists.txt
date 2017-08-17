@@ -27,5 +27,6 @@ install(FILES
     predistorter.h
     stream_to_zero_padded_vector.h
     add_cp.h
-    Agilent_N1996A.h DESTINATION include/dpd
+    Agilent_N1996A.h
+    polynomial_regressor_vector.h DESTINATION include/dpd
 )

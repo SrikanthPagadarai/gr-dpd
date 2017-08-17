@@ -14,6 +14,7 @@
 #include "dpd/stream_to_zero_padded_vector.h"
 #include "dpd/add_cp.h"
 #include "dpd/Agilent_N1996A.h"
+#include "dpd/polynomial_regressor_vector.h"
 %}
 
 
@@ -29,3 +30,5 @@ GR_SWIG_BLOCK_MAGIC2(dpd, stream_to_zero_padded_vector);
 GR_SWIG_BLOCK_MAGIC2(dpd, add_cp);
 %include "dpd/Agilent_N1996A.h"
 GR_SWIG_BLOCK_MAGIC2(dpd, Agilent_N1996A);
+%include "dpd/polynomial_regressor_vector.h"
+GR_SWIG_BLOCK_MAGIC2(dpd, polynomial_regressor_vector);

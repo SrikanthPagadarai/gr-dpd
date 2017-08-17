@@ -32,6 +32,7 @@ list(APPEND dpd_sources
     stream_to_zero_padded_vector_impl.cc
     add_cp_impl.cc
     Agilent_N1996A_impl.cc
+    polynomial_regressor_vector_impl.cc
 )
 
 set(dpd_sources "${dpd_sources}" PARENT_SCOPE)

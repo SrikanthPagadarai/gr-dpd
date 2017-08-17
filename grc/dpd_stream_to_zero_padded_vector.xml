@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <block>
-  <name>stream_to_zero_padded_vector</name>
+  <name>Stream to ZP Vector</name>
   <key>dpd_stream_to_zero_padded_vector</key>
   <category>[dpd]</category>
   <import>import dpd</import>
