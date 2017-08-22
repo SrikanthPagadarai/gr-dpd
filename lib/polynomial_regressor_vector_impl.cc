@@ -26,6 +26,7 @@
 #include "polynomial_regressor_vector_impl.h"
 #include <armadillo>
 #include <algorithm>
+#include <dpd_externals/gen_GMPvector.h>
 
 using std::vector;
 using namespace arma;
@@ -70,73 +71,6 @@ namespace gr {
     {
     }
 
-    vector<gr_complex> 
-    polynomial_regressor_vector_impl::signal_and_aligned_envelope(const gr_complex *in, const int item) 
-    {
-      //vector that will contain regressor elements of the memory polynomial
-      vector<gr_complex> yy1;
-      yy1.reserve(K_a*L_a);
-
-      //grabbing L_a elements in reverse order
-      cx_fcolvec y_vec_arma1(L_a, fill::zeros); 
-      for (int ii = L_a-1; ii >= 0; ii--) 
-         y_vec_arma1(ii) = in[item-ii]; 
-
-      //store abs() of y_vec_arma1
-      cx_fcolvec abs_y_vec_arma1( size(y_vec_arma1), fill::zeros );
-      abs_y_vec_arma1.set_real( abs(y_vec_arma1) );
-
-      yy1.insert(yy1.end(), y_vec_arma1.begin(), y_vec_arma1.end());
-      cx_fcolvec yy_temp;
-      yy_temp = y_vec_arma1%abs_y_vec_arma1;
-      yy1.insert(yy1.end(), yy_temp.begin(), yy_temp.end());
-      for (int kk = 2; kk<K_a; kk++) {
-         //perform element-wise product using the overloaded % operator
-         yy_temp = yy_temp%abs_y_vec_arma1;
-  
-         yy1.insert(yy1.end(), yy_temp.begin(), yy_temp.end());
-      }
-
-      return yy1;
-    }
-
-    vector<gr_complex> 
-    polynomial_regressor_vector_impl::signal_and_delayed_envelope(const gr_complex *in, const int item) 
-    {
-      //vector that will contain regressor elements of the memory polynomial
-      vector<gr_complex> yy2;
-      yy2.reserve(K_b*M_b*L_b);
-
-      //grabbing L_b+M_b elements in reverse order
-      cx_fcolvec y_vec_arma23(L_b+M_b, fill::zeros); 
-      for (int ii = L_b+M_b-1; ii >= 0; ii--) 
-        y_vec_arma23(ii) = in[item-ii]; 
-
-      // L_b signal elements
-      cx_fcolvec y_vec_arma2 = y_vec_arma23.rows(0, L_b-1);
-
-      //store abs() of y_vec_arma23
-      cx_fcolvec abs_y_vec_arma23( size(y_vec_arma23), fill::zeros );
-      abs_y_vec_arma23.set_real( abs(y_vec_arma23) );
-
-      for (int mm = 1; mm < M_b+1; mm++) {
-        //grabbing L_b delayed signal-envelope elements 
-        cx_fcolvec abs_y_vec_arma3 = abs_y_vec_arma23.rows(mm, L_b+mm-1);
-
-        cx_fcolvec yy_temp;
-        yy_temp = y_vec_arma2%abs_y_vec_arma3;
-        yy2.insert(yy2.end(), yy_temp.begin(), yy_temp.end());
-        for (int kk = 2; kk<K_b+1; kk++) {
-          //perform element-wise product using the overloaded % operator
-          yy_temp = yy_temp%abs_y_vec_arma3;
-
-          yy2.insert(yy2.end(), yy_temp.begin(), yy_temp.end());
-        }
-      }
-
-      return yy2;
-    }
-
     int
     polynomial_regressor_vector_impl::work(int noutput_items,
         gr_vector_const_void_star &input_items,
@@ -146,20 +80,12 @@ namespace gr {
       gr_complex *out = (gr_complex *) output_items[0];
 
       // Do <+signal processing+>
-      for (int item = history()-1; item < noutput_items+history()-1; item++) {
-         //vector that will contain regressor elements of the memory polynomial
-         vector<gr_complex> yy;
-         yy.reserve(M);
-
-         //signal-and-aligned envelope component  
-         vector<gr_complex> yy1 = signal_and_aligned_envelope(in, item);
-         yy.insert(yy.end(), yy1.begin(), yy1.end());
-
-         //signal-and-delayed-envelope component
-         vector<gr_complex> yy2 = signal_and_delayed_envelope(in, item);
-         yy.insert(yy.end(), yy2.begin(), yy2.end());
-
-         std::copy(yy.begin(), yy.end(), out+(item-history()+1)*(M));
+      for (int item = history()-1; item < noutput_items+history()-1; item++) {         
+         vector<gr_complex> GMP_vector;
+         GMP_vector.reserve(M);
+         gen_GMPvector(in, item, K_a, L_a, K_b, M_b, L_b, GMP_vector);
+         
+         std::copy(GMP_vector.begin(), GMP_vector.end(), out+(item-history()+1)*(M));
       }
 
       // Tell runtime system how many output items we produced.

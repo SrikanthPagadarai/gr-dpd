@@ -44,10 +44,7 @@ namespace gr {
       const int L_b;
       const int M;
       const int M_bar;
-
-      vector<gr_complex> signal_and_aligned_envelope(const gr_complex *in, const int item); 
-      vector<gr_complex> signal_and_delayed_envelope(const gr_complex *in, const int item); 
-
+     
      public:
       polynomial_regressor_vector_impl(int NFFT, int cp_len, int ovx, int num_zero_syms, const std::vector<int> &dpd_params);
       ~polynomial_regressor_vector_impl();

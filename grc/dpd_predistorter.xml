@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <block>
-  <name>predistorter</name>
+  <name>Predistorter</name>
   <key>dpd_predistorter</key>
   <category>[dpd]</category>
   <import>import dpd</import>

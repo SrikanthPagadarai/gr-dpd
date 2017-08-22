@@ -138,6 +138,7 @@ find_package(BLAS REQUIRED)
 find_package(LAPACK REQUIRED)
 find_package(Armadillo REQUIRED)
 find_package(LibVXI11 REQUIRED)
+find_package(dpd_externals REQUIRED)
 
 # Search for GNU Radio and its components and versions. Add any
 # components required to the list of GR_REQUIRED_COMPONENTS (in all
@@ -165,6 +166,17 @@ else ()
 endif ()
 
 ########################################################################
+# Find dpd_externals
+########################################################################
+find_package(dpd_externals)
+if (DPD_EXTERNALS_FOUND)
+	include_directories(${DPD_EXTERNALS_INCLUDE_DIRS})
+	message(STATUS "dpd_externals found!")
+else ()
+	message(STATUS "dpd_externals not found!")
+endif ()
+
+########################################################################
 # Setup doxygen option
 ########################################################################
 if(DOXYGEN_FOUND)
@@ -184,6 +196,7 @@ include_directories(
     ${Boost_INCLUDE_DIRS}
     ${CPPUNIT_INCLUDE_DIRS}
     ${GNURADIO_ALL_INCLUDE_DIRS}
+    ${DPD_EXTERNALS_INCLUDE_DIR}
 )
 
 link_directories(

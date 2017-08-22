@@ -22,7 +22,7 @@
 ########################################################################
 include(GrPlatform) #define LIB_SUFFIX
 
-include_directories(${Boost_INCLUDE_DIR} ${LIBVXI11_INCLUDE_DIRS})
+include_directories(${Boost_INCLUDE_DIR} ${LIBVXI11_INCLUDE_DIRS} ${DPD_EXTERNALS_INCLUDE_DIRS})
 link_directories(${Boost_LIBRARY_DIRS})
 
 list(APPEND dpd_sources
@@ -50,7 +50,7 @@ else ()
 endif ()
 
 add_library(gnuradio-dpd SHARED ${dpd_sources})
-target_link_libraries(gnuradio-dpd ${Boost_LIBRARIES} ${GNURADIO_ALL_LIBRARIES} ${ARMADILLO_LIBRARIES} ${LIBVXI11_LIBRARIES})
+target_link_libraries(gnuradio-dpd ${Boost_LIBRARIES} ${GNURADIO_ALL_LIBRARIES} ${ARMADILLO_LIBRARIES} ${LIBVXI11_LIBRARIES} ${DPD_EXTERNALS_LIBRARIES})
 set_target_properties(gnuradio-dpd PROPERTIES DEFINE_SYMBOL "gnuradio_dpd_EXPORTS")
 
 if(APPLE)
@@ -85,7 +85,8 @@ target_link_libraries(
   ${Boost_LIBRARIES}
   ${CPPUNIT_LIBRARIES}
   ${LIBVXI11_LIBRARIES}  
-  gnuradio-dpd
+  ${DPD_EXTERNALS_LIBRARIES}
+  gnuradio-dpd  
 )
 
 GR_ADD_TEST(test_dpd test-dpd)
