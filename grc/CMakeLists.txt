@@ -16,7 +16,6 @@
 # along with GNU Radio; see the file COPYING.  If not, write to
 # the Free Software Foundation, Inc., 51 Franklin Street,
 # Boston, MA 02110-1301, USA.
-
 install(FILES
     dpd_peak_detect.xml
     dpd_sts_blocker.xml
@@ -26,5 +25,6 @@ install(FILES
     dpd_Agilent_N1996A.xml
     dpd_polynomial_regressor_vector.xml
     dpd_signum_func.xml
-    dpd_gain_phase_calibrate.xml DESTINATION share/gnuradio/grc/blocks
+    dpd_gain_phase_calibrate.xml
+    DESTINATION share/gnuradio/grc/blocks
 )

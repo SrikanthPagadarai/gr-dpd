@@ -38,3 +38,4 @@ GR_SWIG_BLOCK_MAGIC2(dpd, polynomial_regressor_vector);
 GR_SWIG_BLOCK_MAGIC2(dpd, signum_func);
 %include "dpd/gain_phase_calibrate.h"
 GR_SWIG_BLOCK_MAGIC2(dpd, gain_phase_calibrate);
+

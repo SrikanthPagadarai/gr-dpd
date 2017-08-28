@@ -30,5 +30,6 @@ install(FILES
     Agilent_N1996A.h
     polynomial_regressor_vector.h
     signum_func.h
-    gain_phase_calibrate.h DESTINATION include/dpd
+    gain_phase_calibrate.h
+    DESTINATION include/dpd
 )

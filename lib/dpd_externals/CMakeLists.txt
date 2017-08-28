@@ -3,17 +3,17 @@ project(dpd_externals CXX C)
 set(CMAKE_BUILD_TYPE Release)
 set(CMAKE_CXX_FLAGS "-Wall -pedantic -Wextra")
 
-#Bring the headers, such as orb_complex.h into the project
+#Bring the headers into the project
 include_directories(./include)
 
 #Add the sources, file(GLOB...) allows for wildcard additions:
-file(GLOB SOURCES "*.cc")
+file(GLOB SOURCES "./src/*.cc")
 
 #Generate the shared library from the sources
 add_library(dpd_externals SHARED ${SOURCES})
  
 #Link the target to other libraries, if any
-target_link_libraries(dpd_externals armadillo)
+target_link_libraries(dpd_externals armadillo m)
 
 #Set the location for library installation
 install(TARGETS dpd_externals DESTINATION /usr/local/lib)

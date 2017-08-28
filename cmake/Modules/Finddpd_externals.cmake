@@ -1,11 +1,18 @@
 if(NOT DPD_EXTERNALS_FOUND)
-  find_path(DPD_EXTERNALS_INCLUDE_DIRS NAMES gen_GMPvector.h
+  find_path(DPD_EXTERNALS_INCLUDE_DIRS 
+    NAMES 
+    gen_GMPvector.h
+    givens_rotate.h
+    extract_postdistorted_y.h
+    extract_g_vecs.h
     PATHS
     /usr/include/dpd_externals
     /usr/local/include/dpd_externals
   )
 
-  find_library(DPD_EXTERNALS_LIBRARIES NAMES dpd_externals
+  find_library(DPD_EXTERNALS_LIBRARIES 
+    NAMES 
+    dpd_externals
     PATHS
     /usr/lib
     /usr/local/lib

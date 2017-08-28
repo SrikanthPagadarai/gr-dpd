@@ -111,7 +111,7 @@ def main(argv):
        print 'Error! Invalid choice of baseband signal scale factor.'
        sys.exit()
 
-    dir_name = "./power_measurements"
+    dir_name = "./one_tone_power_measurements"
     if not os.path.exists(dir_name):
        os.makedirs(dir_name)
 
