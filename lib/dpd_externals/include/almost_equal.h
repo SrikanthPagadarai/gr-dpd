@@ -18,17 +18,9 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef INCLUDED_DPD_EXTERNALS_GIVENS_ROTATE_H
-#define INCLUDED_DPD_EXTERNALS_GIVENS_ROTATE_H
+#ifndef INCLUDED_DPD_EXTERNALS_ALMOST_EQUAL_H
+#define INCLUDED_DPD_EXTERNALS_ALMOST_EQUAL_H
 
-#include <armadillo>
-#include <complex>
+bool almost_equal(float a, float b, float tol); 
 
-typedef std::complex<float> gr_complex;
-using namespace arma;
-
-const gr_complex minus_1i(0, -1);
-
-void givens_rotate(const cx_fmat & in, cx_fmat & out);
-
-#endif /*INCLUDED_DPD_EXTERNALS_GIVENS_ROTATE_H*/
+#endif /*INCLUDED_DPD_EXTERNALS_ALMOST_EQUAL_H*/

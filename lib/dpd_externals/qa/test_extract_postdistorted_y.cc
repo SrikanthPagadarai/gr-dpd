@@ -23,20 +23,10 @@
 #include <string> 
 #include <armadillo>
 #include <dpd_externals/extract_postdistorted_y.h>
+#include <dpd_externals/almost_equal.h>
 
 using namespace std;
 using namespace arma;
-
-bool almost_equal(float a, float b)
-{
-  // calculate the difference
-  float diff_ab = fabs(a - b);
-  
-  if (diff_ab <= 100.0*std::numeric_limits<float>::epsilon())
-    return true;
-
-  return false;
-}
 
 frowvec read_from_file(string file_name, int N) {
   ifstream ins(file_name);  
@@ -106,7 +96,7 @@ int main(void) {
   // check if extract_postdistorted_y.m output and extract_postdistorted_y.cc output are equal
   int test1_pass = 1;
   for (int kk = 0; kk < M; kk++) {
-    if (     ( !almost_equal( out(kk).real(), out_re(kk)) ) || ( !almost_equal( out(kk).imag(), out_im(kk)) )     ) {
+    if (     ( !almost_equal( out(kk).real(), out_re(kk), 100.0 ) ) || ( !almost_equal( out(kk).imag(), out_im(kk), 100.0 ) )     ) {
       test1_pass = 0;       
       break;
     }
@@ -158,7 +148,7 @@ int main(void) {
   // check if extract_postdistorted_y.m output and extract_postdistorted_y.cc output are equal
   int test2_pass = 1;
   for (int kk = 0; kk < M; kk++) {
-    if (     ( !almost_equal( out(kk).real(), out_re(kk)) ) || ( !almost_equal( out(kk).imag(), out_im(kk)) )     ) {
+    if (     ( !almost_equal( out(kk).real(), out_re(kk), 100.0) ) || ( !almost_equal( out(kk).imag(), out_im(kk), 100.0) )     ) {
       test2_pass = 0;       
       break;
     }
@@ -210,7 +200,7 @@ int main(void) {
   // check if extract_postdistorted_y.m output and extract_postdistorted_y.cc output are equal
   int test3_pass = 1;
   for (int kk = 0; kk < M; kk++) {
-    if (     ( !almost_equal( out(kk).real(), out_re(kk)) ) || ( !almost_equal( out(kk).imag(), out_im(kk)) )     ) {
+    if (     ( !almost_equal( out(kk).real(), out_re(kk), 100.0) ) || ( !almost_equal( out(kk).imag(), out_im(kk), 100.0) )     ) {
       test3_pass = 0;       
       break;
     }

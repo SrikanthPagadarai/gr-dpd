@@ -18,17 +18,17 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef INCLUDED_DPD_EXTERNALS_GIVENS_ROTATE_H
-#define INCLUDED_DPD_EXTERNALS_GIVENS_ROTATE_H
+#include <limits>
+#include <math.h>
+#include "../include/almost_equal.h"
 
-#include <armadillo>
-#include <complex>
+bool almost_equal(float a, float b, float tol)
+{
+  // calculate the difference
+  float diff_ab = fabs(a - b);
+  
+  if (diff_ab <= tol*std::numeric_limits<float>::epsilon())
+    return true;
 
-typedef std::complex<float> gr_complex;
-using namespace arma;
-
-const gr_complex minus_1i(0, -1);
-
-void givens_rotate(const cx_fmat & in, cx_fmat & out);
-
-#endif /*INCLUDED_DPD_EXTERNALS_GIVENS_ROTATE_H*/
+  return false;
+}

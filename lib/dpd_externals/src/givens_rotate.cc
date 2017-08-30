@@ -19,6 +19,7 @@
  */
 
 #include "../include/givens_rotate.h"
+#include "../include/almost_equal.h"
 
 void givens_rotate(const cx_fmat & in, cx_fmat & out) 
 {
@@ -31,7 +32,9 @@ void givens_rotate(const cx_fmat & in, cx_fmat & out)
   // except for the application of scale adjustment matrix, g
   float a = abs(in(0, 0));
   float b = abs(in(0, 1));
-  if (almost_equal(a, 0.0)) { 
+  if (almost_equal(b, 0.0, 100.0))
+    out = in;
+  else if (almost_equal(a, 0.0, 100.0)) { 
     theta(0,1) = 1.0;
     theta(1,0) = -1.0;
 
@@ -58,16 +61,4 @@ void givens_rotate(const cx_fmat & in, cx_fmat & out)
   
   // form post-array
   out = in*theta; 
-}
-
-
-bool almost_equal(float a, float b)
-{
-  // calculate the difference
-  float diff_ab = fabs(a - b);
-  
-  if (diff_ab <= 100.0*std::numeric_limits<float>::epsilon())
-    return true;
-
-  return false;
 }
