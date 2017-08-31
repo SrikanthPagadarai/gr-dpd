@@ -18,15 +18,14 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef INCLUDED_DPD_EXTERNALS_HGIVENS_ROTATE_H
-#define INCLUDED_DPD_EXTERNALS_HGIVENS_ROTATE_H
+#ifndef INCLUDED_DPD_EXTERNALS_APPLY_ROTATIONS_H
+#define INCLUDED_DPD_EXTERNALS_APPLY_ROTATIONS_H
 
 #include <armadillo>
 #include <complex>
 
-typedef std::complex<float> gr_complex;
 using namespace arma;
 
-void hgivens_rotate(const cx_fmat & in, cx_fmat & out);
+void apply_rotations(const cx_fmat & A, cx_fmat & B);
 
-#endif /*INCLUDED_DPD_EXTERNALS_HGIVENS_ROTATE_H*/
+#endif /*INCLUDED_DPD_EXTERNALS_APPLY_ROTATIONS_H*/

@@ -2,17 +2,10 @@
 
 arg_list = argv ();
 N = str2num(arg_list{1});
-sp_case = str2num(arg_list{2});
-suffix = arg_list{3};
+suffix = arg_list{2};
 
-in = randn(N, 2)+1i*randn(N, 2);
-if (sp_case == 1)
-    in(1,1) = 0;      
-elseif (sp_case == 2)
-    in(1,2) = 0; 
-end
-
-out = apply_hgivens(in);
+in = randn(N, N)+1i*randn(N, N);
+out = rotations(in)
 
 in = single(real(in))+1i*single(imag(in));
 out = single(real(out))+1i*single(imag(out));

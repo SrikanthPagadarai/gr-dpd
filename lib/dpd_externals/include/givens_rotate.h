@@ -27,8 +27,6 @@
 typedef std::complex<float> gr_complex;
 using namespace arma;
 
-const gr_complex minus_1i(0, -1);
-
 void givens_rotate(const cx_fmat & in, cx_fmat & out);
 
 #endif /*INCLUDED_DPD_EXTERNALS_GIVENS_ROTATE_H*/

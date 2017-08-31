@@ -151,5 +151,53 @@ int main(void) {
   else
     std::cerr << "hgivens_rotate(): Test 2 Failed." << std::endl;
 
+  /* Test 3 */
+  N = 120;
+  in_re = fmat(N, 2);
+  in_im = fmat(N, 2);
+  out_re = fmat(N, 2);
+  out_im = fmat(N, 2);
+  sp_case = 2;
+  N_str = to_string(N);
+  sp_case_str = to_string(sp_case);
+  suffix = "test3";
+  oct_str = "./hgivens_rotate.m " + N_str + " " + sp_case_str + " " + suffix;
+  system( oct_str.c_str() );
+
+  // read real part of input
+  in_re_fn = "in_re_" + suffix + ".txt"; 
+  in_re = read_from_file(in_re_fn, N);
+  
+  // read imag part of input
+  in_im_fn = "in_im_" + suffix + ".txt"; 
+  in_im = read_from_file(in_im_fn, N);
+
+  // read real part of output
+  out_re_fn = "out_re_" + suffix + ".txt"; 
+  out_re = read_from_file(out_re_fn, N);
+  
+  // read imag part of output
+  out_im_fn = "out_im_" + suffix + ".txt"; 
+  out_im = read_from_file(out_im_fn, N);
+  
+  // call hgivens_rotate() with the same input as octave function call 
+  in = cx_fmat(in_re, in_im);
+  out = cx_fmat(N, 2);
+  hgivens_rotate(in, out);
+
+  // check if hgivens_rotate.m output and hgivens_rotate.cc output are equal
+  int test3_pass = 1;
+  for (int kk = 0; kk < 2; kk++) {
+    for (int jj = 0; jj < N; jj++) {
+      if (     ( !almost_equal( out(jj, kk).real(), out_re(jj, kk), 100.0 ) ) || ( !almost_equal( out(jj, kk).imag(), out_im(jj, kk), 100.0 ) )     ) 
+        test3_pass = 0;       
+    }
+  }
+
+  if (test3_pass)
+    std::cout << "hgivens_rotate(): Test 3 Passed." << std::endl; 
+  else
+    std::cerr << "hgivens_rotate(): Test 3 Failed." << std::endl;
+
   return 0;
 }
