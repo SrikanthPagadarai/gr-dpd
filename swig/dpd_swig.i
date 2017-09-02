@@ -17,6 +17,7 @@
 #include "dpd/polynomial_regressor_vector.h"
 #include "dpd/signum_func.h"
 #include "dpd/gain_phase_calibrate.h"
+#include "dpd/fastRLS_DPD.h"
 %}
 
 
@@ -39,3 +40,5 @@ GR_SWIG_BLOCK_MAGIC2(dpd, signum_func);
 %include "dpd/gain_phase_calibrate.h"
 GR_SWIG_BLOCK_MAGIC2(dpd, gain_phase_calibrate);
 
+%include "dpd/fastRLS_DPD.h"
+GR_SWIG_BLOCK_MAGIC2(dpd, fastRLS_DPD);
