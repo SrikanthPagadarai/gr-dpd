@@ -61,33 +61,33 @@ int main(void) {
   L_b = 3; 
   M_b = 3;
   M = K_a*L_a+K_b*M_b*L_b;
-  M_bar = K_a*(L_a+1)+K_b*M_b*(L_b+1);
-  in_re = fmat(M_bar, 1);
-  in_im = fmat(M_bar, 1);
-  out1_re = fmat(M_bar, 1);
-  out1_im = fmat(M_bar, 1);
+  M_bar = K_a+K_b*M_b;
+  in_re = fmat(M+M_bar, 1);
+  in_im = fmat(M+M_bar, 1);
+  out1_re = fmat(M+M_bar, 1);
+  out1_im = fmat(M+M_bar, 1);
   out2_re = fmat(M, 1);
   out2_im = fmat(M, 1);
 
   suffix = "test1";
-  oct_str = "./extract_g_vecs.m " + to_string(K_a) + " " + to_string(L_a) + " " + to_string(K_b) + " " + to_string(M_b) + " " + to_string(L_b) + " " + suffix;
+  oct_str = "./test_extract_g_vecs.m " + to_string(K_a) + " " + to_string(L_a) + " " + to_string(K_b) + " " + to_string(M_b) + " " + to_string(L_b) + " " + suffix;
   system( oct_str.c_str() );
 
   // read real part of input
   in_re_fn = "in_re_" + suffix + ".txt"; 
-  in_re = read_from_file(in_re_fn, M_bar);
+  in_re = read_from_file(in_re_fn, M+M_bar);
   
   // read imag part of input
   in_im_fn = "in_im_" + suffix + ".txt"; 
-  in_im = read_from_file(in_im_fn, M_bar);
+  in_im = read_from_file(in_im_fn, M+M_bar);
 
   // read real part of output1
   out1_re_fn = "out1_re_" + suffix + ".txt"; 
-  out1_re = read_from_file(out1_re_fn, M_bar);
+  out1_re = read_from_file(out1_re_fn, M+M_bar);
   
   // read imag part of output1
   out1_im_fn = "out1_im_" + suffix + ".txt"; 
-  out1_im = read_from_file(out1_im_fn, M_bar);
+  out1_im = read_from_file(out1_im_fn, M+M_bar);
 
   // read real part of output2
   out2_re_fn = "out2_re_" + suffix + ".txt"; 
@@ -99,13 +99,13 @@ int main(void) {
 
   // call extract_g_vecs() with the same input as octave function call 
   in = cx_fmat(in_re, in_im);
-  out1 = cx_fmat(M_bar, 1, fill::zeros);
+  out1 = cx_fmat(M+M_bar, 1, fill::zeros);
   out2 = cx_fmat(M, 1, fill::zeros);
-  extract_g_vecs(in, out1, out2, K_a, L_a, K_b, M_b, L_b, M, M_bar);
+  extract_g_vecs(in, out1, out2, K_a, L_a, K_b, M_b, L_b, M, M+M_bar);
 
   // check if extract_g_vecs.m output and extract_g_vecs.cc output are equal
   int test1_pass = 1;
-  for (int kk = 0; kk < M_bar; kk++) {
+  for (int kk = 0; kk < M+M_bar; kk++) {
     if (     ( !almost_equal( out1(kk).real(), out1_re(kk), 100.0 ) ) || ( !almost_equal( out1(kk).imag(), out1_im(kk), 100.0 ) )     ) {
       test1_pass = 0;       
       break;
@@ -130,33 +130,33 @@ int main(void) {
   L_b = 4; 
   M_b = 3;
   M = K_a*L_a+K_b*M_b*L_b;
-  M_bar = K_a*(L_a+1)+K_b*M_b*(L_b+1);
-  in_re = fmat(M_bar, 1);
-  in_im = fmat(M_bar, 1);
-  out1_re = fmat(M_bar, 1);
-  out1_im = fmat(M_bar, 1);
+  M_bar = K_a+K_b*M_b;
+  in_re = fmat(M+M_bar, 1);
+  in_im = fmat(M+M_bar, 1);
+  out1_re = fmat(M+M_bar, 1);
+  out1_im = fmat(M+M_bar, 1);
   out2_re = fmat(M, 1);
   out2_im = fmat(M, 1);
 
   suffix = "test2";
-  oct_str = "./extract_g_vecs.m " + to_string(K_a) + " " + to_string(L_a) + " " + to_string(K_b) + " " + to_string(M_b) + " " + to_string(L_b) + " " + suffix;
+  oct_str = "./test_extract_g_vecs.m " + to_string(K_a) + " " + to_string(L_a) + " " + to_string(K_b) + " " + to_string(M_b) + " " + to_string(L_b) + " " + suffix;
   system( oct_str.c_str() );
 
   // read real part of input
   in_re_fn = "in_re_" + suffix + ".txt"; 
-  in_re = read_from_file(in_re_fn, M_bar);
+  in_re = read_from_file(in_re_fn, M+M_bar);
   
   // read imag part of input
   in_im_fn = "in_im_" + suffix + ".txt"; 
-  in_im = read_from_file(in_im_fn, M_bar);
+  in_im = read_from_file(in_im_fn, M+M_bar);
 
   // read real part of output1
   out1_re_fn = "out1_re_" + suffix + ".txt"; 
-  out1_re = read_from_file(out1_re_fn, M_bar);
+  out1_re = read_from_file(out1_re_fn, M+M_bar);
   
   // read imag part of output1
   out1_im_fn = "out1_im_" + suffix + ".txt"; 
-  out1_im = read_from_file(out1_im_fn, M_bar);
+  out1_im = read_from_file(out1_im_fn, M+M_bar);
 
   // read real part of output2
   out2_re_fn = "out2_re_" + suffix + ".txt"; 
@@ -168,13 +168,13 @@ int main(void) {
 
   // call extract_g_vecs() with the same input as octave function call 
   in = cx_fmat(in_re, in_im);
-  out1 = cx_fmat(M_bar, 1, fill::zeros);
+  out1 = cx_fmat(M+M_bar, 1, fill::zeros);
   out2 = cx_fmat(M, 1, fill::zeros);
-  extract_g_vecs(in, out1, out2, K_a, L_a, K_b, M_b, L_b, M, M_bar);
+  extract_g_vecs(in, out1, out2, K_a, L_a, K_b, M_b, L_b, M, M+M_bar);
 
   // check if extract_g_vecs.m output and extract_g_vecs.cc output are equal
   int test2_pass = 1;
-  for (int kk = 0; kk < M_bar; kk++) {
+  for (int kk = 0; kk < M+M_bar; kk++) {
     if (     ( !almost_equal( out1(kk).real(), out1_re(kk), 100.0 ) ) || ( !almost_equal( out1(kk).imag(), out1_im(kk), 100.0 ) )     ) {
       test2_pass = 0;       
       break;
@@ -199,33 +199,33 @@ int main(void) {
   L_b = 1; 
   M_b = 1;
   M = K_a*L_a+K_b*M_b*L_b;
-  M_bar = K_a*(L_a+1)+K_b*M_b*(L_b+1);
-  in_re = fmat(M_bar, 1);
-  in_im = fmat(M_bar, 1);
-  out1_re = fmat(M_bar, 1);
-  out1_im = fmat(M_bar, 1);
+  M_bar = K_a+K_b*M_b;
+  in_re = fmat(M+M_bar, 1);
+  in_im = fmat(M+M_bar, 1);
+  out1_re = fmat(M+M_bar, 1);
+  out1_im = fmat(M+M_bar, 1);
   out2_re = fmat(M, 1);
   out2_im = fmat(M, 1);
 
   suffix = "test3";
-  oct_str = "./extract_g_vecs.m " + to_string(K_a) + " " + to_string(L_a) + " " + to_string(K_b) + " " + to_string(M_b) + " " + to_string(L_b) + " " + suffix;
+  oct_str = "./test_extract_g_vecs.m " + to_string(K_a) + " " + to_string(L_a) + " " + to_string(K_b) + " " + to_string(M_b) + " " + to_string(L_b) + " " + suffix;
   system( oct_str.c_str() );
 
   // read real part of input
   in_re_fn = "in_re_" + suffix + ".txt"; 
-  in_re = read_from_file(in_re_fn, M_bar);
+  in_re = read_from_file(in_re_fn, M+M_bar);
   
   // read imag part of input
   in_im_fn = "in_im_" + suffix + ".txt"; 
-  in_im = read_from_file(in_im_fn, M_bar);
+  in_im = read_from_file(in_im_fn, M+M_bar);
 
   // read real part of output1
   out1_re_fn = "out1_re_" + suffix + ".txt"; 
-  out1_re = read_from_file(out1_re_fn, M_bar);
+  out1_re = read_from_file(out1_re_fn, M+M_bar);
   
   // read imag part of output1
   out1_im_fn = "out1_im_" + suffix + ".txt"; 
-  out1_im = read_from_file(out1_im_fn, M_bar);
+  out1_im = read_from_file(out1_im_fn, M+M_bar);
 
   // read real part of output2
   out2_re_fn = "out2_re_" + suffix + ".txt"; 
@@ -237,13 +237,13 @@ int main(void) {
 
   // call extract_g_vecs() with the same input as octave function call 
   in = cx_fmat(in_re, in_im);
-  out1 = cx_fmat(M_bar, 1, fill::zeros);
+  out1 = cx_fmat(M+M_bar, 1, fill::zeros);
   out2 = cx_fmat(M, 1, fill::zeros);
-  extract_g_vecs(in, out1, out2, K_a, L_a, K_b, M_b, L_b, M, M_bar);
+  extract_g_vecs(in, out1, out2, K_a, L_a, K_b, M_b, L_b, M, M+M_bar);
 
   // check if extract_g_vecs.m output and extract_g_vecs.cc output are equal
   int test3_pass = 1;
-  for (int kk = 0; kk < M_bar; kk++) {
+  for (int kk = 0; kk < M+M_bar; kk++) {
     if (     ( !almost_equal( out1(kk).real(), out1_re(kk), 100.0 ) ) || ( !almost_equal( out1(kk).imag(), out1_im(kk), 100.0 ) )     ) {
       test3_pass = 0;       
       break;

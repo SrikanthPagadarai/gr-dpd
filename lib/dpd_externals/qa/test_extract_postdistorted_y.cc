@@ -62,23 +62,23 @@ int main(void) {
   L_b = 3; 
   M_b = 3;
   M = K_a*L_a+K_b*M_b*L_b;
-  M_bar = K_a*(L_a+1)+K_b*M_b*(L_b+1);
-  in_re = frowvec(M_bar);
-  in_im = frowvec(M_bar);
+  M_bar = K_a+K_b*M_b;
+  in_re = frowvec(M+M_bar);
+  in_im = frowvec(M+M_bar);
   out_re = frowvec(M);
   out_im = frowvec(M);
 
   suffix = "test1";
-  oct_str = "./extract_postdistorted_y.m " + to_string(K_a) + " " + to_string(L_a) + " " + to_string(K_b) + " " + to_string(M_b) + " " + to_string(L_b) + " " + suffix;
+  oct_str = "./test_extract_postdistorted_y.m " + to_string(K_a) + " " + to_string(L_a) + " " + to_string(K_b) + " " + to_string(M_b) + " " + to_string(L_b) + " " + suffix;
   system( oct_str.c_str() );
 
   // read real part of input
   in_re_fn = "in_re_" + suffix + ".txt"; 
-  in_re = read_from_file(in_re_fn, M_bar);
+  in_re = read_from_file(in_re_fn, M+M_bar);
   
   // read imag part of input
   in_im_fn = "in_im_" + suffix + ".txt"; 
-  in_im = read_from_file(in_im_fn, M_bar);
+  in_im = read_from_file(in_im_fn, M+M_bar);
 
   // read real part of output
   out_re_fn = "out_re_" + suffix + ".txt"; 
@@ -114,23 +114,23 @@ int main(void) {
   L_b = 4; 
   M_b = 3;
   M = K_a*L_a+K_b*M_b*L_b;
-  M_bar = K_a*(L_a+1)+K_b*M_b*(L_b+1);
-  in_re = frowvec(M_bar);
-  in_im = frowvec(M_bar);
+  M_bar = K_a+K_b*M_b;
+  in_re = frowvec(M+M_bar);
+  in_im = frowvec(M+M_bar);
   out_re = frowvec(M);
   out_im = frowvec(M);
 
   suffix = "test2";
-  oct_str = "./extract_postdistorted_y.m " + to_string(K_a) + " " + to_string(L_a) + " " + to_string(K_b) + " " + to_string(M_b) + " " + to_string(L_b) + " " + suffix;
+  oct_str = "./test_extract_postdistorted_y.m " + to_string(K_a) + " " + to_string(L_a) + " " + to_string(K_b) + " " + to_string(M_b) + " " + to_string(L_b) + " " + suffix;
   system( oct_str.c_str() );
 
   // read real part of input
   in_re_fn = "in_re_" + suffix + ".txt"; 
-  in_re = read_from_file(in_re_fn, M_bar);
+  in_re = read_from_file(in_re_fn, M+M_bar);
   
   // read imag part of input
   in_im_fn = "in_im_" + suffix + ".txt"; 
-  in_im = read_from_file(in_im_fn, M_bar);
+  in_im = read_from_file(in_im_fn, M+M_bar);
 
   // read real part of output
   out_re_fn = "out_re_" + suffix + ".txt"; 
@@ -166,23 +166,23 @@ int main(void) {
   L_b = 1; 
   M_b = 1;
   M = K_a*L_a+K_b*M_b*L_b;
-  M_bar = K_a*(L_a+1)+K_b*M_b*(L_b+1);
-  in_re = frowvec(M_bar);
-  in_im = frowvec(M_bar);
+  M_bar = K_a+K_b*M_b;
+  in_re = frowvec(M+M_bar);
+  in_im = frowvec(M+M_bar);
   out_re = frowvec(M);
   out_im = frowvec(M);
 
   suffix = "test3";
-  oct_str = "./extract_postdistorted_y.m " + to_string(K_a) + " " + to_string(L_a) + " " + to_string(K_b) + " " + to_string(M_b) + " " + to_string(L_b) + " " + suffix;
+  oct_str = "./test_extract_postdistorted_y.m " + to_string(K_a) + " " + to_string(L_a) + " " + to_string(K_b) + " " + to_string(M_b) + " " + to_string(L_b) + " " + suffix;
   system( oct_str.c_str() );
 
   // read real part of input
   in_re_fn = "in_re_" + suffix + ".txt"; 
-  in_re = read_from_file(in_re_fn, M_bar);
+  in_re = read_from_file(in_re_fn, M+M_bar);
   
   // read imag part of input
   in_im_fn = "in_im_" + suffix + ".txt"; 
-  in_im = read_from_file(in_im_fn, M_bar);
+  in_im = read_from_file(in_im_fn, M+M_bar);
 
   // read real part of output
   out_re_fn = "out_re_" + suffix + ".txt"; 

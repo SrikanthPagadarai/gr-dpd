@@ -5,7 +5,7 @@ N = str2num(arg_list{1});
 suffix = arg_list{2};
 
 in = randn(N, N)+1i*randn(N, N);
-out = rotations(in)
+out = rotations(in);
 
 in = single(real(in))+1i*single(imag(in));
 out = single(real(out))+1i*single(imag(out));

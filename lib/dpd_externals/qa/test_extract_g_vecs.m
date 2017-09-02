@@ -9,8 +9,8 @@ L_b = str2num(arg_list{5});
 suffix = arg_list{6};
 
 M = K_a*L_a+K_b*M_b*L_b;
-M_bar = K_a*(L_a+1)+K_b*M_b*(L_b+1);
-in = randn(M_bar, 1)+1i*randn(M_bar, 1);
+M_bar = K_a+K_b*M_b;
+in = randn(M+M_bar, 1)+1i*randn(M+M_bar, 1);
 g_vec_i1 = zeros(K_a*L_a, 1);
 g_tmp1 = in(1:K_a*L_a+K_a);
 g_tmp1 = reshape(g_tmp1, L_a+1, K_a);

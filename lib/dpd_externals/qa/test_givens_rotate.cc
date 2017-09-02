@@ -65,7 +65,7 @@ int main(void) {
   N_str = to_string(N);
   sp_case_str = to_string(sp_case);
   suffix = "test1";
-  oct_str = "./givens_rotate.m " + N_str + " " + sp_case_str + " " + suffix;
+  oct_str = "./test_givens_rotate.m " + N_str + " " + sp_case_str + " " + suffix;
   system( oct_str.c_str() );
 
   // read real part of input
@@ -113,7 +113,7 @@ int main(void) {
   N_str = to_string(N);
   sp_case_str = to_string(sp_case);
   suffix = "test2";
-  oct_str = "./givens_rotate.m " + N_str + " " + sp_case_str + " " + suffix;
+  oct_str = "./test_givens_rotate.m " + N_str + " " + sp_case_str + " " + suffix;
   system( oct_str.c_str() );
 
   // read real part of input
@@ -161,7 +161,7 @@ int main(void) {
   N_str = to_string(N);
   sp_case_str = to_string(sp_case);
   suffix = "test3";
-  oct_str = "./givens_rotate.m " + N_str + " " + sp_case_str + " " + suffix;
+  oct_str = "./test_givens_rotate.m " + N_str + " " + sp_case_str + " " + suffix;
   system( oct_str.c_str() );
 
   // read real part of input

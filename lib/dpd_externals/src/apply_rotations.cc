@@ -60,5 +60,4 @@ void apply_rotations(const cx_fmat & A, cx_fmat & B)
     }
     A_bar = B;
   }
-  B.print("B:");
 }
