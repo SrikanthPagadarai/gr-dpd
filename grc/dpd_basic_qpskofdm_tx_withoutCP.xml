@@ -1,0 +1,38 @@
+<block>
+  <name>Basic QPSK-OFDM Tx</name>
+  <key>basic_qpskofdm_tx_withoutCP</key>
+  <category>[dpd]</category>
+  <import>import dpd</import>
+  <make>dpd.basic_qpskofdm_tx_withoutCP(
+    N=$N,
+    NFFT=$NFFT,
+    used_sc=$used_sc,
+)</make>
+  <callback>set_N($N)</callback>
+  <callback>set_NFFT($NFFT)</callback>
+  <callback>set_used_sc($used_sc)</callback>
+  <param>
+    <name># of OFDM Frames</name>
+    <key>N</key>
+    <value>10</value>
+    <type>raw</type>
+  </param>
+  <param>
+    <name>FFT Size</name>
+    <key>NFFT</key>
+    <value>2048</value>
+    <type>raw</type>
+  </param>
+  <param>
+    <name>Used Subcarriers</name>
+    <key>used_sc</key>
+    <value>1680</value>
+    <type>raw</type>
+  </param>
+
+  <source>
+    <name>out</name>
+    <type>complex</type>
+    <vlen>$NFFT</vlen>
+  </source>  
+</block>

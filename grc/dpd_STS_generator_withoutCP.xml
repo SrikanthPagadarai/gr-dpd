@@ -1,0 +1,12 @@
+<block>
+  <name>STS without CP</name>
+  <key>STS_generator_withoutCP</key>
+  <category>[dpd]</category>
+  <import>import dpd</import>
+  <make>dpd.STS_generator_withoutCP()</make>
+  <source>
+    <name>out</name>
+    <type>complex</type>
+    <vlen>2048</vlen>
+  </source>  
+</block>

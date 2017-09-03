@@ -1,0 +1,66 @@
+<block>
+  <name>Estimate Integer Delay</name>
+  <key>estimate_integer_delay</key>
+  <category>[dpd]</category>
+  <import>import dpd</import>
+  <make>dpd.estimate_integer_delay(
+    NFFT=$NFFT,
+    STS_len=$STS_len,
+    STS_signed_ampl_diff=$STS_signed_ampl_diff,
+    corr_len=$corr_len,
+    ovx=$ovx,
+    peak_val=$peak_val,
+)</make>
+  <callback>set_NFFT($NFFT)</callback>
+  <callback>set_STS_len($STS_len)</callback>
+  <callback>set_STS_signed_ampl_diff($STS_signed_ampl_diff)</callback>
+  <callback>set_corr_len($corr_len)</callback>
+  <callback>set_ovx($ovx)</callback>
+  <callback>set_peak_val($peak_val)</callback>
+  <param>
+    <name>FFT Size</name>
+    <key>NFFT</key>
+    <value>2048</value>
+    <type>raw</type>
+  </param>
+  <param>
+    <name>STS Length</name>
+    <key>STS_len</key>
+    <value>0</value>
+    <type>raw</type>
+  </param>
+  <param>
+    <name>Reference</name>
+    <key>STS_signed_ampl_diff</key>
+    <value>[-1,-1,-1,-1,1,1,1,1,1,-1]</value>
+    <type>raw</type>
+  </param>
+  <param>
+    <name>Correlation Length</name>
+    <key>corr_len</key>
+    <value>0</value>
+    <type>raw</type>
+  </param>
+  <param>
+    <name>Oversampling Factor</name>
+    <key>ovx</key>
+    <value>6</value>
+    <type>raw</type>
+  </param>
+  <param>
+    <name>Correlation Peak Value</name>
+    <key>peak_val</key>
+    <value>0</value>
+    <type>raw</type>
+  </param>
+  <sink>
+    <name>in</name>
+    <type>complex</type>
+    <vlen>1</vlen>
+  </sink>
+  <source>
+    <name>out</name>
+    <type>complex</type>
+    <vlen>1</vlen>
+  </source>  
+</block>

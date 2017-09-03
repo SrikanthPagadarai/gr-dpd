@@ -4,35 +4,13 @@
   <key>dpd_polynomial_regressor_vector</key>
   <category>[dpd]</category>
   <import>import dpd</import>
-  <make>dpd.polynomial_regressor_vector($NFFT, $cp_len, $ovx, $num_zero_syms, $dpd_params)</make>
-  
-  <param>
-    <name>NFFT</name>
-    <key>NFFT</key>
-    <type>int</type>
-  </param>
-  <param>
-    <name>Cyclic-Prefix Length</name>
-    <key>cp_len</key>
-    <type>int</type>
-  </param>
-  <param>
-    <name>Oversampling Factor</name>
-    <key>ovx</key>
-    <type>int</type>
-  </param>
-  <param>
-    <name>Number of Zero Symbols</name>
-    <key>num_zero_syms</key>
-    <type>int</type>
-  </param>
+  <make>dpd.polynomial_regressor_vector($dpd_params)</make>  
   <param>
     <name>DPD Parameters</name>
     <key>dpd_params</key>
     <value>(0,0,0,0,0)</value>
     <type>raw</type>
   </param>
-
 
   <sink>
     <name>in</name>

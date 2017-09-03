@@ -31,10 +31,6 @@ namespace gr {
     class polynomial_regressor_vector_impl : public polynomial_regressor_vector
     {
      private:
-      int d_NFFT;
-      int d_cp_len;
-      int d_ovx;
-      int d_num_zero_syms; 
       std::vector<int> d_dpd_params;
       //consts to be assigned values in the constructor initialization list
       const int K_a;
@@ -46,7 +42,7 @@ namespace gr {
       const int M_bar;
      
      public:
-      polynomial_regressor_vector_impl(int NFFT, int cp_len, int ovx, int num_zero_syms, const std::vector<int> &dpd_params);
+      polynomial_regressor_vector_impl(const std::vector<int> &dpd_params);
       ~polynomial_regressor_vector_impl();
 
       // Where all the action really happens

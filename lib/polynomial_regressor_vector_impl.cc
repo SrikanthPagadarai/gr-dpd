@@ -35,23 +35,19 @@ namespace gr {
   namespace dpd {
 
     polynomial_regressor_vector::sptr
-    polynomial_regressor_vector::make(int NFFT, int cp_len, int ovx, int num_zero_syms, const std::vector<int> &dpd_params)
+    polynomial_regressor_vector::make(const std::vector<int> &dpd_params)
     {
       return gnuradio::get_initial_sptr
-        (new polynomial_regressor_vector_impl(NFFT, cp_len, ovx, num_zero_syms, dpd_params));
+        (new polynomial_regressor_vector_impl(dpd_params));
     }
 
     /*
      * The private constructor
      */
-    polynomial_regressor_vector_impl::polynomial_regressor_vector_impl(int NFFT, int cp_len, int ovx, int num_zero_syms, const std::vector<int> &dpd_params)
+    polynomial_regressor_vector_impl::polynomial_regressor_vector_impl(const std::vector<int> &dpd_params)
       : gr::sync_block("polynomial_regressor_vector",
               gr::io_signature::make(1, 1, sizeof(gr_complex)),
               gr::io_signature::make(1, 1, (dpd_params[0]*dpd_params[1] + dpd_params[2]*dpd_params[3]*dpd_params[4])*sizeof(gr_complex))),
-              d_NFFT(NFFT), 
-              d_cp_len(cp_len), 
-              d_ovx(ovx),
-              d_num_zero_syms(num_zero_syms),
               d_dpd_params(dpd_params),
               K_a(d_dpd_params[0]),
               L_a(d_dpd_params[1]),

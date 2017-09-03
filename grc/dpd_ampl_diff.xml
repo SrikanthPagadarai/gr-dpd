@@ -1,0 +1,17 @@
+<block>
+  <name>Amplitude Difference </name>
+  <key>hier_ampl_diff</key>
+  <category>[dpd]</category>
+  <import>import dpd</import>
+  <make>dpd.ampl_diff()</make>
+  <sink>
+    <name>in</name>
+    <type>complex</type>
+    <vlen>1</vlen>
+  </sink>
+  <source>
+    <name>out</name>
+    <type>float</type>
+    <vlen>1</vlen>
+  </source>  
+</block>

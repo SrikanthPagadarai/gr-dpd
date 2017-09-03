@@ -31,7 +31,10 @@ endif()
 GR_PYTHON_INSTALL(
     FILES
     __init__.py
-    DESTINATION ${GR_PYTHON_DIR}/dpd
+    ampl_diff.py 
+    estimate_integer_delay.py
+    basic_qpskofdm_tx_withoutCP.py 
+    STS_generator_withoutCP.py DESTINATION ${GR_PYTHON_DIR}/dpd
 )
 
 ########################################################################

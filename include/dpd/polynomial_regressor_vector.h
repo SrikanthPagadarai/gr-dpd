@@ -46,7 +46,7 @@ namespace gr {
        * class. dpd::polynomial_regressor_vector::make is the public interface for
        * creating new instances.
        */
-      static sptr make(int NFFT, int cp_len, int ovx, int num_zero_syms, const std::vector<int> &dpd_params);
+      static sptr make(const std::vector<int> &dpd_params);
     };
 
   } // namespace dpd
