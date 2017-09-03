@@ -33,6 +33,7 @@ GR_PYTHON_INSTALL(
     __init__.py
     ampl_diff.py 
     estimate_integer_delay.py
+    pa_wiener_model.py
     basic_qpskofdm_tx_withoutCP.py 
     STS_generator_withoutCP.py DESTINATION ${GR_PYTHON_DIR}/dpd
 )

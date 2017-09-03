@@ -29,6 +29,7 @@ install(FILES
     dpd_fastRLS_DPD.xml 
     dpd_ampl_diff.xml
     dpd_estimate_integer_delay.xml
+    dpd_pa_wiener_model.xml
     dpd_basic_qpskofdm_tx_withoutCP.xml
     dpd_STS_generator_withoutCP.xml
     DESTINATION share/gnuradio/grc/blocks

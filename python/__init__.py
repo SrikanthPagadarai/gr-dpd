@@ -36,4 +36,5 @@ from basic_qpskofdm_tx_withoutCP import basic_qpskofdm_tx_withoutCP
 from STS_generator_withoutCP import STS_generator_withoutCP
 from ampl_diff import ampl_diff
 from estimate_integer_delay import estimate_integer_delay
+from pa_wiener_model import pa_wiener_model
 #

@@ -1,0 +1,17 @@
+<block>
+  <name>Wiener Power Amplifier</name>
+  <key>dpd_pa_wiener_model</key>
+  <category>[dpd]</category>
+  <import>import dpd</import>
+  <make>dpd.pa_wiener_model()</make>
+  <sink>
+    <name>in</name>
+    <type>complex</type>
+    <vlen>1</vlen>
+  </sink>
+  <source>
+    <name>out</name>
+    <type>complex</type>
+    <vlen>1</vlen>
+  </source>
+</block>
