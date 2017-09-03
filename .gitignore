@@ -1,2 +1,3 @@
 build/*
 apps/power_measurements/*
+dpd_externals/build/*
