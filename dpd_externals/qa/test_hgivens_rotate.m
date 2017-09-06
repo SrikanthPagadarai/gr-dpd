@@ -12,6 +12,11 @@ elseif (sp_case == 2)
     in(1,2) = 0; 
 end
 
+indices = randperm(N);
+zindices = indices(1:10);
+for ii = 1:length(zindices)
+    in(zindices, round(rand(1))+1) = 0;
+end
 out = apply_hgivens(in);
 
 in = single(real(in))+1i*single(imag(in));

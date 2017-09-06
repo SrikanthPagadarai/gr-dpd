@@ -56,7 +56,7 @@ int main(void) {
   cx_fmat in, out;
   
   /* Test 1 */
-  N = 50;
+  N = 20;
   in_re = fmat(N, 2);
   in_im = fmat(N, 2);
   out_re = fmat(N, 2);
@@ -104,7 +104,7 @@ int main(void) {
     std::cerr << "hgivens_rotate(): Test 1 Failed." << std::endl;
 
   /* Test 2 */
-  N = 100;
+  N = 80;
   in_re = fmat(N, 2);
   in_im = fmat(N, 2);
   out_re = fmat(N, 2);
@@ -152,7 +152,7 @@ int main(void) {
     std::cerr << "hgivens_rotate(): Test 2 Failed." << std::endl;
 
   /* Test 3 */
-  N = 120;
+  N = 100;
   in_re = fmat(N, 2);
   in_im = fmat(N, 2);
   out_re = fmat(N, 2);

@@ -1,0 +1,26 @@
+<block>
+  <name>Upsample</name>
+  <key>dpd_upsample</key>
+  <category>[dpd]</category>
+  <import>import dpd</import>
+  <make>dpd.upsample(
+    ovx=$ovx,
+)</make>
+  <callback>set_ovx($ovx)</callback>
+  <param>
+    <name>ovx</name>
+    <key>ovx</key>
+    <value>0</value>
+    <type>raw</type>
+  </param>
+  <sink>
+    <name>in</name>
+    <type>complex</type>
+    <vlen>1</vlen>
+  </sink>
+  <source>
+    <name>out</name>
+    <type>complex</type>
+    <vlen>1</vlen>
+  </source>  
+</block>

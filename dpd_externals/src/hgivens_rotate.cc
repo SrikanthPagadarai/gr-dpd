@@ -27,61 +27,65 @@ void hgivens_rotate(const cx_fmat & in, cx_fmat & out)
 
   int flip; 
   gr_complex a, b, c, d1, d2, x, y, z, conj_a, conj_b, p, q;
-  float abs_a, abs_b, scale, angle_a;
+  float scale, angle_a;
 
   x = in(0, 0);
   y = in(0, 1);
   if (almost_equal(abs(x), 0.0, 100.0)) {
     angle_a = std::arg(in(0, 1));
-    out = std::exp(minus_1i*angle_a)*fliplr(in);
+    out = std::exp(minus_1i*angle_a)*in;
   }
   else if (almost_equal(abs(y), 0.0, 100.0)) {
     angle_a = std::arg(in(0, 0));
     out = std::exp(minus_1i*angle_a)*in;
   }
   else {
-    if (abs(x) < abs(y)) {
-      flip = 1; 
-      b = x;
-      a = y; 
+    b = in(0, 1);
+    a = in(0, 0);        
+    conj_a = conj(a);
+    conj_b = conj(b);        
+    if ( abs(in(0, 0)) > abs(in(0, 1)) ) {
+      flip = 0;     
+      scale = abs(a)/sqrt((abs(a) - abs(b)) * (abs(a) + abs(b)));
+      d1 = (conj_a-conj_b)/conj_a;
+      p = (a+b)/a;
+      q = (conj_a+conj_b)/conj_a;   
     }
     else {
-      flip = 0; 
-      b = y;
-      a = x;
-    } 
-    conj_a = conj(a);
-    conj_b = conj(b);
-    p = gr_complex(1.0, 0.0) + b/a;
-    q = gr_complex(1.0, 0.0) + conj_b/conj_a;
-    abs_a = abs(a);
-    abs_b = abs(b);
-    angle_a = std::arg(a);
-    scale = abs_a/sqrt( (abs_a - abs_b)*(abs_a + abs_b) );
+      flip = 1;        
+      scale = abs(b)/sqrt((abs(a) - abs(b)) * (abs(a) + abs(b)));
+      d1 = (b-a)/b;
+      p = (conj_a+conj_b)/conj_b;
+      q = (a+b)/b;                
+    }
 
     // Algorithm adapted from H-procedure described in 2.6.4 and 2.A of 
     // Fast Reliable Algorithms for Matrices with Structure - Edited by Sayed and Kailath
     for (int ii = 0; ii < in.n_rows; ii++) {
-      if (flip) {
-        x = in(ii, 1);
-        y = in(ii, 0);
+      if ( almost_equal(abs(in(ii, 0)), 0.0, 100.0) && almost_equal(abs(in(ii, 1)), 0.0, 100.0) ) {
+        out(ii, 0) = in(ii, 0);
+        out(ii, 1) = in(ii, 1); 
       }
       else {
         x = in(ii, 0);
-        y = in(ii, 1);
+        y = in(ii, 1);    
+        if ( !almost_equal(abs(in(ii, 0)), 0.0, 100.0) ) {
+          d2 = (x-y)/x;
+          z = d1+d2-d1*d2;
+
+          out(ii, 0) = scale * x * z;
+          out(ii, 1) = out(ii, 0) - scale*( p*x - q*y );
+        }
+        else {
+          out(ii, 0) = -scale*y*(q-gr_complex(1.0, 0.0));
+          out(ii, 1) = scale*y;                
+        }
       }
-      c = conj_b*y/(conj_a*x);
-
-      if (abs(c) < 0.5)
-        z = gr_complex(1.0, 0.0) - c;
-      else {
-        d1 = (conj_a-conj_b)/conj_a;
-        d2 = (x-y)/x;
-        z = d1+d2-d1*d2;
-      }      
-
-      out(ii, 0) = std::exp(minus_1i*angle_a)*scale*x*z;
-      out(ii, 1) = out(ii, 0) - std::exp(minus_1i*angle_a)*scale*(p*x - q*y);
     }
+    
+    if (flip == 0)
+        out = std::exp(minus_1i*std::arg(out(0,0)))*out;
+    else
+        out = std::exp(minus_1i*std::arg(out(0,1)))*out;    
   }
 }

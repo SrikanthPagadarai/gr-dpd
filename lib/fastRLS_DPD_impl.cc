@@ -22,6 +22,7 @@
 #include "config.h"
 #endif
 
+#include <string>
 #include <gnuradio/io_signature.h>
 #include "fastRLS_DPD_impl.h"
 #include <dpd_externals/gen_GMPvector.h>
@@ -36,7 +37,8 @@
 #define COPY_MEM false  // Do not copy matrices into separate memory
 #define FIX_SIZE true // Keep dimensions of matrices constant
 
-using std::vector;
+using namespace std;
+using std::string;
 using namespace arma;
 
 namespace gr {
@@ -102,7 +104,7 @@ namespace gr {
 	cx_fmat &g_vec_iMinus1, cx_fmat &L_bar_iMinus1, cx_fmat &w_iMinus1)
     {
       //constants
-      int k = 8;
+      int k = 10;
       lambda = 1-pow(2, 1-k);
       eta = pow(2, k);
 
@@ -238,6 +240,18 @@ namespace gr {
 
           // obtain B-matrix by performing Givens and Hyperbolic rotations
           apply_rotations(A_mat, B_mat);
+          // if (iteration > 51 && iteration > 61) {
+            char numstr[21]; // enough to hold all numbers up to 64-bits
+            sprintf(numstr, "%d", iteration);
+            std::string file_name1, file_name2;
+            std::string prefix1 = "/home/radio1/Documents/gr-dpd/examples/A_mat";
+            file_name1 = prefix1+numstr+".csv";
+            A_mat.save( file_name1, csv_ascii );
+
+            std::string prefix2 = "/home/radio1/Documents/gr-dpd/examples/B_mat";
+            file_name2 = prefix2+numstr+".csv";
+            B_mat.save( file_name2, csv_ascii );
+          //}
 			
           //get time-updates for gamma
           static gr_complex inv_sqrt_gamma_i = B_mat(0, 0);

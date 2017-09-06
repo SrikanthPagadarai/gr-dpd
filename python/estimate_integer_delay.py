@@ -22,7 +22,7 @@ class estimate_integer_delay(gr.hier_block2):
         gr.hier_block2.__init__(
             self, "Estimate Integer Delay",
             gr.io_signature(1, 1, gr.sizeof_gr_complex*1),
-            gr.io_signature(1, 1, gr.sizeof_gr_complex*1),
+            gr.io_signature(2, 2, gr.sizeof_gr_complex*1),
         )
 
         ##################################################
@@ -51,6 +51,7 @@ class estimate_integer_delay(gr.hier_block2):
         self.connect((self.analog_const_source_x_0, 0), (self.blocks_float_to_complex_0, 1))
         self.connect((self.blocks_float_to_complex_0, 0), (self.dpd_peak_detect_0, 0))
         self.connect((self.dpd_peak_detect_0, 0), (self, 0))
+        self.connect((self.blocks_float_to_complex_0, 0), (self, 1))
         self.connect((self.fir_filter_xxx_0, 0), (self.blocks_float_to_complex_0, 0))
         self.connect((self.dpd_ampl_diff_0, 0), (self.fir_filter_xxx_0, 0))
         self.connect((self, 0), (self.dpd_peak_detect_0, 1))

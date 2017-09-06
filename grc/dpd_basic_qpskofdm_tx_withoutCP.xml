@@ -7,10 +7,12 @@
     N=$N,
     NFFT=$NFFT,
     used_sc=$used_sc,
+    syms_filename=$syms_filename
 )</make>
   <callback>set_N($N)</callback>
   <callback>set_NFFT($NFFT)</callback>
   <callback>set_used_sc($used_sc)</callback>
+  <callback>set_syms_filename($syms_filename)</callback>
   <param>
     <name># of OFDM Frames</name>
     <key>N</key>
@@ -28,6 +30,12 @@
     <key>used_sc</key>
     <value>1680</value>
     <type>raw</type>
+  </param>
+  <param>
+    <name>Filename</name>
+    <key>syms_filename</key>
+    <value>/tmp/qpsk_syms.bin</value>
+    <type>file_save</type>
   </param>
 
   <source>

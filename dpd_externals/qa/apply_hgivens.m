@@ -2,7 +2,7 @@ function out = apply_hgivens(in)
   z = in(1, :);
   if abs(z(1)) == 0
     angle_a = angle(z(2));
-    out = exp(-1i*angle_a)*fliplr(in);
+    out = exp(-1i*angle_a)*in;
   elseif abs(z(2)) == 0
     angle_a = angle(z(1));
     out = exp(-1i*angle_a)*in;
@@ -14,7 +14,7 @@ function out = apply_hgivens(in)
     elseif ( abs(z(1)) < abs(z(2)) )            
         rho = z(1)'/z(2)';
         theta = exp( -1i*angle(z(2)) )*( 1/sqrt(1-abs(rho)^2) )*[1 -rho; -rho' 1];                    
-        out = fliplr(in*theta);
+        out = in*theta;
     end
   end
 end

@@ -32,5 +32,6 @@ install(FILES
     dpd_pa_wiener_model.xml
     dpd_basic_qpskofdm_tx_withoutCP.xml
     dpd_STS_generator_withoutCP.xml
+    dpd_upsample.xml
     DESTINATION share/gnuradio/grc/blocks
 )

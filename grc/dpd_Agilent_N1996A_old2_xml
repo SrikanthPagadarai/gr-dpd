@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<block>
+  <name>Agilent N1996A</name>
+  <key>dpd_Agilent_N1996A</key>
+  <category>[dpd]</category>
+  <import>import dpd</import>
+  <make>dpd.Agilent_N1996A($ip_addr, $frequency, $span, $resbw, $nb_points)</make>
+
+    <param>
+        <name>IP Address</name>
+        <key>ip_addr</key>
+        <type>string</type>
+    </param>
+    <param>
+        <name>Center Frequency</name>
+        <key>frequency</key>
+        <value>1e9</value>
+        <type>float</type>
+    </param>
+    <param>
+        <name>SPAN</name>
+        <key>span</key>
+        <value>200e6</value>
+        <type>float</type>
+    </param>
+    <param>
+        <name>Resbw</name>
+        <key>resbw</key>
+        <value>8e6</value>
+        <type>float</type>
+    </param>
+    <param>
+        <name>Nb_points</name>
+        <key>nb_points</key>
+        <value>4096</value>
+        <type>int</type>
+    </param>
+
+  <source>
+    <name>out</name>
+    <type>byte</type>
+    <vlen>4096</vlen>
+  </source>
+</block>

@@ -63,4 +63,9 @@
     <type>complex</type>
     <vlen>1</vlen>
   </source>  
+  <source>
+    <name>corr_out</name>
+    <type>complex</type>
+    <vlen>1</vlen>
+  </source> 
 </block>
