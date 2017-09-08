@@ -57,7 +57,7 @@ namespace gr {
     fastRLS_DPD_impl::fastRLS_DPD_impl(const std::vector<int> &dpd_params)
       : gr::sync_block("fastRLS_DPD",
               gr::io_signature::make(1, 1, sizeof(gr_complex)),
-              gr::io_signature::make(1, 1, sizeof(float))),
+              gr::io_signature::make(1, 1, sizeof(gr_complex))),
 	      d_dpd_params(dpd_params),
 	      K_a(d_dpd_params[0]), 
 	      L_a(d_dpd_params[1]),
@@ -79,6 +79,12 @@ namespace gr {
       message_port_register_in(pmt::mp("PA_input"));
       set_msg_handler(pmt::mp("PA_input"),
                       boost::bind(&fastRLS_DPD_impl::get_PA_input, this, _1));
+
+      output_file.open("/home/radio1/Documents/gr-dpd/examples/taps.txt", std::ios_base::app);      
+      PA_output_file.open("/home/radio1/Documents/gr-dpd/examples/PA_output_file.txt", std::ios_base::app);
+
+      for (int ii = 0; ii < sreg_len; ii++)   
+        sreg[ii]=0.0;
     }
 
     /*
@@ -104,9 +110,15 @@ namespace gr {
 	cx_fmat &g_vec_iMinus1, cx_fmat &L_bar_iMinus1, cx_fmat &w_iMinus1)
     {
       //constants
-      int k = 10;
+      int k = 13;
       lambda = 1-pow(2, 1-k);
       eta = pow(2, k);
+
+      g_vec_iMinus1.set_size(M+M_bar, 1);
+      g_vec_i.set_size(M, 1);
+      L_bar_iMinus1.set_size(M+M_bar, M_bar*2);
+      w_i.set_size(M, 1);
+      w_iMinus1.set_size(M, 1);
 
       //inverse of square-root of gamm
       inv_sqrt_gamma_iMinus1 = 1;
@@ -120,17 +132,17 @@ namespace gr {
       temp_cx_fmat1(L_a, 1) = sqrt(eta*lambda)*pow(lambda, 0.5*L_a);
       cx_fmat eye_K_a(K_a, K_a, fill::eye);
       cx_fmat L_bar_iMinus1_a = kron(eye_K_a, temp_cx_fmat1);
-
+      
       cx_fmat temp_cx_fmat2(L_b+1, 2, fill::zeros);
       temp_cx_fmat2(0, 0) = gr_complex(sqrt(eta*lambda), 0);
       temp_cx_fmat2(L_b, 1) = sqrt(eta*lambda)*pow(lambda, 0.5*L_b);
       cx_fmat eye_K_bM_b(K_b*M_b, K_b*M_b, fill::eye);
       cx_fmat L_bar_iMinus1_b = kron(eye_K_bM_b, temp_cx_fmat2);
-
+      
       L_bar_iMinus1 = zeros<cx_fmat>(K_a*(L_a+1)+K_b*M_b*(L_b+1), (K_a+K_b*M_b)*2);
       L_bar_iMinus1( span(0, K_a*(L_a+1)-1), span(0, K_a*2-1) ) = L_bar_iMinus1_a;
       L_bar_iMinus1( span(K_a*(L_a+1), K_a*(L_a+1)+K_b*M_b*(L_b+1)-1), span(K_a*2, (K_a+K_b*M_b)*2-1) ) = L_bar_iMinus1_b;
-
+      
       //weight-vector
       w_iMinus1 = zeros<cx_fmat>(M, 1);
       w_iMinus1(0,0) = gr_complex(1.0, 0.0);
@@ -145,7 +157,7 @@ namespace gr {
         gr_vector_void_star &output_items)
     {
       const gr_complex *in = (const gr_complex *) input_items[0];
-      float *out = (float *) output_items[0];
+      gr_complex *out = (gr_complex *) output_items[0];
 
       // Do <+signal processing+>
       // copy private variables accessed by the asynchronous message handler block
@@ -154,15 +166,7 @@ namespace gr {
       bool ack_predistorter_vec_updated = d_ack_predistorter_vec_updated;
       int sample_index_received = d_sample_index_received;
 
-      // Fast-RLS parameter declaration
-      static float lambda;
-      static float eta;
-      static float inv_sqrt_gamma_iMinus1;
-      static cx_fmat g_vec_iMinus1(M+M_bar, 1);
-      static cx_fmat g_vec_i(M, 1);
-      static cx_fmat L_bar_iMinus1(M+M_bar, M_bar*2);
-      static cx_fmat w_i(M, 1);
-      static cx_fmat w_iMinus1(M, 1);
+      
 
       cx_fmat yy_times_L_bar;
       cx_fmat A_mat(M+M_bar+1, M_bar*2+1, fill::zeros);
@@ -184,6 +188,7 @@ namespace gr {
         // get number of samples consumed since the beginning of time by this block
         // from port 0
         const uint64_t nread = this->nitems_read(0);
+        out[item] = in[item];
 
         // container to hold tags
         std::vector<gr::tag_t> tags;
@@ -207,30 +212,59 @@ namespace gr {
 
         // std::cout << "Inside Fast-RLS DPD work function..." << std::endl;
         static cx_float error = 0.1;
-        out[item] = 10.0*log10(pow(abs(error), 2));
+        // out[item] = 10.0*log10(pow(abs(error), 2));
+        // std::cout << "current_sample_index: " << current_sample_index << std::endl;
+        // std::cout << "sample_index_received: " << sample_index_received << std::endl;
         if ( (current_sample_index == sample_index_received) && (current_ofdm_block_index == ofdm_block_index_received) && ack_predistorter_vec_updated ) 
         {
           // std::cout << "pa_input (received by Fast RLS-DPD): " << pa_input << std::endl;
-          std::cout << "iteration: " << iteration << std::endl;	    
+          // std::cout << "iteration: " << iteration << std::endl;	    
           iteration++;
 
           // std::cout << "predistorter_vec_updated: " << predistorter_vec_updated << std::endl;
-          std::cout << "true sample index received: " << nread+item << endl;
-          std::cout << "OFDM block index applied to: " << current_ofdm_block_index << std::endl;
-          std::cout << "relative sample index received: " << sample_index_received << endl;
+          // std::cout << "true sample index received: " << nread+item << endl;
+          // std::cout << "OFDM block index applied to: " << current_ofdm_block_index << std::endl;
+          // std::cout << "relative sample index received: " << sample_index_received << endl;
+          // std::cout << "current_sample_index: " << current_sample_index << std::endl;
 
           int yy_len = M+M_bar;
 
           // extracting the PA output and arranging into a shift-structured GMP vector
           vector<gr_complex> temp_out1;
           temp_out1.reserve(M_bar);         
-          gen_GMPvector(in, item, K_a, L_a+1, K_b, M_b, L_b+1, temp_out1);
+          
+          PA_output_file << in[item] << '\n';
+          // if ( (iteration > 2) && (iteration < 61) )
+          //   std::cout << "in[" << item << "]:" << in[item] << '\n';
+          sreg[49] = in[item];                    
+          // if ( (iteration > 2) && (iteration < 11) ) {
+            // std::cout << "iteration: " << iteration << std::endl;	
+            // for (int ii = 0; ii < sreg_len; ii++)
+              // std::cout << "sreg[ii]: " << sreg[ii] << std::endl;
+          // }
+          
+          // gen_GMPvector(in, item, K_a, L_a+1, K_b, M_b, L_b+1, temp_out1);          
+          gen_GMPvector(ptr_sreg, 49, K_a, L_a+1, K_b, M_b, L_b+1, temp_out1);
+          for (int ii = 1; ii < sreg_len; ii++)
+            sreg[ii-1] = sreg[ii];          
+
           cx_frowvec yy_cx_frowvec(M+M_bar);
           for (int ii = 0; ii < (M+M_bar); ii++)
             yy_cx_frowvec(ii) = temp_out1[ii];
+          
+          
+          if ( (iteration == 2) || (iteration == 3) ) {
+            printf("Here\n\n");
+            yy_cx_frowvec.save("/home/radio1/Documents/gr-dpd/examples/yy_cx_frowvec.csv", csv_ascii);
+          }
+          
 
           // yy_times_L_bar = gr_complex(0.01, 0.0)*yy_cx_frowvec*L_bar_iMinus1;
           yy_times_L_bar = yy_cx_frowvec*L_bar_iMinus1;
+          /*
+          if (iteration == 2)
+            yy_times_L_bar.save("/home/radio1/Documents/gr-dpd/examples/yy_times_L_bar.csv", csv_ascii);
+          */
 
           // A-matrix
           A_mat.submat(0, 0, 0, 0) = inv_sqrt_gamma_iMinus1;
@@ -240,7 +274,8 @@ namespace gr {
 
           // obtain B-matrix by performing Givens and Hyperbolic rotations
           apply_rotations(A_mat, B_mat);
-          // if (iteration > 51 && iteration > 61) {
+          
+          if (iteration > 1 && iteration < 10) {
             char numstr[21]; // enough to hold all numbers up to 64-bits
             sprintf(numstr, "%d", iteration);
             std::string file_name1, file_name2;
@@ -251,24 +286,28 @@ namespace gr {
             std::string prefix2 = "/home/radio1/Documents/gr-dpd/examples/B_mat";
             file_name2 = prefix2+numstr+".csv";
             B_mat.save( file_name2, csv_ascii );
-          //}
+          }
 			
           //get time-updates for gamma
-          static gr_complex inv_sqrt_gamma_i = B_mat(0, 0);
-          static float gamma_i = 1.0/pow(real(inv_sqrt_gamma_i), 2);
+          gr_complex inv_sqrt_gamma_i = B_mat(0, 0);
           // std::cout << "gamma_i: " << gamma_i << std::endl;
+          if (iteration > 1 && iteration < 10) 
+            std::cout << "inv_sqrt_gamma_i: " << inv_sqrt_gamma_i << std::endl;
 		
           // get time-updates for g-vector
           cx_fmat g = B_mat(span(1, M+M_bar), 0);    
           extract_g_vecs(g, g_vec_iMinus1, g_vec_i, K_a, L_a, K_b, M_b, L_b, M, M+M_bar);    
-
+          
           // adjust post-distorted PA output dimensions
           cx_fmat y(1, M, fill::zeros);
           extract_postdistorted_y(yy_cx_frowvec, y, K_a, L_a, K_b, M_b, L_b, M);
-
+          
           //adaptation error
           gr_complex postdistorter_op = as_scalar(y*w_iMinus1);
-          error = pa_input - postdistorter_op;	        	
+          // error = gr_complex(0.01,0.0)*(pa_input - postdistorter_op);	        	
+          error = pa_input - postdistorter_op;	        
+          // if ( (iteration > 2) && (iteration < 20) )	
+          //   std::cout << "error: " << error << std::endl;
 
           // correction-factor
           cx_fmat c_factor = (error/real(inv_sqrt_gamma_i))*g_vec_i;	  
@@ -281,12 +320,16 @@ namespace gr {
           L_bar_iMinus1 = cx_float(1.0/sqrt(lambda), 0.0) * B_mat( span(1, M+M_bar), span(1, 2*M_bar) );
           w_iMinus1 = w_i;
 
-          out[item] = 10.0*log10(pow(abs(error), 2));
+          // out[item] = 10.0*log10(pow(abs(error), 2));
 
           // send weight-vector to predistorter block in a message
           vector<gr_complex> taps = conv_to< vector<gr_complex> >::from(w_i);
           pmt::pmt_t P_c32vector_taps = pmt::init_c32vector(M, taps);
           message_port_pub(pmt::mp("taps"), P_c32vector_taps);
+
+          for(vector<gr_complex>::const_iterator i = taps.begin(); i != taps.end(); ++i) {
+            output_file << *i << '\n';
+          }
  
           ack_predistorter_vec_updated = false;
         } 

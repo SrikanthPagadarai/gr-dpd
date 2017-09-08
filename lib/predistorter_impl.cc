@@ -106,15 +106,14 @@ namespace gr {
       const gr_complex *in = (const gr_complex *) input_items[0];
       gr_complex *out = (gr_complex *) output_items[0];
 
-      // Do <+signal processing+>
-		
+      // Do <+signal processing+>		
       // copy private variables accessed by the asynchronous message handler block
       cx_fcolvec predistorter_colvec = d_predistorter_colvec;
       bool update_predistorter_vec = d_update_predistorter_vec;	
 		 
       for (int item = 0; item < noutput_items; item++) 
       {
-         // grabbing the PA input which has been arranged in a GMP vector by an upstream block
+         // PA input which has been arranged in a GMP vector format
          // for predistortion
          vector<gr_complex> yy(in+item*M, in+item*M+M);
          cx_fmat yy_cx_rowvec(1, M);
@@ -157,18 +156,21 @@ namespace gr {
             gr_complex pa_input = as_scalar( yy_cx_rowvec*predistorter_colvec );
             out[item] = pa_input;
 
+            // std::cout << "current_sample_index: " << current_sample_index << std::endl;
+            // std::cout << "sent_sample_index: " << sent_sample_index << std::endl;
             if ( (current_sample_index == sent_sample_index) && update_predistorter_vec ) 
             {
-               std::cout << "true sample index sent: " << nread+item << std::endl;
-               std::cout << "OFDM block index sent: " << current_ofdm_block_index << std::endl;
+               // std::cout << "true sample index sent: " << nread+item << std::endl;
+               // std::cout << "OFDM block index sent: " << current_ofdm_block_index << std::endl;
 
-               std:: cout << "relative sample index sent: " << sent_sample_index << std::endl;
+               // std:: cout << "relative sample index sent: " << sent_sample_index << std::endl;
 
                // create a pmt tuple
                pmt::pmt_t P = pmt::make_tuple(pmt::from_long(current_ofdm_block_index), pmt::from_complex(out[item]));
                message_port_pub(pmt::mp("PA_input"), P);
-
+               
                sent_sample_index++;
+               // std::cout << "sent_sample_index: " << sent_sample_index << std::endl;
                update_predistorter_vec = false;
                d_update_predistorter_vec = false;
             }

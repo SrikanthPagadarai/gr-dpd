@@ -45,6 +45,20 @@ namespace gr {
       const int L_b;
       const int M;
       const int M_bar;
+      std::ofstream output_file, PA_output_file;
+      const int sreg_len = 50;
+      gr_complex sreg[50];      
+      const gr_complex *ptr_sreg = sreg;
+
+      // Fast-RLS parameter declaration
+      float lambda;
+      float eta;
+      float inv_sqrt_gamma_iMinus1;
+      cx_fmat g_vec_iMinus1;
+      cx_fmat g_vec_i;
+      cx_fmat L_bar_iMinus1;
+      cx_fmat w_i;
+      cx_fmat w_iMinus1;
 
       // private functions
       void init_params(float &lambda, float &eta, float &inv_sqrt_gamma_iMinus1, 
