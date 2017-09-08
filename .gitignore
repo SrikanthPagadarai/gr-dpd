@@ -1,3 +1,6 @@
 build/*
-apps/power_measurements/*
+usrp_rf_tests/one_tone_power_measurements_B200mini/*
+usrp_rf_tests/two_tone_power_measurements_B200mini/*
+usrp_rf_tests/one_tone_power_measurements_N210SBX/*
+usrp_rf_tests/two_tone_power_measurements_N210SBX/*
 dpd_externals/build/*
