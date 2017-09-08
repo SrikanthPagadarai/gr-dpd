@@ -71,7 +71,7 @@ namespace gr {
       // extract reference samples from the message
       int P_vec_len = pmt::length(P);
       for (int i = 0; i < P_vec_len; i++)	
-        d_reference_samples.push_back( pmt::c32vector_ref(P, i) );	
+        d_reference_samples.push_back( pmt::c32vector_ref(P, i) );	     
     }
 
     int
@@ -120,18 +120,11 @@ namespace gr {
 
 	 	
         if (gain_phase_calibrated) {
-
-          gr_complex current_cfactor = reference_samples[current_sample_index]/in[item];
-          cfactor = ( gr_complex(current_sample_index, 0.0)*previous_cfactor + current_cfactor )/gr_complex(current_sample_index+1, 0.0); 
-          previous_cfactor = cfactor;
-
           out[item-nitems_to_skip] = cfactor*in[item];
           item++;
-
         }
         else {
           if ( reference_acquired && packet_start && (current_sample_index < d_ref_len) ) {
-
             gr_complex current_cfactor = reference_samples[current_sample_index]/in[item];
             cfactor = ( gr_complex(current_sample_index, 0.0)*previous_cfactor + current_cfactor )/gr_complex(current_sample_index+1, 0.0); 
             previous_cfactor = cfactor;
@@ -144,7 +137,7 @@ namespace gr {
               std::cout << std::endl;
               std::cout << "Gain/phase calibration factor applied: " << cfactor << std::endl;
               std::cout << "Gain/phase calibration begin... " << std::endl;
-              std::cout << std::endl;
+              std::cout << std::endl;             
             }
           }			
         } 
