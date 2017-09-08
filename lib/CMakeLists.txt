@@ -34,7 +34,8 @@ list(APPEND dpd_sources
     polynomial_regressor_vector_impl.cc
     signum_func_impl.cc
     gain_phase_calibrate_impl.cc
-    fastRLS_DPD_impl.cc )
+    fastRLS_DPD_impl.cc
+    stream_to_message_impl.cc )
 
 set(dpd_sources "${dpd_sources}" PARENT_SCOPE)
 if(NOT dpd_sources)

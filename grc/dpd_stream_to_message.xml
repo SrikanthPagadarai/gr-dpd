@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<block>
+  <name>Stream to Message</name>
+  <key>dpd_stream_to_message</key>
+  <category>[dpd]</category>
+  <import>import dpd</import>
+  <make>dpd.stream_to_message($msg_len)</make>
+  <param>
+    <name>Message Length </name>
+    <key>msg_len</key>
+    <type>int</type>
+  </param>
+
+  <sink>
+    <name>in</name>
+    <type>complex</type>
+  </sink>
+
+  <source>
+    <name>samples</name>
+    <type>message</type>
+  </source>
+</block>

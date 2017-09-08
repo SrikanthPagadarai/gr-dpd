@@ -31,5 +31,6 @@ install(FILES
     polynomial_regressor_vector.h
     signum_func.h
     gain_phase_calibrate.h
-    fastRLS_DPD.h DESTINATION include/dpd
+    fastRLS_DPD.h
+    stream_to_message.h DESTINATION include/dpd
 )
