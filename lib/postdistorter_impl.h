@@ -33,7 +33,7 @@ namespace gr {
     {
      private:
       std::vector<int> d_dpd_params;
-      bool d_init;
+      // bool d_init;
       long d_ofdm_block_index_received;
       gr_complex d_pa_input;
       bool d_ack_predistorter_vec_updated; 

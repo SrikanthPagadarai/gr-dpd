@@ -26,7 +26,7 @@ install(FILES
     dpd_polynomial_regressor_vector.xml
     dpd_signum_func.xml
     dpd_gain_phase_calibrate.xml
-    dpd_fastRLS_DPD.xml 
+    dpd_postdistorter.xml 
     dpd_ampl_diff.xml
     dpd_estimate_integer_delay.xml
     dpd_pa_wiener_model.xml

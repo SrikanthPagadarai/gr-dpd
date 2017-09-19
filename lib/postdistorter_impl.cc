@@ -67,7 +67,7 @@ namespace gr {
               M(dpd_params[0]*dpd_params[1] + dpd_params[2]*dpd_params[3]*dpd_params[4]),
               M_bar(dpd_params[0] + dpd_params[2]*dpd_params[3])
     {
-      d_init = false;
+      // d_init = false;
       d_ack_predistorter_vec_updated = false;
       d_sample_index_received = -1;
 
@@ -85,6 +85,44 @@ namespace gr {
 
       for (int ii = 0; ii < sreg_len; ii++)   
         sreg[ii]=0.0;
+
+      //constants
+      int k = 18;
+      lambda = 1-pow(2, 1-k);
+      eta = pow(2, k);
+
+      g_vec_iMinus1.set_size(M+M_bar, 1);
+      g_vec_i.set_size(M, 1);
+      L_bar_iMinus1.set_size(M+M_bar, M_bar*2);
+      w_i.set_size(M, 1);
+      w_iMinus1.set_size(M, 1);
+
+      //inverse of square-root of gamm
+      inv_sqrt_gamma_iMinus1 = 1;
+
+      //g vector
+      g_vec_iMinus1 = zeros<cx_fmat>(M+M_bar, 1);
+
+      //L-bar matrix
+      cx_fmat temp_cx_fmat1(L_a+1, 2, fill::zeros);
+      temp_cx_fmat1(0, 0) = gr_complex(sqrt(eta*lambda), 0);
+      temp_cx_fmat1(L_a, 1) = sqrt(eta*lambda)*pow(lambda, 0.5*L_a);
+      cx_fmat eye_K_a(K_a, K_a, fill::eye);
+      cx_fmat L_bar_iMinus1_a = kron(eye_K_a, temp_cx_fmat1);
+      
+      cx_fmat temp_cx_fmat2(L_b+1, 2, fill::zeros);
+      temp_cx_fmat2(0, 0) = gr_complex(sqrt(eta*lambda), 0);
+      temp_cx_fmat2(L_b, 1) = sqrt(eta*lambda)*pow(lambda, 0.5*L_b);
+      cx_fmat eye_K_bM_b(K_b*M_b, K_b*M_b, fill::eye);
+      cx_fmat L_bar_iMinus1_b = kron(eye_K_bM_b, temp_cx_fmat2);
+      
+      L_bar_iMinus1 = zeros<cx_fmat>(K_a*(L_a+1)+K_b*M_b*(L_b+1), (K_a+K_b*M_b)*2);
+      L_bar_iMinus1( span(0, K_a*(L_a+1)-1), span(0, K_a*2-1) ) = L_bar_iMinus1_a;
+      L_bar_iMinus1( span(K_a*(L_a+1), K_a*(L_a+1)+K_b*M_b*(L_b+1)-1), span(K_a*2, (K_a+K_b*M_b)*2-1) ) = L_bar_iMinus1_b;
+      
+      //weight-vector
+      w_iMinus1 = zeros<cx_fmat>(M, 1);
+      w_iMinus1(0,0) = gr_complex(1.0, 0.0);
     }
 
     /*
@@ -105,7 +143,7 @@ namespace gr {
       d_sample_index_received++;
     }
 
-    void 
+    /*void 
     fastRLS_DPD_impl::init_params(float &lambda, float &eta, float &inv_sqrt_gamma_iMinus1, 
 	cx_fmat &g_vec_iMinus1, cx_fmat &L_bar_iMinus1, cx_fmat &w_iMinus1)
     {
@@ -149,7 +187,7 @@ namespace gr {
 
       //reset init flag
       d_init = 1;        
-    }
+    }*/
 
     int
     fastRLS_DPD_impl::work(int noutput_items,
@@ -173,13 +211,13 @@ namespace gr {
       cx_fmat B_mat(M+M_bar+1, M_bar*2+1, fill::zeros);
 
       // Fast-RLS parameter initialization
-      if (!d_init) 
+      /*if (!d_init) 
       {
         init_params(lambda, eta, inv_sqrt_gamma_iMinus1, 
                     g_vec_iMinus1, L_bar_iMinus1, w_iMinus1);
 
         d_init = true;
-      }
+      }*/
 
       static int iteration = 1;
       for (int item = 0; item < noutput_items; item++) 
@@ -218,7 +256,7 @@ namespace gr {
         if ( (current_sample_index == sample_index_received) && (current_ofdm_block_index == ofdm_block_index_received) && ack_predistorter_vec_updated ) 
         {
           // std::cout << "pa_input (received by Fast RLS-DPD): " << pa_input << std::endl;
-          // std::cout << "iteration: " << iteration << std::endl;	    
+          std::cout << "iteration: " << iteration << std::endl;	    
           iteration++;
 
           // std::cout << "predistorter_vec_updated: " << predistorter_vec_updated << std::endl;
@@ -275,7 +313,7 @@ namespace gr {
           // obtain B-matrix by performing Givens and Hyperbolic rotations
           apply_rotations(A_mat, B_mat);
           
-          if (iteration > 1 && iteration < 10) {
+          /*if (iteration > 1 && iteration < 10) {
             char numstr[21]; // enough to hold all numbers up to 64-bits
             sprintf(numstr, "%d", iteration);
             std::string file_name1, file_name2;
@@ -286,13 +324,13 @@ namespace gr {
             std::string prefix2 = "/home/radio1/Documents/gr-dpd/examples/B_mat";
             file_name2 = prefix2+numstr+".csv";
             B_mat.save( file_name2, csv_ascii );
-          }
+          }*/
 			
           //get time-updates for gamma
           gr_complex inv_sqrt_gamma_i = B_mat(0, 0);
           // std::cout << "gamma_i: " << gamma_i << std::endl;
-          if (iteration > 1 && iteration < 10) 
-            std::cout << "inv_sqrt_gamma_i: " << inv_sqrt_gamma_i << std::endl;
+          /*if (iteration > 1 && iteration < 10) 
+            std::cout << "inv_sqrt_gamma_i: " << inv_sqrt_gamma_i << std::endl;*/
 		
           // get time-updates for g-vector
           cx_fmat g = B_mat(span(1, M+M_bar), 0);    
@@ -315,7 +353,7 @@ namespace gr {
           // weight-vector
           w_i = w_iMinus1+c_factor;	    
 	
-          // prepare-quantities for next iteration
+          // prepare quantities for next iteration
           inv_sqrt_gamma_iMinus1 = inv_sqrt_gamma_i.real();
           L_bar_iMinus1 = cx_float(1.0/sqrt(lambda), 0.0) * B_mat( span(1, M+M_bar), span(1, 2*M_bar) );
           w_iMinus1 = w_i;
