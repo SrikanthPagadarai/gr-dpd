@@ -24,7 +24,7 @@
 
 #include <string>
 #include <gnuradio/io_signature.h>
-#include "fastRLS_DPD_impl.h"
+#include "postdistorter_impl.h"
 #include <dpd_externals/gen_GMPvector.h>
 #include <dpd_externals/extract_postdistorted_y.h>
 #include <dpd_externals/extract_g_vecs.h>
@@ -44,18 +44,18 @@ using namespace arma;
 namespace gr {
   namespace dpd {
 
-    fastRLS_DPD::sptr
-    fastRLS_DPD::make(const std::vector<int> &dpd_params)
+    postdistorter::sptr
+    postdistorter::make(const std::vector<int> &dpd_params)
     {
       return gnuradio::get_initial_sptr
-        (new fastRLS_DPD_impl(dpd_params));
+        (new postdistorter_impl(dpd_params));
     }
 
     /*
      * The private constructor
      */
-    fastRLS_DPD_impl::fastRLS_DPD_impl(const std::vector<int> &dpd_params)
-      : gr::sync_block("fastRLS_DPD",
+    postdistorter_impl::postdistorter_impl(const std::vector<int> &dpd_params)
+      : gr::sync_block("postdistorter",
               gr::io_signature::make(1, 1, sizeof(gr_complex)),
               gr::io_signature::make(1, 1, sizeof(gr_complex))),
 	      d_dpd_params(dpd_params),
@@ -78,7 +78,7 @@ namespace gr {
       // Setup Input port
       message_port_register_in(pmt::mp("PA_input"));
       set_msg_handler(pmt::mp("PA_input"),
-                      boost::bind(&fastRLS_DPD_impl::get_PA_input, this, _1));
+                      boost::bind(&postdistorter_impl::get_PA_input, this, _1));
 
       output_file.open("/home/radio1/Documents/gr-dpd/examples/taps.txt", std::ios_base::app);      
       PA_output_file.open("/home/radio1/Documents/gr-dpd/examples/PA_output_file.txt", std::ios_base::app);
@@ -128,12 +128,12 @@ namespace gr {
     /*
      * Our virtual destructor.
      */
-    fastRLS_DPD_impl::~fastRLS_DPD_impl()
+    postdistorter_impl::~postdistorter_impl()
     {
     }
 
     void 
-    fastRLS_DPD_impl::get_PA_input(pmt::pmt_t P) 
+    postdistorter_impl::get_PA_input(pmt::pmt_t P) 
     {	
       d_ofdm_block_index_received = pmt::to_long(pmt::tuple_ref(P, 0));
       d_pa_input = pmt::to_complex(pmt::tuple_ref(P, 1));
@@ -144,7 +144,7 @@ namespace gr {
     }
 
     /*void 
-    fastRLS_DPD_impl::init_params(float &lambda, float &eta, float &inv_sqrt_gamma_iMinus1, 
+    postdistorter_impl::init_params(float &lambda, float &eta, float &inv_sqrt_gamma_iMinus1, 
 	cx_fmat &g_vec_iMinus1, cx_fmat &L_bar_iMinus1, cx_fmat &w_iMinus1)
     {
       //constants
@@ -190,7 +190,7 @@ namespace gr {
     }*/
 
     int
-    fastRLS_DPD_impl::work(int noutput_items,
+    postdistorter_impl::work(int noutput_items,
         gr_vector_const_void_star &input_items,
         gr_vector_void_star &output_items)
     {

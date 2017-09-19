@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <block>
-  <name>Fast-RLS DPD</name>
-  <key>dpd_fastRLS_DPD</key>
+  <name>Postdistorter</name>
+  <key>dpd_postdistorter</key>
   <category>[dpd]</category>
   <import>import dpd</import>
-  <make>dpd.fastRLS_DPD($dpd_params)</make>
+  <make>dpd.postdistorter($dpd_params)</make>
 
   <param>
     <name>DPD Parameters</name>

@@ -18,10 +18,10 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef INCLUDED_DPD_FASTRLS_DPD_IMPL_H
-#define INCLUDED_DPD_FASTRLS_DPD_IMPL_H
+#ifndef INCLUDED_DPD_postdistorter_IMPL_H
+#define INCLUDED_DPD_postdistorter_IMPL_H
 
-#include <dpd/fastRLS_DPD.h>
+#include <dpd/postdistorter.h>
 #include <armadillo>
 
 using namespace arma;
@@ -29,7 +29,7 @@ using namespace arma;
 namespace gr {
   namespace dpd {
 
-    class fastRLS_DPD_impl : public fastRLS_DPD
+    class postdistorter_impl : public postdistorter
     {
      private:
       std::vector<int> d_dpd_params;
@@ -65,8 +65,8 @@ namespace gr {
 		cx_fmat &g_vec_iMinus1, cx_fmat &L_bar_iMinus1, cx_fmat &w_iMinus1);
 
      public:
-      fastRLS_DPD_impl(const std::vector<int> &dpd_params);
-      ~fastRLS_DPD_impl();
+      postdistorter_impl(const std::vector<int> &dpd_params);
+      ~postdistorter_impl();
 
       void get_PA_input(pmt::pmt_t P);
 
@@ -79,5 +79,5 @@ namespace gr {
   } // namespace dpd
 } // namespace gr
 
-#endif /* INCLUDED_DPD_FASTRLS_DPD_IMPL_H */
+#endif /* INCLUDED_DPD_postdistorter_IMPL_H */
 

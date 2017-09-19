@@ -19,8 +19,8 @@
  */
 
 
-#ifndef INCLUDED_DPD_FASTRLS_DPD_H
-#define INCLUDED_DPD_FASTRLS_DPD_H
+#ifndef INCLUDED_DPD_postdistorter_H
+#define INCLUDED_DPD_postdistorter_H
 
 #include <dpd/api.h>
 #include <gnuradio/sync_block.h>
@@ -33,17 +33,17 @@ namespace gr {
      * \ingroup dpd
      *
      */
-    class DPD_API fastRLS_DPD : virtual public gr::sync_block
+    class DPD_API postdistorter : virtual public gr::sync_block
     {
      public:
-      typedef boost::shared_ptr<fastRLS_DPD> sptr;
+      typedef boost::shared_ptr<postdistorter> sptr;
 
       /*!
-       * \brief Return a shared_ptr to a new instance of dpd::fastRLS_DPD.
+       * \brief Return a shared_ptr to a new instance of dpd::postdistorter.
        *
-       * To avoid accidental use of raw pointers, dpd::fastRLS_DPD's
+       * To avoid accidental use of raw pointers, dpd::postdistorter's
        * constructor is in a private implementation
-       * class. dpd::fastRLS_DPD::make is the public interface for
+       * class. dpd::postdistorter::make is the public interface for
        * creating new instances.
        */
       static sptr make(const std::vector<int> &dpd_params);
@@ -52,5 +52,5 @@ namespace gr {
   } // namespace dpd
 } // namespace gr
 
-#endif /* INCLUDED_DPD_FASTRLS_DPD_H */
+#endif /* INCLUDED_DPD_postdistorter_H */
 
