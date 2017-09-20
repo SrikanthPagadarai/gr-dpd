@@ -35,6 +35,7 @@ GR_PYTHON_INSTALL(
     estimate_integer_delay.py
     pa_wiener_model.py
     upsample.py
+    gr_dpd_elliptic_filter.py
     basic_qpskofdm_tx_withoutCP.py 
     STS_generator_withoutCP.py DESTINATION ${GR_PYTHON_DIR}/dpd
 )
