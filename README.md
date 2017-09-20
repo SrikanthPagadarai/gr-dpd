@@ -4,6 +4,7 @@
  - UHD >= 
  - gnuradio >= 
  - armadillo >=
+ - [VXI-11 instruments access library](https://github.com/f4exb/libvxi11)
 
 ### Dependencies Needed for QA Testing
 

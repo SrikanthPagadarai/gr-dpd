@@ -147,7 +147,7 @@ namespace gr {
          static int sent_sample_index = 0;
 
          // send the STS signal samples as-is, without any predistortion,
-         // for the remaining samples, do predistortion and send the PA input to Fast-RLS DPD
+         // for the remaining samples, do predistortion and send the PA input to postdistorter
          int nskip_predistortion = (d_NFFT+d_cp_len)*d_ovx*d_num_zero_syms + (d_NFFT+d_cp_len)*d_ovx;
          if (nread < nskip_predistortion)
             out[item] = in[item*M];

@@ -29,7 +29,7 @@ class top_block(gr.top_block):
         ##################################################
         self.tone_freq1 = tone_freq1 = 50e3
         self.tone_freq2 = tone_freq2 = 75e3
-        self.samp_rate = samp_rate = 100e6/500
+        self.samp_rate = samp_rate = 100e6/200
         self.center_freq = center_freq
         self.b200mini_gain = b200mini_gain
         self.bb_ampl = bb_ampl

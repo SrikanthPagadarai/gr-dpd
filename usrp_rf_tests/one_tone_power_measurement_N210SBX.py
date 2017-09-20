@@ -27,8 +27,8 @@ class top_block(gr.top_block):
         ##################################################
         # Variables
         ##################################################
-        self.tone_freq = tone_freq = 100e3
-        self.samp_rate = samp_rate = 100e6/500
+        self.tone_freq = tone_freq = 50e3
+        self.samp_rate = samp_rate = 100e6/200
         self.center_freq = center_freq
         self.sbx_db_gain = sbx_db_gain
         self.bb_ampl = bb_ampl
@@ -84,12 +84,12 @@ def main(argv):
     try:
        opts, args = getopt.getopt(argv,"hf:g:a:",["freq=", "db_gain=", "bb_ampl="])
     except getopt.GetoptError:
-       print 'one_tone_power_measurement.py -f <center_freq> -g <daughterboard_gain> -a <dac_scale>'
+       print 'one_tone_power_measurement_N210SBX.py -f <center_freq> -g <daughterboard_gain> -a <dac_scale>'
        sys.exit(2)
 
     for opt, arg in opts:
        if opt == '-h':
-          print 'one_tone_power_measurement.py -f <center_freq> -g <daughterboard_gain> -a <dac_scale>'
+          print 'one_tone_power_measurement_N210SBX.py -f <center_freq> -g <daughterboard_gain> -a <dac_scale>'
           sys.exit()
        elif opt in ("-f", "--freq"):
           center_freq = float(arg)
@@ -111,11 +111,11 @@ def main(argv):
        print 'Error! Invalid choice of baseband signal scale factor.'
        sys.exit()
 
-    dir_name = "./one_tone_power_measurements"
+    dir_name = "./one_tone_power_measurements_N210SBX"
     if not os.path.exists(dir_name):
        os.makedirs(dir_name)
 
-    filename = "one_tone_power_f" + str(int(center_freq)) + "_g" + str(int(sbx_db_gain*10)) + "_a" + str(int(bb_ampl*100)) + ".bin"
+    filename = "one_tone_power_N210SBX_f" + str(int(center_freq)) + "_g" + str(int(sbx_db_gain*10)) + "_a" + str(int(bb_ampl*100)) + ".bin"
     dir_filename = dir_name + "/" + filename    
 
     tb = top_block(center_freq, sbx_db_gain, bb_ampl, dir_filename)    

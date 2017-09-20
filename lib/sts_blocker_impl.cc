@@ -29,29 +29,24 @@ namespace gr {
   namespace dpd {
 
     sts_blocker::sptr
-    sts_blocker::make(int cp_len)
+    sts_blocker::make()
     {
       return gnuradio::get_initial_sptr
-        (new sts_blocker_impl(cp_len));
+        (new sts_blocker_impl());
     }
 
     /*
      * The private constructor
      */
-    sts_blocker_impl::sts_blocker_impl(int cp_len)
+    sts_blocker_impl::sts_blocker_impl()
       : gr::block("sts_blocker",
       gr::io_signature::make(1, 1, sizeof(gr_complex)),
-      gr::io_signature::make(1, 1, sizeof(gr_complex))),
-      d_cp_len(cp_len)
+      gr::io_signature::make(1, 1, sizeof(gr_complex)))      
     {
-        // don't propagate upstream tags
-        set_tag_propagation_policy(TPP_DONT);
+      // don't propagate upstream tags
+      set_tag_propagation_policy(TPP_DONT);
 
-        if (d_cp_len == 0)
-           d_expected_peaks = 4;
-        else
-           d_expected_peaks = 5;
-
+      d_expected_peaks = 5;
     }
 
     /*
@@ -72,7 +67,6 @@ namespace gr {
       gr_complex *out = (gr_complex *) output_items[0];
 
       // Do <+signal processing+>
-
       // get number of samples consumed since the beginning of time by this block
       // from port 0
       const uint64_t nread = this->nitems_read(0);
@@ -87,52 +81,49 @@ namespace gr {
       static int count = 0;	
       while (item < ninput_items) 
       {
+        //get tag if the current sample has one
+        get_tags_in_range(tags, 0, nread+item, nread+item+1);
 
-         //get tag if the current sample has one
-         get_tags_in_range(tags, 0, nread+item, nread+item+1);
+        if (tags.size()) 
+        {
+          peaks++;
+          std::cout << "peaks detected at STS-Blocker: " << peaks << std::endl;
 
-         if (tags.size()) 
-         {
-            peaks++;
-            std::cout << "peaks detected at STS-Blocker: " << peaks << std::endl;
+          for (int k = 0; k<tags.size(); k++) 
+            std::cout<<"Key: "<<pmt::symbol_to_string(tags[k].key)<<std::endl;
 
-            for (int k = 0; k<tags.size(); k++) 
-	        std::cout<<"Key: "<<pmt::symbol_to_string(tags[k].key)<<std::endl;
-
-            if (peaks == d_expected_peaks) 
-            {
-                std::cout << "peaks: " << peaks << std::endl;
-                item++;
-            }
-         }
+          if (peaks == d_expected_peaks) 
+          {
+            std::cout << "peaks: " << peaks << std::endl;
+            item++;
+          }
+        }
 
 		
-         if (peaks < d_expected_peaks) 
-         {
-              item++;
-         }
-         else 
-         {
-            if (count == 0) 
-            {
-               std::cout << "nread+item: " << nread+item << std::endl;
-               count++;
-            }
-
-            int n_to_copy = ninput_items - item;
-
-            const char *iptr = (const char *)&(in[item]);
-            char *optr = (char *)&(out[0]);
-            memcpy(optr, iptr, n_to_copy*sizeof(gr_complex));
-
-            // consume all regardless of items copied
-            consume_each(ninput_items);
-            // Tell runtime system how many output items we produced.
-            return n_to_copy;
+        if (peaks < d_expected_peaks) 
+        {
+          item++;
+        }
+        else 
+        {
+          if (count == 0) 
+          {
+            std::cout << "nread+item: " << nread+item << std::endl;
+            count++;
           }
 
-      }
+          int n_to_copy = ninput_items - item;
 
+          const char *iptr = (const char *)&(in[item]);
+          char *optr = (char *)&(out[0]);
+          memcpy(optr, iptr, n_to_copy*sizeof(gr_complex));
+
+          // consume all regardless of items copied
+          consume_each(ninput_items);
+          // Tell runtime system how many output items we produced.
+          return n_to_copy;
+        }
+      }
 
       // Tell runtime system how many input items we consumed on
       // each input stream.

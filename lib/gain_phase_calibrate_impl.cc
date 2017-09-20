@@ -23,6 +23,7 @@
 #endif
 
 #include <gnuradio/io_signature.h>
+#include <dpd_externals/almost_equals_zero.h>
 #include "gain_phase_calibrate_impl.h"
 
 namespace gr {
@@ -54,6 +55,8 @@ namespace gr {
       message_port_register_in(pmt::mp("samples"));
       set_msg_handler(pmt::mp("samples"),
       boost::bind(&gain_phase_calibrate_impl::set_reference, this, _1));
+
+      output_file.open("/home/radio1/Documents/gr-dpd/examples/current_cfactor.txt", std::ios_base::app);
     }
 
     /*
@@ -84,6 +87,7 @@ namespace gr {
       gr_complex *out = (gr_complex *) output_items[0];
 
       // Do <+signal processing+>
+      gr_complex current_cfactor;
       // copy private variables accessed by the asynchronous message handler block
       bool reference_acquired = d_reference_acquired;
       std::vector<gr_complex> reference_samples = d_reference_samples;
@@ -123,14 +127,19 @@ namespace gr {
           out[item-nitems_to_skip] = cfactor*in[item];
           item++;
         }
-        else {
-          if ( reference_acquired && packet_start && (current_sample_index < d_ref_len) ) {
-            gr_complex current_cfactor = reference_samples[current_sample_index]/in[item];
+        else {          
+          if ( reference_acquired && packet_start && (current_sample_index < d_ref_len) ) 
+          {
+            current_cfactor = reference_samples[current_sample_index]/in[item];
             cfactor = ( gr_complex(current_sample_index, 0.0)*previous_cfactor + current_cfactor )/gr_complex(current_sample_index+1, 0.0); 
-            previous_cfactor = cfactor;
+
+            if ( !almost_equals_zero(std::real(in[item]), 4) && !almost_equals_zero(std::imag(in[item]), 4) )
+              previous_cfactor = cfactor;
             item++;
             nitems_to_skip++;
 
+            output_file << std::real(cfactor) << '\n' << std::real(in[item]) << '\n';
+            
             if (current_sample_index == d_ref_len-1) {
               gain_phase_calibrated = true;
 
@@ -139,7 +148,7 @@ namespace gr {
               std::cout << "Gain/phase calibration begin... " << std::endl;
               std::cout << std::endl;             
             }
-          }			
+          }          
         } 
       }
 

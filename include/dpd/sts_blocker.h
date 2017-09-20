@@ -46,7 +46,7 @@ namespace gr {
        * class. dpd::sts_blocker::make is the public interface for
        * creating new instances.
        */
-      static sptr make(int cp_len);
+      static sptr make();
     };
 
   } // namespace dpd

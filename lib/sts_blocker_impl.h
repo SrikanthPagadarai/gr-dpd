@@ -33,12 +33,10 @@ namespace gr {
       int d_expected_peaks;
 
      public:
-      sts_blocker_impl(int cp_len);
+      sts_blocker_impl();
       ~sts_blocker_impl();
 
       // Where all the action really happens
-      // void forecast (int noutput_items, gr_vector_int &ninput_items_required);
-
       int general_work(int noutput_items,
            gr_vector_int &ninput_items,
            gr_vector_const_void_star &input_items,

@@ -1,9 +1,9 @@
 clc;
 clear; 
-%close all;
+close all;
 
 center_freq = '500000000';
-g = 400:10:890;
+g = 510:10:890;
 a = 5:5:35;
 
 span = 1e6;
@@ -52,7 +52,10 @@ plot(g./10, mean_imd3_lvl_dBc(6, :), 'kv-')
 plot(g./10, mean_imd3_lvl_dBc(7, :), 'ksq-')
 legend('Ampl. Scale = 0.05','Ampl. Scale = 0.1','Ampl. Scale = 0.15',...
     'Ampl. Scale = 0.2','Ampl. Scale = 0.25','Ampl. Scale = 0.3',...
-    'Ampl. Scale = 0.35');
-xlim([40 89]);
-xlabel('B200-Mini Gain (dB)');
+    'Ampl. Scale = 0.35','Location', 'NorthWest');
+xlim([50 90]);
+xlabel('B200mini Gain (dB)');
 ylabel('Mean IMD3 Level (dBc)');
+axis square;
+title('B200mini IMD3 Level');
+set(gca, 'FontSize', 16);

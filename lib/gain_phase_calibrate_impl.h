@@ -22,6 +22,7 @@
 #define INCLUDED_DPD_GAIN_PHASE_CALIBRATE_IMPL_H
 
 #include <dpd/gain_phase_calibrate.h>
+#include <fstream>
 
 namespace gr {
   namespace dpd {
@@ -32,6 +33,7 @@ namespace gr {
        bool d_reference_acquired;
        std::vector<gr_complex> d_reference_samples;
        int d_ref_len;
+       std::ofstream output_file;
 
      public:
       gain_phase_calibrate_impl(int ref_len);

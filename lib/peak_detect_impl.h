@@ -29,12 +29,11 @@ namespace gr {
     class peak_detect_impl : public peak_detect
     {
      private:
-      int d_NFFT;
-      int d_ovx;
       int d_peak_cond;
+      float prev2_peak, prev1_peak, curr_peak;
 
      public:
-      peak_detect_impl(int NFFT, int ovx, int peak_cond);
+      peak_detect_impl(int peak_cond);
       ~peak_detect_impl();
 
       // Where all the action really happens

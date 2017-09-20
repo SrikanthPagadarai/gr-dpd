@@ -4,14 +4,8 @@
   <key>dpd_sts_blocker</key>
   <category>[dpd]</category>
   <import>import dpd</import>
-  <make>dpd.sts_blocker($cp_len)</make>
+  <make>dpd.sts_blocker()</make>
   
-  <param>
-    <name>Cyclic-Prefix Length</name>
-    <key>cp_len</key>
-    <type>int</type>
-  </param>
-
   <sink>
     <name>in</name>
     <type>complex</type>

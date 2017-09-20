@@ -46,7 +46,7 @@ namespace gr {
        * class. dpd::peak_detect::make is the public interface for
        * creating new instances.
        */
-      static sptr make(int NFFT, int ovx, int peak_cond);
+      static sptr make(int peak_cond);
     };
 
   } // namespace dpd

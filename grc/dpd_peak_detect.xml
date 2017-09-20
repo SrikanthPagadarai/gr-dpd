@@ -4,20 +4,10 @@
   <key>dpd_peak_detect</key>
   <category>[dpd]</category>
   <import>import dpd</import>
-  <make>dpd.peak_detect($NFFT, $ovx, $peak_cond)</make>
+  <make>dpd.peak_detect($peak_cond)</make>
 
   <param>
-    <name>NFFT</name>
-    <key>NFFT</key>
-    <type>int</type>
-  </param>
-  <param>
-    <name>Oversampling Factor</name>
-    <key>ovx</key>
-    <type>int</type>
-  </param>
-  <param>
-    <name>Peak Present When > </name>
+    <name>Threshold</name>
     <key>peak_cond</key>
     <type>int</type>
   </param>
