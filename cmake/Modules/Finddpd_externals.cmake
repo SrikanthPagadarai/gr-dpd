@@ -1,6 +1,7 @@
 if(NOT DPD_EXTERNALS_FOUND)
   find_path(DPD_EXTERNALS_INCLUDE_DIRS 
     NAMES 
+    almost_equals_zero.h
     almost_equal.h
     gen_GMPvector.h
     givens_rotate.h

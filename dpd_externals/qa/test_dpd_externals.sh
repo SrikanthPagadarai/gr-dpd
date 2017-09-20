@@ -13,6 +13,7 @@ then
   echo "[4] givens_rotate()"
   echo "[5] hgivens_rotate()"
   echo "[6] apply_rotations()"
+  echo "[7] almost_equals_zero()"
 
   exit
 fi
@@ -63,6 +64,13 @@ if [ "$1" -eq 6 ] || [ "$1" -eq 0 ]; then
   g++ -std=c++11 -o test_apply_rotations.o test_apply_rotations.cc ../src/givens_rotate.cc ../src/hgivens_rotate.cc ../src/apply_rotations.cc -ldpd_externals -larmadillo
   ./test_apply_rotations.o
   gvfs-trash *.txt
+fi
+
+if [ "$1" -eq 7 ] || [ "$1" -eq 0 ]; then 
+  # compile and run apply_rotations() tests
+  printf "Compiling and running tests for almost_equals_zero()...\n"
+  g++ -std=c++11 -o test_almost_equals_zero.o test_almost_equals_zero.cc ../src/almost_equals_zero.cc -ldpd_externals
+  ./test_almost_equals_zero.o  
 fi
 
 gvfs-trash *.o
