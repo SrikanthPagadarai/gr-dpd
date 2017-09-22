@@ -30,6 +30,7 @@ namespace gr {
     {
      private:
       int d_peak_cond;
+      int peak_count;            
       float prev2_peak, prev1_peak, curr_peak;
 
      public:

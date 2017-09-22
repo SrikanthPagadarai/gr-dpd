@@ -138,7 +138,8 @@ namespace gr {
             item++;
             nitems_to_skip++;
 
-            output_file << std::real(cfactor) << '\n' << std::real(in[item]) << '\n';
+            // output_file << std::real(cfactor) << '\n' << std::real(in[item]) << '\n';
+            output_file << current_sample_index << '\n';
             
             if (current_sample_index == d_ref_len-1) {
               gain_phase_calibrated = true;

@@ -47,6 +47,7 @@ namespace gr {
       prev2_peak = 0.0;
       prev1_peak = 0.0;
       curr_peak = 0.0;
+      peak_count = 0;
 
       // don't propagate upstream tags
       set_tag_propagation_policy(TPP_DONT);
@@ -75,9 +76,8 @@ namespace gr {
             out[i] = in[i];
     
             // std::cout << "std::real(in_corr[i]): " << std::real(in_corr[i]) << std::endl;
-            static int count = 0;
             curr_peak = std::abs(std::real(in_corr[i]));
-            if( ( curr_peak > d_peak_cond ) && (count < 5) )
+            if( ( curr_peak > d_peak_cond ) && (peak_count < 5) )
             { 
                if ( (prev2_peak < prev1_peak) && (curr_peak < prev1_peak) )
                {             
@@ -86,15 +86,15 @@ namespace gr {
                  std::cout << "peak: " << prev1_peak << std::endl;
                  GR_LOG_DEBUG(d_logger, boost::format("Detected peak on sample %1%")%(nitems_written(0)+i-1));
 
-                 count++;
+                 peak_count++;
   
                  tag_t tag;
-                 tag.offset = nitems_written(0)+i-1;
+                 tag.offset = nitems_written(0)+i;
                  tag.key = pmt::mp("STS found");
-                 tag.value = pmt::from_long(count);
+                 tag.value = pmt::from_long(peak_count);
                  add_item_tag(0, tag);
 
-                 // std::cout << "count: " << count << std::endl;
+                 // std::cout << "peak_count: " << peak_count << std::endl;
                  prev2_peak = 0.0;
                  prev1_peak = 0.0;
                }
