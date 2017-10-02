@@ -94,7 +94,7 @@ namespace gr {
 
         // extract predistorter weight vector from the message
         for (int i = 0; i < P_vec_len; i++)	
-            d_predistorter_colvec(i) = pmt::c32vector_ref(P, i);
+            d_predistorter_colvec(i) = pmt::c64vector_ref(P, i);
         
     }
 
@@ -108,7 +108,7 @@ namespace gr {
 
       // Do <+signal processing+>		
       // copy private variables accessed by the asynchronous message handler block
-      cx_fcolvec predistorter_colvec = d_predistorter_colvec;
+      cx_colvec predistorter_colvec = d_predistorter_colvec;
       bool update_predistorter_vec = d_update_predistorter_vec;	
 		 
       for (int item = 0; item < noutput_items; item++) 
@@ -116,8 +116,8 @@ namespace gr {
          // PA input which has been arranged in a GMP vector format
          // for predistortion
          vector<gr_complex> yy(in+item*M, in+item*M+M);
-         cx_fmat yy_cx_rowvec(1, M);
-         yy_cx_rowvec = conv_to<cx_fmat>::from(yy);
+         cx_mat yy_cx_rowvec(1, M);
+         yy_cx_rowvec = conv_to<cx_mat>::from(yy);
          yy_cx_rowvec = strans(yy_cx_rowvec);
 
          //get number of samples consumed since the beginning of time by this block from port 0
@@ -148,12 +148,12 @@ namespace gr {
 
          // send the STS signal samples as-is, without any predistortion,
          // for the remaining samples, do predistortion and send the PA input to postdistorter
-         int nskip_predistortion = (d_NFFT+d_cp_len)*d_ovx*d_num_zero_syms + (d_NFFT+d_cp_len)*d_ovx;
+         int nskip_predistortion = (d_NFFT+d_cp_len)*d_ovx*d_num_zero_syms + (d_NFFT+d_cp_len)*d_ovx*2;
          if (nread < nskip_predistortion)
             out[item] = in[item*M];
          else 
          {	
-            gr_complex pa_input = as_scalar( yy_cx_rowvec*predistorter_colvec );
+            gr_complex pa_input = as_scalar( conv_to<cx_fmat>::from(yy_cx_rowvec*predistorter_colvec) );
             out[item] = pa_input;
 
             // std::cout << "current_sample_index: " << current_sample_index << std::endl;

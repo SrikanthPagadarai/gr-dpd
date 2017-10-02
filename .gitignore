@@ -12,3 +12,7 @@ usrp_rf_tests/ofdm_TXpower_measurements_N210SBX_ZX60_6013E/*
 usrp_rf_tests/ofdm_TXpower_measurements_N210SBX_noPA/*
 apps/*.bin
 examples/*.bin
+dpd_externals/src/*.cc~
+dpd_externals/include/*.h~
+dpd_externals/qa/*.cc~
+dpd_externals/qa/*.m~

@@ -51,7 +51,7 @@ namespace gr {
       std::ofstream PA_output_file;
       const int sreg_len = 50;
       gr_complex sreg[50];      
-      const gr_complex *ptr_sreg = sreg;
+      const gr_complexd *ptr_sreg = sreg;
 
       // Fast-RLS parameter declaration
       double lambda;

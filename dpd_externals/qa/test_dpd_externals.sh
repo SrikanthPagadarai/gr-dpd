@@ -2,7 +2,7 @@
 
 if [ $# -lt 1 ]
 then
-  echo "Usage: $./test_dpd_externals.sh <0-6>"
+  echo "Usage: $./test_dpd_externals.sh <0-8>"
   echo
   echo "           Tests"
   echo "-----------------------------"
@@ -14,6 +14,7 @@ then
   echo "[5] hgivens_rotate()"
   echo "[6] apply_rotations()"
   echo "[7] almost_equals_zero()"
+  echo "[8] gauss_smooth()"
 
   exit
 fi
@@ -67,10 +68,19 @@ if [ "$1" -eq 6 ] || [ "$1" -eq 0 ]; then
 fi
 
 if [ "$1" -eq 7 ] || [ "$1" -eq 0 ]; then 
-  # compile and run apply_rotations() tests
+  # compile and run almost_equals_zero() tests
   printf "Compiling and running tests for almost_equals_zero()...\n"
   g++ -std=c++11 -o test_almost_equals_zero.o test_almost_equals_zero.cc ../src/almost_equals_zero.cc -ldpd_externals
   ./test_almost_equals_zero.o  
+  gvfs-trash *.txt
+fi
+
+if [ "$1" -eq 8 ] || [ "$1" -eq 0 ]; then 
+  # compile and run gauss_smooth() tests
+  printf "Compiling and running tests for gauss_smooth()...\n"
+  g++ -std=c++11 -o test_gauss_smooth.o test_gauss_smooth.cc ../src/gauss_smooth.cc -ldpd_externals
+  ./test_gauss_smooth.o  
+  gvfs-trash *.txt
 fi
 
 gvfs-trash *.o

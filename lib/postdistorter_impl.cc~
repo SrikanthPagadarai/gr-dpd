@@ -57,8 +57,8 @@ namespace gr {
      */
     postdistorter_impl::postdistorter_impl(const std::vector<int> &dpd_params)
       : gr::sync_block("postdistorter",
-              gr::io_signature::make(1, 1, sizeof(gr_complex)),
-              gr::io_signature::make(1, 1, sizeof(gr_complex))),
+              gr::io_signature::make(1, 1, sizeof(gr_complexd)),
+              gr::io_signature::make(1, 1, sizeof(gr_complexd))),
 	      d_dpd_params(dpd_params),
 	      K_a(d_dpd_params[0]), 
 	      L_a(d_dpd_params[1]),
@@ -295,7 +295,6 @@ namespace gr {
           // if ( (iteration > 2) && (iteration < 61) )
           //   std::cout << "in[" << item << "]:" << in[item] << '\n';
           sreg[49] = in[item];                    
-          // sreg[49] = pa_output_smooth;                    
           // if ( (iteration > 2) && (iteration < 11) ) {
             // std::cout << "iteration: " << iteration << std::endl;	
             // for (int ii = 0; ii < sreg_len; ii++)
@@ -388,7 +387,6 @@ namespace gr {
           gr_complexd postdistorter_op = as_scalar(y*w_iMinus1);
           // error = gr_complexd(0.01,0.0)*(pa_input - postdistorter_op);	        	
           error = pa_input - postdistorter_op;	        
-          // error = pa_input_smooth - postdistorter_op;	        
           // if ( (iteration > 2) && (iteration < 20) )	
           //   std::cout << "error: " << error << std::endl;
           // if ( (iteration > 2) && (iteration < 30) )	
