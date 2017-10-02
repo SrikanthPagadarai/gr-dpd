@@ -21,13 +21,13 @@
 #include "../include/hgivens_rotate.h"
 #include "../include/almost_equal.h"
 
-void hgivens_rotate(const cx_fmat & in, cx_fmat & out) 
+void hgivens_rotate(const cx_mat & in, cx_mat & out) 
 {
-  const static gr_complex minus_1i(0, -1);
+  const static gr_complexd minus_1i(0, -1);
 
   int flip; 
-  gr_complex a, b, c, d1, d2, x, y, z, conj_a, conj_b, p, q;
-  float scale, angle_a;
+  gr_complexd a, b, c, d1, d2, x, y, z, conj_a, conj_b, p, q;
+  double scale, angle_a;
 
   x = in(0, 0);
   y = in(0, 1);
@@ -53,7 +53,7 @@ void hgivens_rotate(const cx_fmat & in, cx_fmat & out)
     }
     else {
       flip = 1;        
-      scale = abs(b)/sqrt((abs(a) - abs(b)) * (abs(a) + abs(b)));
+      scale = abs(b)/sqrt((abs(b) - abs(a)) * (abs(a) + abs(b)));
       d1 = (b-a)/b;
       p = (conj_a+conj_b)/conj_b;
       q = (a+b)/b;                
@@ -77,7 +77,7 @@ void hgivens_rotate(const cx_fmat & in, cx_fmat & out)
           out(ii, 1) = out(ii, 0) - scale*( p*x - q*y );
         }
         else {
-          out(ii, 0) = -scale*y*(q-gr_complex(1.0, 0.0));
+          out(ii, 0) = -scale*y*(q-gr_complexd(1.0, 0.0));
           out(ii, 1) = scale*y;                
         }
       }

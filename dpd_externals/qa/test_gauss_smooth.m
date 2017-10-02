@@ -2,22 +2,11 @@
 
 arg_list = argv ();
 N = str2num(arg_list{1});
-sp_case = str2num(arg_list{2});
-suffix = arg_list{3};
+suffix = arg_list{2};
 
-in = randn(N, 2)+1i*randn(N, 2);
-if (sp_case == 1)
-    in(1,1) = 0;      
-elseif (sp_case == 2)
-    in(1,2) = 0; 
-end
-
-indices = randperm(N);
-zindices = indices(1:10);
-for ii = 1:length(zindices)
-    in(zindices, round(rand(1))+1) = 0;
-end
-out = apply_hgivens(in);
+in = randn(N,1)+1i*randn(N,1);
+w = [0.0137723135750602, 0.0473339698075019, 0.119480615091568,	0.221503433838812,	0.301593494919519,	0.301593494919519,	0.221503433838812,	0.119480615091568,	0.0473339698075019,	0.0137723135750602];
+out = filter(w, 1, in);
 
 in = real(in)+1i*imag(in);
 out = real(out)+1i*imag(out);

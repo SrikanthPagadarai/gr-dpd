@@ -21,6 +21,6 @@
 #ifndef INCLUDED_DPD_EXTERNALS_ALMOST_EQUALS_ZERO_H
 #define INCLUDED_DPD_EXTERNALS_ALMOST_EQUALS_ZERO_H
 
-bool almost_equals_zero(float a, int num_digits); 
+bool almost_equals_zero(double a, int num_digits); 
 
 #endif /*INCLUDED_DPD_EXTERNALS_ALMOST_EQUALS_ZERO_H*/

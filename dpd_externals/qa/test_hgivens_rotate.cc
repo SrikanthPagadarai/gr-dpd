@@ -23,18 +23,18 @@
 #include <string> 
 #include <armadillo>
 #include <dpd_externals/hgivens_rotate.h>
-#include <dpd_externals/almost_equal.h>
+#include <dpd_externals/almost_equals_zero.h>
 
 using namespace std;
 using namespace arma;
 
 
-fmat read_from_file(string file_name, int N) {
+mat read_from_file(string file_name, int N) {
   ifstream ins(file_name);  
   string line;
-  float value;
+  double value;
   int ii = 0;
-  fmat out = fmat(N, 2);
+  mat out = mat(N, 2);
   
   while (std::getline(ins, line)) {
     stringstream ss(line);
@@ -52,15 +52,15 @@ int main(void) {
   int N, sp_case;
   string N_str, sp_case_str, oct_str, suffix;
   string in_re_fn, in_im_fn, out_re_fn, out_im_fn;
-  fmat in_re, in_im, out_re, out_im;
-  cx_fmat in, out;
+  mat in_re, in_im, out_re, out_im;
+  cx_mat in, out;
   
   /* Test 1 */
   N = 20;
-  in_re = fmat(N, 2);
-  in_im = fmat(N, 2);
-  out_re = fmat(N, 2);
-  out_im = fmat(N, 2);
+  in_re = mat(N, 2);
+  in_im = mat(N, 2);
+  out_re = mat(N, 2);
+  out_im = mat(N, 2);
   sp_case = 0;
   N_str = to_string(N);
   sp_case_str = to_string(sp_case);
@@ -85,16 +85,17 @@ int main(void) {
   out_im = read_from_file(out_im_fn, N);
   
   // call hgivens_rotate() with the same input as octave function call 
-  in = cx_fmat(in_re, in_im);
-  out = cx_fmat(N, 2);
+  in = cx_mat(in_re, in_im);
+  out = cx_mat(N, 2);
   hgivens_rotate(in, out);
 
   // check if hgivens_rotate.m output and hgivens_rotate.cc output are equal
   int test1_pass = 1;
   for (int kk = 0; kk < 2; kk++) {
     for (int jj = 0; jj < N; jj++) {
-      if (     ( !almost_equal( out(jj, kk).real(), out_re(jj, kk), 1000.0) ) || ( !almost_equal( out(jj, kk).imag(), out_im(jj, kk), 1000.0) )     )
+      if (     ( !almost_equals_zero( std::abs(out(jj, kk).real()-out_re(jj, kk)), 3 ) ) || ( !almost_equals_zero( std::abs(out(jj, kk).imag()-out_im(jj, kk)), 3 ) )     ) {
         test1_pass = 0;       
+      }
     }
   }
 
@@ -105,10 +106,10 @@ int main(void) {
 
   /* Test 2 */
   N = 80;
-  in_re = fmat(N, 2);
-  in_im = fmat(N, 2);
-  out_re = fmat(N, 2);
-  out_im = fmat(N, 2);
+  in_re = mat(N, 2);
+  in_im = mat(N, 2);
+  out_re = mat(N, 2);
+  out_im = mat(N, 2);
   sp_case = 1;
   N_str = to_string(N);
   sp_case_str = to_string(sp_case);
@@ -133,16 +134,17 @@ int main(void) {
   out_im = read_from_file(out_im_fn, N);
   
   // call hgivens_rotate() with the same input as octave function call 
-  in = cx_fmat(in_re, in_im);
-  out = cx_fmat(N, 2);
+  in = cx_mat(in_re, in_im);
+  out = cx_mat(N, 2);
   hgivens_rotate(in, out);
 
   // check if hgivens_rotate.m output and hgivens_rotate.cc output are equal
   int test2_pass = 1;
   for (int kk = 0; kk < 2; kk++) {
     for (int jj = 0; jj < N; jj++) {
-      if (     ( !almost_equal( out(jj, kk).real(), out_re(jj, kk), 100.0 ) ) || ( !almost_equal( out(jj, kk).imag(), out_im(jj, kk), 100.0 ) )     ) 
-        test2_pass = 0;       
+      if (     ( !almost_equals_zero( std::abs(out(jj, kk).real()-out_re(jj, kk)), 3 ) ) || ( !almost_equals_zero( std::abs(out(jj, kk).imag()-out_im(jj, kk)), 3 ) )     ) {
+        test2_pass = 0;   
+      }    
     }
   }
 
@@ -153,10 +155,10 @@ int main(void) {
 
   /* Test 3 */
   N = 100;
-  in_re = fmat(N, 2);
-  in_im = fmat(N, 2);
-  out_re = fmat(N, 2);
-  out_im = fmat(N, 2);
+  in_re = mat(N, 2);
+  in_im = mat(N, 2);
+  out_re = mat(N, 2);
+  out_im = mat(N, 2);
   sp_case = 2;
   N_str = to_string(N);
   sp_case_str = to_string(sp_case);
@@ -181,16 +183,17 @@ int main(void) {
   out_im = read_from_file(out_im_fn, N);
   
   // call hgivens_rotate() with the same input as octave function call 
-  in = cx_fmat(in_re, in_im);
-  out = cx_fmat(N, 2);
+  in = cx_mat(in_re, in_im);
+  out = cx_mat(N, 2);
   hgivens_rotate(in, out);
 
   // check if hgivens_rotate.m output and hgivens_rotate.cc output are equal
   int test3_pass = 1;
   for (int kk = 0; kk < 2; kk++) {
     for (int jj = 0; jj < N; jj++) {
-      if (     ( !almost_equal( out(jj, kk).real(), out_re(jj, kk), 100.0 ) ) || ( !almost_equal( out(jj, kk).imag(), out_im(jj, kk), 100.0 ) )     ) 
+      if (     ( !almost_equals_zero( std::abs(out(jj, kk).real()-out_re(jj, kk)), 3 ) ) || ( !almost_equals_zero( std::abs(out(jj, kk).imag()-out_im(jj, kk)), 3 ) )     ) {
         test3_pass = 0;       
+      }
     }
   }
 

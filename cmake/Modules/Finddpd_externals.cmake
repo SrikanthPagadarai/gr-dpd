@@ -8,6 +8,7 @@ if(NOT DPD_EXTERNALS_FOUND)
     hgivens_rotate.h
     extract_postdistorted_y.h
     extract_g_vecs.h
+    gauss_smooth.h
     PATHS
     /usr/include/dpd_externals
     /usr/local/include/dpd_externals

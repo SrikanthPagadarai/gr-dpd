@@ -21,6 +21,6 @@
 #ifndef INCLUDED_DPD_EXTERNALS_ALMOST_EQUAL_H
 #define INCLUDED_DPD_EXTERNALS_ALMOST_EQUAL_H
 
-bool almost_equal(float a, float b, float tol); 
+bool almost_equal(double a, double b, double tol); 
 
 #endif /*INCLUDED_DPD_EXTERNALS_ALMOST_EQUAL_H*/

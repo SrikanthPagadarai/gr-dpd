@@ -18,13 +18,16 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef INCLUDED_DPD_EXTERNALS_EXTRACT_G_VECS_H
-#define INCLUDED_DPD_EXTERNALS_EXTRACT_G_VECS_H
+#ifndef INCLUDED_DPD_EXTERNALS_GAUSS_SMOOTH_H
+#define INCLUDED_DPD_EXTERNALS_GAUSS_SMOOTH_H
 
-#include <armadillo>
+#include <complex>
 
-using namespace arma;
+typedef std::complex<double> gr_complexd;
 
-void extract_g_vecs(cx_mat &g, cx_mat &g_vec_iMinus1, cx_mat &g_vec_i, int K_a, int L_a, int K_b, int M_b, int L_b, int M, int M_bar); 
+const int sr_len = 10;
+const double w[10] = {0.013772313575060, 0.047333969807502, 0.119480615091568, 0.221503433838812, 0.301593494919519, 0.301593494919519, 0.221503433838812, 0.119480615091568, 0.047333969807502, 0.013772313575060}; 
 
-#endif /*INCLUDED_DPD_EXTERNALS_EXTRACT_G_VECS_H*/
+void gauss_smooth(gr_complexd *sr, gr_complexd &out);
+
+#endif /*INCLUDED_DPD_EXTERNALS_GAUSS_SMOOTH_H*/

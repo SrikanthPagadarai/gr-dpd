@@ -24,9 +24,9 @@
 #include <armadillo>
 #include <complex>
 
-typedef std::complex<float> gr_complex;
+typedef std::complex<double> gr_complexd;
 using namespace arma;
 
-void hgivens_rotate(const cx_fmat & in, cx_fmat & out);
+void hgivens_rotate(const cx_mat & in, cx_mat & out);
 
 #endif /*INCLUDED_DPD_EXTERNALS_HGIVENS_ROTATE_H*/

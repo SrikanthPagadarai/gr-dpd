@@ -24,21 +24,21 @@
 int main(void) 
 {
   /* Test 1 */
-  float a = 999.9997, b = 1000.0005;
+  double a = 999.9997, b = 1000.0005;
   if (almost_equals_zero(a-b, 3))
     std::cout << "almost_equals_zero(): Test 1 Passed." << std::endl; 
   else
     std::cerr << "almost_equals_zero(): Test 1 Failed." << std::endl;
 
   /* Test 2 */
-  float c = 0.6348, d = 0.634884;
+  double c = 0.6348, d = 0.634884;
   if (almost_equals_zero(c-d, 4))
     std::cout << "almost_equals_zero(): Test 2 Passed." << std::endl; 
   else
     std::cerr << "almost_equals_zero(): Test 2 Failed." << std::endl;
 
   /* Test 3 */
-  float e = -0.00058;  
+  double e = -0.00058;  
   if (almost_equals_zero(e, 3))
     std::cout << "almost_equals_zero(): Test 2 Passed." << std::endl; 
   else

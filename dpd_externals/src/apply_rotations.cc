@@ -22,20 +22,20 @@
 #include "../include/givens_rotate.h"
 #include "../include/hgivens_rotate.h"
 
-void apply_rotations(const cx_fmat & A, cx_fmat & B) 
+void apply_rotations(const cx_mat & A, cx_mat & B) 
 {
-  cx_fmat A_bar = A;
+  cx_mat A_bar = A;
        
   for (int i = 1; i < A_bar.n_cols; i++) {				    
-    cx_fmat z(A_bar.n_rows, 2, fill::zeros);
+    cx_mat z(A_bar.n_rows, 2, fill::zeros);
     z.col(0) = A_bar.col(0);
     z.col(1) = A_bar.col(i);
 
-    cx_fmat rotated_z(z.n_rows, 2, fill::zeros);
+    cx_mat rotated_z(z.n_rows, 2, fill::zeros);
     switch( i%2 ) {
       case 1:
         // apply Givens rotation to z
-	givens_rotate(z, rotated_z);		
+	    givens_rotate(z, rotated_z);		
         break;
 
       case 0: 

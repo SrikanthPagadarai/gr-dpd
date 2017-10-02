@@ -38,9 +38,9 @@ g_vec_iMinus1_b = g_vec_iMinus1_tmp(:);
 out1 = [g_vec_iMinus1_a; g_vec_iMinus1_b];
 out2 = [g_vec_i1; g_vec_i2];
 
-in = single(real(in))+1i*single(imag(in));
-out1 = single(real(out1))+1i*single(imag(out1));
-out2 = single(real(out2))+1i*single(imag(out2));
+in = real(in)+1i*imag(in);
+out1 = real(out1)+1i*imag(out1);
+out2 = real(out2)+1i*imag(out2);
 
 in_fn1 = strcat('in_re_', suffix, '.txt');
 fileID1 = fopen(in_fn1,'w');

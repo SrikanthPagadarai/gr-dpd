@@ -21,27 +21,27 @@
 #include "../include/givens_rotate.h"
 #include "../include/almost_equal.h"
 
-void givens_rotate(const cx_fmat & in, cx_fmat & out) 
+void givens_rotate(const cx_mat & in, cx_mat & out) 
 {
-  const static gr_complex minus_1i(0, -1);
+  const static gr_complexd minus_1i(0, -1);
 
-  cx_fmat theta(2, 2, fill::zeros);
-  gr_complex alpha; 
-  float scale, norm;
-  cx_fmat g(2, 2, fill::ones);
+  cx_mat theta(2, 2, fill::zeros);
+  gr_complexd alpha; 
+  double scale, norm;
+  cx_mat g(2, 2, fill::ones);
     
   // algorithm similar to LAPACK's crotg()
   // except for the application of scale adjustment matrix, g
-  float a = abs(in(0, 0));
-  float b = abs(in(0, 1));
+  double a = abs(in(0, 0));
+  double b = abs(in(0, 1));
   if (almost_equal(b, 0.0, 100.0)) {
     theta(0,0) = 1.0;
     theta(1,1) = 1.0;
 
     // scale adjustment matrix to make the first element of post-array real
     g(0, 0) = std::exp(minus_1i*std::arg(in(0, 0)));
-    g(0, 1) = gr_complex(0.0, 0.0);
-    g(1, 0) = gr_complex(0.0, 0.0);
+    g(0, 1) = gr_complexd(0.0, 0.0);
+    g(1, 0) = gr_complexd(0.0, 0.0);
     g(1, 1) = g(0, 0);    
   }
   else if (almost_equal(a, 0.0, 100.0)) { 

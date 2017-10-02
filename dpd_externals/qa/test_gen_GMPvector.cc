@@ -24,7 +24,7 @@
 #include <vector>
 #include <string> 
 #include <dpd_externals/gen_GMPvector.h>
-#include <dpd_externals/almost_equal.h>
+#include <dpd_externals/almost_equals_zero.h>
 
 using namespace std;
 
@@ -93,15 +93,10 @@ int main(void) {
   out1.reserve(M+M_bar);         
   gen_GMPvector(in1, item-1, K_a, L_a+1, K_b, M_b, L_b+1, out1);
 
-  /*
-  for (int ii = 0; ii < M+M_bar; ii++)
-    std::cout << "out_re[ii]: " << out1[ii].real() << "      out_im[ii]: " << out1[ii].imag() << std::endl;   
-  */
-
   // check if gen_GMPvector.m output and gen_GMPvector.cc output are equal
   int test1_pass = 1;
   for (int kk = 0; kk < M; kk++) {
-    if (     ( !almost_equal( out1[kk].real(), out_re[kk], 1000.0 ) ) || ( !almost_equal( out1[kk].imag(), out_im[kk], 1000.0 ) )     ) {
+    if (     ( !almost_equals_zero( std::abs(out1[kk].real()-out_re[kk]), 3 ) ) || ( !almost_equals_zero( std::abs(out1[kk].imag()-out_im[kk]), 3 ) )     ) {
       test1_pass = 0;       
       break;
     }
@@ -163,7 +158,7 @@ int main(void) {
   // check if gen_GMPvector.m output and gen_GMPvector.cc output are equal
   int test2_pass = 1;
   for (int kk = 0; kk < M; kk++) {
-    if (     ( !almost_equal( out2[kk].real(), out_re[kk], 1000.0 ) ) || ( !almost_equal( out2[kk].imag(), out_im[kk], 1000.0 ) )     ) {
+    if (     ( !almost_equals_zero( std::abs(out2[kk].real()-out_re[kk]), 3 ) ) || ( !almost_equals_zero( std::abs(out2[kk].imag()-out_im[kk]), 3 ) )     ) {
       test2_pass = 0;       
       break;
     }
@@ -225,7 +220,7 @@ int main(void) {
   // check if gen_GMPvector.m output and gen_GMPvector.cc output are equal
   int test3_pass = 1;
   for (int kk = 0; kk < M; kk++) {
-    if (     ( !almost_equal( out3[kk].real(), out_re[kk], 1000.0 ) ) || ( !almost_equal( out3[kk].imag(), out_im[kk], 1000.0 ) )     ) {
+    if (     ( !almost_equals_zero( std::abs(out3[kk].real()-out_re[kk]), 3 ) ) || ( !almost_equals_zero( std::abs(out3[kk].imag()-out_im[kk]), 3 ) )     ) {
       test3_pass = 0;       
       break;
     }
@@ -287,7 +282,7 @@ int main(void) {
   // check if gen_GMPvector.m output and gen_GMPvector.cc output are equal
   int test4_pass = 1;
   for (int kk = 0; kk < M; kk++) {
-    if (     ( !almost_equal( out4[kk].real(), out_re[kk], 1000.0 ) ) || ( !almost_equal( out4[kk].imag(), out_im[kk], 1000.0 ) )     ) {
+    if (     ( !almost_equals_zero( std::abs(out4[kk].real()-out_re[kk]), 3 ) ) || ( !almost_equals_zero( std::abs(out4[kk].imag()-out_im[kk]), 3 ) )     ) {
       test4_pass = 0;       
       break;
     }

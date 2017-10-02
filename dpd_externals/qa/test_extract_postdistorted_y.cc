@@ -23,17 +23,17 @@
 #include <string> 
 #include <armadillo>
 #include <dpd_externals/extract_postdistorted_y.h>
-#include <dpd_externals/almost_equal.h>
+#include <dpd_externals/almost_equals_zero.h>
 
 using namespace std;
 using namespace arma;
 
-frowvec read_from_file(string file_name, int N) {
+rowvec read_from_file(string file_name, int N) {
   ifstream ins(file_name);  
   string line;
-  float value;
+  double value;
   int ii = 0;
-  frowvec out = frowvec(N);
+  rowvec out = rowvec(N);
   
   while (std::getline(ins, line)) {
     stringstream ss(line);
@@ -49,11 +49,11 @@ frowvec read_from_file(string file_name, int N) {
 
 int main(void) {
   int K_a, L_a, K_b, L_b, M_b, M, M_bar;
-  frowvec in_re, in_im, out_re, out_im;
+  rowvec in_re, in_im, out_re, out_im;
   string oct_str, suffix;
   string in_re_fn, in_im_fn, out_re_fn, out_im_fn;   
-  cx_frowvec in;
-  cx_fmat out;
+  cx_rowvec in;
+  cx_mat out;
 
   /* Test 1 */
   K_a = 5;
@@ -63,10 +63,10 @@ int main(void) {
   M_b = 3;
   M = K_a*L_a+K_b*M_b*L_b;
   M_bar = K_a+K_b*M_b;
-  in_re = frowvec(M+M_bar);
-  in_im = frowvec(M+M_bar);
-  out_re = frowvec(M);
-  out_im = frowvec(M);
+  in_re = rowvec(M+M_bar);
+  in_im = rowvec(M+M_bar);
+  out_re = rowvec(M);
+  out_im = rowvec(M);
 
   suffix = "test1";
   oct_str = "./test_extract_postdistorted_y.m " + to_string(K_a) + " " + to_string(L_a) + " " + to_string(K_b) + " " + to_string(M_b) + " " + to_string(L_b) + " " + suffix;
@@ -89,14 +89,14 @@ int main(void) {
   out_im = read_from_file(out_im_fn, M);
 
   // call extract_postdistorted_y() with the same input as octave function call 
-  in = cx_frowvec(in_re, in_im);
-  out = cx_fmat(1, M, fill::zeros);
+  in = cx_rowvec(in_re, in_im);
+  out = cx_mat(1, M, fill::zeros);
   extract_postdistorted_y(in, out, K_a, L_a, K_b, M_b, L_b, M);
 
   // check if extract_postdistorted_y.m output and extract_postdistorted_y.cc output are equal
   int test1_pass = 1;
   for (int kk = 0; kk < M; kk++) {
-    if (     ( !almost_equal( out(kk).real(), out_re(kk), 100.0 ) ) || ( !almost_equal( out(kk).imag(), out_im(kk), 100.0 ) )     ) {
+    if (     ( !almost_equals_zero( std::abs(out[kk].real()-out_re[kk]), 3 ) ) || ( !almost_equals_zero( std::abs(out[kk].imag()-out_im[kk]), 3 ) )     ) {
       test1_pass = 0;       
       break;
     }
@@ -115,10 +115,10 @@ int main(void) {
   M_b = 3;
   M = K_a*L_a+K_b*M_b*L_b;
   M_bar = K_a+K_b*M_b;
-  in_re = frowvec(M+M_bar);
-  in_im = frowvec(M+M_bar);
-  out_re = frowvec(M);
-  out_im = frowvec(M);
+  in_re = rowvec(M+M_bar);
+  in_im = rowvec(M+M_bar);
+  out_re = rowvec(M);
+  out_im = rowvec(M);
 
   suffix = "test2";
   oct_str = "./test_extract_postdistorted_y.m " + to_string(K_a) + " " + to_string(L_a) + " " + to_string(K_b) + " " + to_string(M_b) + " " + to_string(L_b) + " " + suffix;
@@ -141,14 +141,14 @@ int main(void) {
   out_im = read_from_file(out_im_fn, M);
 
   // call extract_postdistorted_y() with the same input as octave function call 
-  in = cx_frowvec(in_re, in_im);
-  out = cx_fmat(1, M, fill::zeros);
+  in = cx_rowvec(in_re, in_im);
+  out = cx_mat(1, M, fill::zeros);
   extract_postdistorted_y(in, out, K_a, L_a, K_b, M_b, L_b, M);
 
   // check if extract_postdistorted_y.m output and extract_postdistorted_y.cc output are equal
   int test2_pass = 1;
   for (int kk = 0; kk < M; kk++) {
-    if (     ( !almost_equal( out(kk).real(), out_re(kk), 100.0) ) || ( !almost_equal( out(kk).imag(), out_im(kk), 100.0) )     ) {
+    if (     ( !almost_equals_zero( std::abs(out[kk].real()-out_re[kk]), 3 ) ) || ( !almost_equals_zero( std::abs(out[kk].imag()-out_im[kk]), 3 ) )     ) {
       test2_pass = 0;       
       break;
     }
@@ -167,10 +167,10 @@ int main(void) {
   M_b = 1;
   M = K_a*L_a+K_b*M_b*L_b;
   M_bar = K_a+K_b*M_b;
-  in_re = frowvec(M+M_bar);
-  in_im = frowvec(M+M_bar);
-  out_re = frowvec(M);
-  out_im = frowvec(M);
+  in_re = rowvec(M+M_bar);
+  in_im = rowvec(M+M_bar);
+  out_re = rowvec(M);
+  out_im = rowvec(M);
 
   suffix = "test3";
   oct_str = "./test_extract_postdistorted_y.m " + to_string(K_a) + " " + to_string(L_a) + " " + to_string(K_b) + " " + to_string(M_b) + " " + to_string(L_b) + " " + suffix;
@@ -193,14 +193,14 @@ int main(void) {
   out_im = read_from_file(out_im_fn, M);
 
   // call extract_postdistorted_y() with the same input as octave function call 
-  in = cx_frowvec(in_re, in_im);
-  out = cx_fmat(1, M, fill::zeros);
+  in = cx_rowvec(in_re, in_im);
+  out = cx_mat(1, M, fill::zeros);
   extract_postdistorted_y(in, out, K_a, L_a, K_b, M_b, L_b, M);
 
   // check if extract_postdistorted_y.m output and extract_postdistorted_y.cc output are equal
   int test3_pass = 1;
   for (int kk = 0; kk < M; kk++) {
-    if (     ( !almost_equal( out(kk).real(), out_re(kk), 100.0) ) || ( !almost_equal( out(kk).imag(), out_im(kk), 100.0) )     ) {
+    if (     ( !almost_equals_zero( std::abs(out[kk].real()-out_re[kk]), 3 ) ) || ( !almost_equals_zero( std::abs(out[kk].imag()-out_im[kk]), 3 ) )     ) {
       test3_pass = 0;       
       break;
     }

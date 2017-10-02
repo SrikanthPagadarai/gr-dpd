@@ -28,8 +28,8 @@ end
 y_vec_i2 = y_vec_i2_tmp(:);    
 out = [y_vec_i1   y_vec_i2.'];
 
-in = single(real(in))+1i*single(imag(in));
-out = single(real(out))+1i*single(imag(out));
+in = real(in)+1i*imag(in);
+out = real(out)+1i*imag(out);
 
 in_fn1 = strcat('in_re_', suffix, '.txt');
 fileID1 = fopen(in_fn1,'w');

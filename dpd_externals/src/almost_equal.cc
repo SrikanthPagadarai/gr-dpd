@@ -22,12 +22,12 @@
 #include <math.h>
 #include "../include/almost_equal.h"
 
-bool almost_equal(float a, float b, float tol)
+bool almost_equal(double a, double b, double tol)
 {
   // calculate the difference
-  float diff_ab = fabs(a - b);
+  double diff_ab = fabs(a - b);
   
-  if (diff_ab <= tol*std::numeric_limits<float>::epsilon())
+  if (diff_ab <= tol*std::numeric_limits<double>::epsilon())
     return true;
 
   return false;

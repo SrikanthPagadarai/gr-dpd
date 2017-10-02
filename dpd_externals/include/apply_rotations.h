@@ -26,6 +26,6 @@
 
 using namespace arma;
 
-void apply_rotations(const cx_fmat & A, cx_fmat & B);
+void apply_rotations(const cx_mat & A, cx_mat & B);
 
 #endif /*INCLUDED_DPD_EXTERNALS_APPLY_ROTATIONS_H*/

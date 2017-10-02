@@ -22,7 +22,7 @@
 #include <math.h>
 #include "../include/almost_equals_zero.h"
 
-bool almost_equals_zero(float a, int num_digits)
+bool almost_equals_zero(double a, int num_digits)
 {
   // identify the first few significant digits
   int na = floor(fabs(a)*pow(10.0, num_digits));

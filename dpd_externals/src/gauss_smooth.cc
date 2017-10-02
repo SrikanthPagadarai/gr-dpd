@@ -18,13 +18,16 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef INCLUDED_DPD_EXTERNALS_EXTRACT_G_VECS_H
-#define INCLUDED_DPD_EXTERNALS_EXTRACT_G_VECS_H
+#include "../include/gauss_smooth.h"
 
-#include <armadillo>
-
-using namespace arma;
-
-void extract_g_vecs(cx_mat &g, cx_mat &g_vec_iMinus1, cx_mat &g_vec_i, int K_a, int L_a, int K_b, int M_b, int L_b, int M, int M_bar); 
-
-#endif /*INCLUDED_DPD_EXTERNALS_EXTRACT_G_VECS_H*/
+void gauss_smooth(gr_complexd *sr, gr_complexd &out)
+{  
+  // Gaussian smoothing
+  out = gr_complexd(0.0, 0.0);
+  for (int ii = 0; ii < sr_len; ii++)
+    out += sr[ii]*w[ii];
+   
+  // shift the register contents
+  for (int jj = sr_len-1; jj > 0; jj--)
+    sr[jj] = sr[jj-1];
+}

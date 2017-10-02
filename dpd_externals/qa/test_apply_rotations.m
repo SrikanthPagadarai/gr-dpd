@@ -7,8 +7,8 @@ suffix = arg_list{2};
 in = randn(N, N)+1i*randn(N, N);
 out = rotations(in);
 
-in = single(real(in))+1i*single(imag(in));
-out = single(real(out))+1i*single(imag(out));
+in = real(in)+1i*imag(in);
+out = real(out)+1i*imag(out)
 
 in_fn1 = strcat('in_re_', suffix, '.txt');
 fileID1 = fopen(in_fn1,'w');

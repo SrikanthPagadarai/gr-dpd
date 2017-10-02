@@ -23,17 +23,17 @@
 #include <string> 
 #include <armadillo>
 #include <dpd_externals/extract_g_vecs.h>
-#include <dpd_externals/almost_equal.h>
+#include <dpd_externals/almost_equals_zero.h>
 
 using namespace std;
 using namespace arma;
 
-fmat read_from_file(string file_name, int N) {
+mat read_from_file(string file_name, int N) {
   ifstream ins(file_name);  
   string line;
-  float value;
+  double value;
   int ii = 0;
-  fmat out = fmat(N, 1);
+  mat out = mat(N, 1);
   
   while (std::getline(ins, line)) {
     stringstream ss(line);
@@ -49,10 +49,10 @@ fmat read_from_file(string file_name, int N) {
 
 int main(void) {
   int K_a, L_a, K_b, L_b, M_b, M, M_bar;
-  fmat in_re, in_im, out1_re, out1_im, out2_re, out2_im;
+  mat in_re, in_im, out1_re, out1_im, out2_re, out2_im;
   string oct_str, suffix;
   string in_re_fn, in_im_fn, out1_re_fn, out1_im_fn, out2_re_fn, out2_im_fn;   
-  cx_fmat in, out1, out2;
+  cx_mat in, out1, out2;
 
   /* Test 1 */
   K_a = 5;
@@ -62,12 +62,12 @@ int main(void) {
   M_b = 3;
   M = K_a*L_a+K_b*M_b*L_b;
   M_bar = K_a+K_b*M_b;
-  in_re = fmat(M+M_bar, 1);
-  in_im = fmat(M+M_bar, 1);
-  out1_re = fmat(M+M_bar, 1);
-  out1_im = fmat(M+M_bar, 1);
-  out2_re = fmat(M, 1);
-  out2_im = fmat(M, 1);
+  in_re = mat(M+M_bar, 1);
+  in_im = mat(M+M_bar, 1);
+  out1_re = mat(M+M_bar, 1);
+  out1_im = mat(M+M_bar, 1);
+  out2_re = mat(M, 1);
+  out2_im = mat(M, 1);
 
   suffix = "test1";
   oct_str = "./test_extract_g_vecs.m " + to_string(K_a) + " " + to_string(L_a) + " " + to_string(K_b) + " " + to_string(M_b) + " " + to_string(L_b) + " " + suffix;
@@ -98,21 +98,21 @@ int main(void) {
   out2_im = read_from_file(out2_im_fn, M);
 
   // call extract_g_vecs() with the same input as octave function call 
-  in = cx_fmat(in_re, in_im);
-  out1 = cx_fmat(M+M_bar, 1, fill::zeros);
-  out2 = cx_fmat(M, 1, fill::zeros);
+  in = cx_mat(in_re, in_im);
+  out1 = cx_mat(M+M_bar, 1, fill::zeros);
+  out2 = cx_mat(M, 1, fill::zeros);
   extract_g_vecs(in, out1, out2, K_a, L_a, K_b, M_b, L_b, M, M+M_bar);
 
   // check if extract_g_vecs.m output and extract_g_vecs.cc output are equal
   int test1_pass = 1;
   for (int kk = 0; kk < M+M_bar; kk++) {
-    if (     ( !almost_equal( out1(kk).real(), out1_re(kk), 100.0 ) ) || ( !almost_equal( out1(kk).imag(), out1_im(kk), 100.0 ) )     ) {
+    if (     ( !almost_equals_zero( std::abs(out1[kk].real()-out1_re[kk]), 3 ) ) || ( !almost_equals_zero( std::abs(out1[kk].imag()-out1_im[kk]), 3 ) )     ) {
       test1_pass = 0;       
       break;
     }
   }
   for (int kk = 0; kk < M; kk++) {
-    if (     ( !almost_equal( out2(kk).real(), out2_re(kk), 100.0 ) ) || ( !almost_equal( out2(kk).imag(), out2_im(kk), 100.0 ) )     ) {
+    if (     ( !almost_equals_zero( std::abs(out2[kk].real()-out2_re[kk]), 3 ) ) || ( !almost_equals_zero( std::abs(out2[kk].imag()-out2_im[kk]), 3 ) )     ) {
       test1_pass = 0;       
       break;
     }
@@ -131,12 +131,12 @@ int main(void) {
   M_b = 3;
   M = K_a*L_a+K_b*M_b*L_b;
   M_bar = K_a+K_b*M_b;
-  in_re = fmat(M+M_bar, 1);
-  in_im = fmat(M+M_bar, 1);
-  out1_re = fmat(M+M_bar, 1);
-  out1_im = fmat(M+M_bar, 1);
-  out2_re = fmat(M, 1);
-  out2_im = fmat(M, 1);
+  in_re = mat(M+M_bar, 1);
+  in_im = mat(M+M_bar, 1);
+  out1_re = mat(M+M_bar, 1);
+  out1_im = mat(M+M_bar, 1);
+  out2_re = mat(M, 1);
+  out2_im = mat(M, 1);
 
   suffix = "test2";
   oct_str = "./test_extract_g_vecs.m " + to_string(K_a) + " " + to_string(L_a) + " " + to_string(K_b) + " " + to_string(M_b) + " " + to_string(L_b) + " " + suffix;
@@ -167,21 +167,21 @@ int main(void) {
   out2_im = read_from_file(out2_im_fn, M);
 
   // call extract_g_vecs() with the same input as octave function call 
-  in = cx_fmat(in_re, in_im);
-  out1 = cx_fmat(M+M_bar, 1, fill::zeros);
-  out2 = cx_fmat(M, 1, fill::zeros);
+  in = cx_mat(in_re, in_im);
+  out1 = cx_mat(M+M_bar, 1, fill::zeros);
+  out2 = cx_mat(M, 1, fill::zeros);
   extract_g_vecs(in, out1, out2, K_a, L_a, K_b, M_b, L_b, M, M+M_bar);
 
   // check if extract_g_vecs.m output and extract_g_vecs.cc output are equal
   int test2_pass = 1;
   for (int kk = 0; kk < M+M_bar; kk++) {
-    if (     ( !almost_equal( out1(kk).real(), out1_re(kk), 100.0 ) ) || ( !almost_equal( out1(kk).imag(), out1_im(kk), 100.0 ) )     ) {
+    if (     ( !almost_equals_zero( std::abs(out1[kk].real()-out1_re[kk]), 3 ) ) || ( !almost_equals_zero( std::abs(out1[kk].imag()-out1_im[kk]), 3 ) )     ) {
       test2_pass = 0;       
       break;
     }
   }
   for (int kk = 0; kk < M; kk++) {
-    if (     ( !almost_equal( out2(kk).real(), out2_re(kk), 100.0 ) ) || ( !almost_equal( out2(kk).imag(), out2_im(kk), 100.0 ) )     ) {
+    if (     ( !almost_equals_zero( std::abs(out2[kk].real()-out2_re[kk]), 3 ) ) || ( !almost_equals_zero( std::abs(out2[kk].imag()-out2_im[kk]), 3 ) )     ) {
       test2_pass = 0;       
       break;
     }
@@ -200,12 +200,12 @@ int main(void) {
   M_b = 1;
   M = K_a*L_a+K_b*M_b*L_b;
   M_bar = K_a+K_b*M_b;
-  in_re = fmat(M+M_bar, 1);
-  in_im = fmat(M+M_bar, 1);
-  out1_re = fmat(M+M_bar, 1);
-  out1_im = fmat(M+M_bar, 1);
-  out2_re = fmat(M, 1);
-  out2_im = fmat(M, 1);
+  in_re = mat(M+M_bar, 1);
+  in_im = mat(M+M_bar, 1);
+  out1_re = mat(M+M_bar, 1);
+  out1_im = mat(M+M_bar, 1);
+  out2_re = mat(M, 1);
+  out2_im = mat(M, 1);
 
   suffix = "test3";
   oct_str = "./test_extract_g_vecs.m " + to_string(K_a) + " " + to_string(L_a) + " " + to_string(K_b) + " " + to_string(M_b) + " " + to_string(L_b) + " " + suffix;
@@ -236,21 +236,21 @@ int main(void) {
   out2_im = read_from_file(out2_im_fn, M);
 
   // call extract_g_vecs() with the same input as octave function call 
-  in = cx_fmat(in_re, in_im);
-  out1 = cx_fmat(M+M_bar, 1, fill::zeros);
-  out2 = cx_fmat(M, 1, fill::zeros);
+  in = cx_mat(in_re, in_im);
+  out1 = cx_mat(M+M_bar, 1, fill::zeros);
+  out2 = cx_mat(M, 1, fill::zeros);
   extract_g_vecs(in, out1, out2, K_a, L_a, K_b, M_b, L_b, M, M+M_bar);
 
   // check if extract_g_vecs.m output and extract_g_vecs.cc output are equal
   int test3_pass = 1;
   for (int kk = 0; kk < M+M_bar; kk++) {
-    if (     ( !almost_equal( out1(kk).real(), out1_re(kk), 100.0 ) ) || ( !almost_equal( out1(kk).imag(), out1_im(kk), 100.0 ) )     ) {
+    if (     ( !almost_equals_zero( std::abs(out1[kk].real()-out1_re[kk]), 3 ) ) || ( !almost_equals_zero( std::abs(out1[kk].imag()-out1_im[kk]), 3 ) )     ) {
       test3_pass = 0;       
       break;
     }
   }
   for (int kk = 0; kk < M; kk++) {
-    if (     ( !almost_equal( out2(kk).real(), out2_re(kk), 100.0 ) ) || ( !almost_equal( out2(kk).imag(), out2_im(kk), 100.0 ) )     ) {
+    if (     ( !almost_equals_zero( std::abs(out2[kk].real()-out2_re[kk]), 3 ) ) || ( !almost_equals_zero( std::abs(out2[kk].imag()-out2_im[kk]), 3 ) )     ) {
       test3_pass = 0;       
       break;
     }
