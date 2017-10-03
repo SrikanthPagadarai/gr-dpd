@@ -31,11 +31,12 @@ list(APPEND dpd_sources
     stream_to_zero_padded_vector_impl.cc
     add_cp_impl.cc
     Agilent_N1996A_impl.cc
-    polynomial_regressor_vector_impl.cc
+    stream_to_gmp_vector_impl.cc
     signum_func_impl.cc
     gain_phase_calibrate_impl.cc
     postdistorter_impl.cc
-    stream_to_message_impl.cc )
+    stream_to_message_impl.cc
+    phase_calibrate_impl.cc )
 
 set(dpd_sources "${dpd_sources}" PARENT_SCOPE)
 if(NOT dpd_sources)

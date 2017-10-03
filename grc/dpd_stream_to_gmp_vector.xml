@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <block>
   <name>Stream to GMP Vector</name>
-  <key>dpd_polynomial_regressor_vector</key>
+  <key>dpd_stream_to_gmp_vector</key>
   <category>[dpd]</category>
   <import>import dpd</import>
-  <make>dpd.polynomial_regressor_vector($dpd_params)</make>  
+  <make>dpd.stream_to_gmp_vector($dpd_params)</make>  
   <param>
     <name>DPD Parameters</name>
     <key>dpd_params</key>

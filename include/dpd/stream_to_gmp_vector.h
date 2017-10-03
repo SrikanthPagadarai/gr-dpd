@@ -18,41 +18,39 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef INCLUDED_DPD_POLYNOMIAL_REGRESSOR_VECTOR_IMPL_H
-#define INCLUDED_DPD_POLYNOMIAL_REGRESSOR_VECTOR_IMPL_H
 
-#include <dpd/polynomial_regressor_vector.h>
+#ifndef INCLUDED_DPD_STREAM_TO_GMP_VECTOR_H
+#define INCLUDED_DPD_STREAM_TO_GMP_VECTOR_H
 
-using std::vector;
+#include <dpd/api.h>
+#include <gnuradio/sync_block.h>
 
 namespace gr {
   namespace dpd {
 
-    class polynomial_regressor_vector_impl : public polynomial_regressor_vector
+    /*!
+     * \brief <+description of block+>
+     * \ingroup dpd
+     *
+     */
+    class DPD_API stream_to_gmp_vector : virtual public gr::sync_block
     {
-     private:
-      std::vector<int> d_dpd_params;
-      //consts to be assigned values in the constructor initialization list
-      const int K_a;
-      const int L_a;
-      const int K_b;
-      const int M_b;
-      const int L_b;
-      const int M;
-      const int M_bar;
-     
      public:
-      polynomial_regressor_vector_impl(const std::vector<int> &dpd_params);
-      ~polynomial_regressor_vector_impl();
+      typedef boost::shared_ptr<stream_to_gmp_vector> sptr;
 
-      // Where all the action really happens
-      int work(int noutput_items,
-         gr_vector_const_void_star &input_items,
-         gr_vector_void_star &output_items);
+      /*!
+       * \brief Return a shared_ptr to a new instance of dpd::stream_to_gmp_vector.
+       *
+       * To avoid accidental use of raw pointers, dpd::stream_to_gmp_vector's
+       * constructor is in a private implementation
+       * class. dpd::stream_to_gmp_vector::make is the public interface for
+       * creating new instances.
+       */
+      static sptr make(const std::vector<int> &dpd_params);
     };
 
   } // namespace dpd
 } // namespace gr
 
-#endif /* INCLUDED_DPD_POLYNOMIAL_REGRESSOR_VECTOR_IMPL_H */
+#endif /* INCLUDED_DPD_STREAM_TO_GMP_VECTOR_H */
 

@@ -28,7 +28,7 @@ install(FILES
     stream_to_zero_padded_vector.h
     add_cp.h
     Agilent_N1996A.h
-    polynomial_regressor_vector.h
+    stream_to_gmp_vector.h
     signum_func.h
     gain_phase_calibrate.h
     postdistorter.h
