@@ -4,7 +4,7 @@
   <key>dpd_predistorter</key>
   <category>[dpd]</category>
   <import>import dpd</import>
-  <make>dpd.predistorter($NFFT, $cp_len, $ovx, $num_zero_syms, $dpd_params)</make>
+  <make>dpd.predistorter($NFFT, $cp_len, $ovx, $num_zero_syms, $M, $save_log)</make>
 
   <param>
     <name>NFFT</name>
@@ -27,16 +27,29 @@
     <type>int</type>
   </param>
   <param>
-    <name>DPD Parameters</name>
-    <key>dpd_params</key>
-    <value>(0,0,0,0,0)</value>
-    <type>raw</type>
+    <name>GMP Vector Length</name>
+    <key>M</key>
+    <type>int</type>
   </param>
+  <param>
+    <name>Save log file?</name>
+    <key>save_log</key>
+    <value>0</value>
+    <type>enum</type>
+    <option>
+      <name>Yes</name>
+      <key>1</key>
+    </option>
+    <option>
+      <name>No</name>
+      <key>0</key>
+    </option>
+  </param> 
 
   <sink>
     <name>in</name>
     <type>complex</type>
-    <vlen>($dpd_params)[0]*($dpd_params)[1]+($dpd_params)[2]*($dpd_params)[3]*($dpd_params)[4]</vlen>
+    <vlen>M</vlen>
   </sink>
 
   <sink>

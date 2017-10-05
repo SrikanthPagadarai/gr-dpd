@@ -4,7 +4,7 @@
   <key>dpd_postdistorter</key>
   <category>[dpd]</category>
   <import>import dpd</import>
-  <make>dpd.postdistorter($dpd_params)</make>
+  <make>dpd.postdistorter($dpd_params, $save_log)</make>
 
   <param>
     <name>DPD Parameters</name>
@@ -12,7 +12,21 @@
     <value>(0,0,0,0,0)</value>
     <type>raw</type>
   </param>
-
+  <param>
+    <name>Save log file?</name>
+    <key>save_log</key>
+    <value>0</value>
+    <type>enum</type>
+    <option>
+      <name>Yes</name>
+      <key>1</key>
+    </option>
+    <option>
+      <name>No</name>
+      <key>0</key>
+    </option>
+  </param> 
+  
   <sink>
     <name>PA_input</name>
     <type>message</type>

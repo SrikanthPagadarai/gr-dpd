@@ -20,9 +20,9 @@ then
 fi
 
 if [ "$1" -eq 1 ] || [ "$1" -eq 0 ]; then 
-  # compile and run extract_postdistorted_y() tests
+  # compile and run gen_GMPvector() tests
   printf "Compiling and running tests for gen_GMPvector()...\n"
-  g++ -std=c++11 -o test_gen_GMPvector.o test_gen_GMPvector.cc -ldpd_externals
+  g++ -std=c++11 -o test_gen_GMPvector.o test_gen_GMPvector.cc ../src/gen_GMPvector.cc -ldpd_externals -larmadillo
   ./test_gen_GMPvector.o
   gvfs-trash *.txt
 fi
@@ -72,7 +72,6 @@ if [ "$1" -eq 7 ] || [ "$1" -eq 0 ]; then
   printf "Compiling and running tests for almost_equals_zero()...\n"
   g++ -std=c++11 -o test_almost_equals_zero.o test_almost_equals_zero.cc ../src/almost_equals_zero.cc -ldpd_externals
   ./test_almost_equals_zero.o  
-  gvfs-trash *.txt
 fi
 
 if [ "$1" -eq 8 ] || [ "$1" -eq 0 ]; then 

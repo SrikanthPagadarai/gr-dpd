@@ -34,21 +34,17 @@ namespace gr {
       int d_cp_len;
       int d_ovx;
       int d_num_zero_syms; 
-      std::vector<int> d_dpd_params;
-      bool d_update_predistorter_vec; 
-      arma::cx_fcolvec d_predistorter_colvec;
-
-      //consts can be assigned values in the constructor initialization list
-      const int K_a;
-      const int L_a;
-      const int K_b;
-      const int M_b;
-      const int L_b;
-      const int M;
-      const int M_bar;
+      int d_M;
+      bool d_update_predistorter; 
+      arma::cx_colvec d_predistorter_colvec, predistorter_colvec;     
+      std::ofstream log_file; 
+      int d_save_log;
+      bool update_predistorter;
+      std::vector<gr::tag_t> tags; // container to hold tags
+      int current_sample_index, sent_sample_index, current_ofdm_block_index;        
 
      public:
-      predistorter_impl(int NFFT, int cp_len, int ovx, int num_zero_syms, const std::vector<int> &dpd_params);
+      predistorter_impl(int NFFT, int cp_len, int ovx, int num_zero_syms, int M, int save_log);
       ~predistorter_impl();
 
       void set_taps(pmt::pmt_t P);

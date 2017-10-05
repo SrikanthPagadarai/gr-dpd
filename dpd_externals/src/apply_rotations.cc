@@ -35,7 +35,7 @@ void apply_rotations(const cx_mat & A, cx_mat & B)
     switch( i%2 ) {
       case 1:
         // apply Givens rotation to z
-	    givens_rotate(z, rotated_z);		
+        givens_rotate(z, rotated_z);		
         break;
 
       case 0: 

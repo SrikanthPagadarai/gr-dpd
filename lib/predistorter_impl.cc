@@ -25,6 +25,10 @@
 #include <gnuradio/io_signature.h>
 #include "predistorter_impl.h"
 #include <armadillo>
+#include <ctime>
+#include <string>
+#define COPY_MEM false  // Do not copy vectors into separate memory
+#define FIX_SIZE true // Keep dimensions of vectors constant
 
 using std::vector;
 using namespace arma;
@@ -33,49 +37,60 @@ namespace gr {
   namespace dpd {
 
     predistorter::sptr
-    predistorter::make(int NFFT, int cp_len, int ovx, int num_zero_syms, const std::vector<int> &dpd_params)
+    predistorter::make(int NFFT, int cp_len, int ovx, int num_zero_syms, int M, int save_log)
     {
       return gnuradio::get_initial_sptr
-        (new predistorter_impl(NFFT, cp_len, ovx, num_zero_syms, dpd_params));
+        (new predistorter_impl(NFFT, cp_len, ovx, num_zero_syms, M, save_log));
     }
 
     /*
      * The private constructor
      */
-    predistorter_impl::predistorter_impl(int NFFT, int cp_len, int ovx, int num_zero_syms, const std::vector<int> &dpd_params)
+    predistorter_impl::predistorter_impl(int NFFT, int cp_len, int ovx, int num_zero_syms, int M, int save_log)
       : gr::sync_block("predistorter",
-              gr::io_signature::make(1, 1, (dpd_params[0]*dpd_params[1] + dpd_params[2]*dpd_params[3]*dpd_params[4])*sizeof(gr_complex)),
+              gr::io_signature::make(1, 1, M*sizeof(gr_complex)),
               gr::io_signature::make(1, 1, sizeof(gr_complex))),
               d_NFFT(NFFT), 
               d_cp_len(cp_len), 
               d_ovx(ovx),
-              d_num_zero_syms(num_zero_syms),
-              d_dpd_params(dpd_params),
-              K_a(d_dpd_params[0]), 
-              L_a(d_dpd_params[1]),
-              K_b(d_dpd_params[2]),
-              M_b(d_dpd_params[3]),
-              L_b(d_dpd_params[4]),
-              M(dpd_params[0]*dpd_params[1] + dpd_params[2]*dpd_params[3]*dpd_params[4]),
-              M_bar(dpd_params[0] + dpd_params[2]*dpd_params[3])
+              d_num_zero_syms(num_zero_syms), 
+              d_M(M),
+              d_save_log(save_log)          
     {
-        d_update_predistorter_vec = true;
+      d_update_predistorter = true;
 
-        d_predistorter_colvec.set_size(M);
-        d_predistorter_colvec.zeros();
-        d_predistorter_colvec(0) = gr_complex(1.0, 0.0);
+      d_predistorter_colvec.set_size(d_M);
+      d_predistorter_colvec.zeros();
+      d_predistorter_colvec(0) = gr_complex(1.0, 0.0);
 
-        // don't propagate upstream tags
-        set_tag_propagation_policy(TPP_DONT);
+      current_sample_index = 0; 
+      sent_sample_index = 0;
+      current_ofdm_block_index = -1*d_num_zero_syms-2;         
 
-        // setup output message port and 
-        // send predistorted PA input to the Fast-RLS DPD block
-        message_port_register_out(pmt::mp("PA_input"));
+      // don't propagate upstream tags
+      set_tag_propagation_policy(TPP_DONT);
 
-        // Setup input port
-        message_port_register_in(pmt::mp("taps"));
-        set_msg_handler(pmt::mp("taps"),
-        boost::bind(&predistorter_impl::set_taps, this, _1));
+      // setup output message port and 
+      // send predistorted PA input to the Fast-RLS DPD block
+      message_port_register_out(pmt::mp("PA_input"));
+
+      // Setup input port
+      message_port_register_in(pmt::mp("taps"));
+      set_msg_handler(pmt::mp("taps"),
+      boost::bind(&predistorter_impl::set_taps, this, _1));
+
+      if (d_save_log)
+      {
+        // log-file creation
+        time_t rawtime;
+        time (&rawtime);
+        std::string log_filename = ctime(&rawtime);
+        log_filename.erase(std::remove(log_filename.begin(),log_filename.end(),' '),log_filename.end()); // remove spaces
+        log_filename.erase(log_filename.size() - 1); // remove return
+        log_filename = "/tmp/PREDISTORTER_LOG_"+log_filename+".txt";
+        std::cout << "Writing log messages to " << log_filename << '\n';
+        log_file.open(log_filename.c_str(), std::ios_base::app);
+      }
     }	
 
     /*
@@ -88,14 +103,13 @@ namespace gr {
     void 
     predistorter_impl::set_taps(pmt::pmt_t P) 
     {
-        d_update_predistorter_vec = true;
+      d_update_predistorter = true;
 
-        int P_vec_len = pmt::length(P);
+      int P_vec_len = pmt::length(P);
 
-        // extract predistorter weight vector from the message
-        for (int i = 0; i < P_vec_len; i++)	
-            d_predistorter_colvec(i) = pmt::c64vector_ref(P, i);
-        
+      // extract predistorter weight vector from the message
+      for (int i = 0; i < P_vec_len; i++)	
+        d_predistorter_colvec(i) = pmt::c64vector_ref(P, i);        
     }
 
     int
@@ -103,85 +117,65 @@ namespace gr {
         gr_vector_const_void_star &input_items,
         gr_vector_void_star &output_items)
     {
-      const gr_complex *in = (const gr_complex *) input_items[0];
       gr_complex *out = (gr_complex *) output_items[0];
 
       // Do <+signal processing+>		
       // copy private variables accessed by the asynchronous message handler block
-      cx_colvec predistorter_colvec = d_predistorter_colvec;
-      bool update_predistorter_vec = d_update_predistorter_vec;	
+      predistorter_colvec = d_predistorter_colvec;
+      update_predistorter = d_update_predistorter;	
 		 
       for (int item = 0; item < noutput_items; item++) 
       {
          // PA input which has been arranged in a GMP vector format
          // for predistortion
-         vector<gr_complex> yy(in+item*M, in+item*M+M);
-         cx_mat yy_cx_rowvec(1, M);
-         yy_cx_rowvec = conv_to<cx_mat>::from(yy);
-         yy_cx_rowvec = strans(yy_cx_rowvec);
-
+         cx_fmat yy_cx_rowvec( ((gr_complex *) input_items[0])+item*d_M, 1, d_M, COPY_MEM, FIX_SIZE ); 
+         
          //get number of samples consumed since the beginning of time by this block from port 0
          const uint64_t nread = this->nitems_read(0);
-
-         // container to hold tags
-         std::vector<gr::tag_t> tags;
 
          //get tag if the current sample has one
          get_tags_in_range(tags, 0, nread+item, nread+item+1);
 
-         // keep track of the current sample index relative to the OFDM block length
-         static int current_sample_index = 0;
-         // keep track of the OFDM block index from which a certain sample is sent
-         static int current_ofdm_block_index = -1*d_num_zero_syms-2;
-
-	
          if (!tags.size()) 
-            current_sample_index++; 
+           current_sample_index++; 
          else 
          {
-            current_sample_index = 0;	
-            current_ofdm_block_index++;
-         }
-	    
-         // keep track of the sample index sent to the Fast-RLS DPD block
-         static int sent_sample_index = 0;
-
-         // send the STS signal samples as-is, without any predistortion,
-         // for the remaining samples, do predistortion and send the PA input to postdistorter
+           current_sample_index = 0;	// keep track of the current sample index relative to the OFDM block length         
+           current_ofdm_block_index++;  // keep track of the OFDM block index from which a certain sample is sent         
+         }       
+         
+         // send the STS samples without any predistortion
+         // for the remaining samples, apply predistortion and send the PA input to postdistorter
          int nskip_predistortion = (d_NFFT+d_cp_len)*d_ovx*d_num_zero_syms + (d_NFFT+d_cp_len)*d_ovx*2;
          if (nread < nskip_predistortion)
-            out[item] = in[item*M];
+           out[item] = *(((gr_complex *) input_items[0])+item*d_M); 
          else 
          {	
-            gr_complex pa_input = as_scalar( conv_to<cx_fmat>::from(yy_cx_rowvec*predistorter_colvec) );
-            out[item] = pa_input;
+           out[item] = as_scalar( conv_to<cx_fmat>::from(yy_cx_rowvec*predistorter_colvec) );            
 
-            // std::cout << "current_sample_index: " << current_sample_index << std::endl;
-            // std::cout << "sent_sample_index: " << sent_sample_index << std::endl;
-            if ( (current_sample_index == sent_sample_index) && update_predistorter_vec ) 
-            {
-               // std::cout << "true sample index sent: " << nread+item << std::endl;
-               // std::cout << "OFDM block index sent: " << current_ofdm_block_index << std::endl;
+           if ( (current_sample_index == sent_sample_index) && update_predistorter ) 
+           {             
+             // create a pmt tuple
+             pmt::pmt_t P = pmt::make_tuple(pmt::from_long(current_ofdm_block_index), pmt::from_complex(out[item]));
+             message_port_pub(pmt::mp("PA_input"), P);               
 
-               // std:: cout << "relative sample index sent: " << sent_sample_index << std::endl;
-
-               // create a pmt tuple
-               pmt::pmt_t P = pmt::make_tuple(pmt::from_long(current_ofdm_block_index), pmt::from_complex(out[item]));
-               message_port_pub(pmt::mp("PA_input"), P);
-               
-               sent_sample_index++;
-               // std::cout << "sent_sample_index: " << sent_sample_index << std::endl;
-               update_predistorter_vec = false;
-               d_update_predistorter_vec = false;
-            }
+             if (d_save_log)
+             {
+               log_file << "PA Input (sent by Predistorter): " << out[item] << std::endl;
+               log_file << "True sample index sent: " << nread+item << std::endl;
+               log_file << "OFDM block index sent: " << current_ofdm_block_index << std::endl;
+               log_file << "Relative sample index sent: " << sent_sample_index << std::endl;
+             }
+             sent_sample_index++; // keep track of the sample index sent to the Postdistorter block
+             update_predistorter = false;
+             d_update_predistorter = false;              
+           }
          }
-
       }
 
       // Tell runtime system how many output items we produced.
       return noutput_items;
     }
-
   } /* namespace dpd */
 } /* namespace gr */
 

@@ -31,6 +31,6 @@ using std::vector;
 using namespace arma;
 
 void gen_GMPvector(const gr_complex *const in, int item, 
-  int K_a, int L_a, int K_b, int M_b, int L_b, cx_fcolvec &GMP_vector);
+  int K_a, int L_a, int K_b, int M_b, int L_b, vector<gr_complex> &GMP_vector);
 
 #endif /* INCLUDED_DPD_EXTERNALS_GEN_GMPVECTOR_H */

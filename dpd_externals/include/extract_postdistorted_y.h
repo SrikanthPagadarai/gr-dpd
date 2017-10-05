@@ -25,6 +25,6 @@
 
 using namespace arma;
 
-void extract_postdistorted_y(cx_mat &y_in, cx_mat &y, int K_a, int L_a, int K_b, int M_b, int L_b, int M);
+void extract_postdistorted_y(cx_fmat &y_in, cx_fmat &y, int K_a, int L_a, int K_b, int M_b, int L_b, int M);
 
 #endif /*INCLUDED_DPD_EXTERNALS_EXTRACT_POSTDISTORTED_Y_H*/

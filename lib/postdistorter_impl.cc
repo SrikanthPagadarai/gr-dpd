@@ -46,16 +46,16 @@ namespace gr {
   namespace dpd {
 
     postdistorter::sptr
-    postdistorter::make(const std::vector<int> &dpd_params)
+    postdistorter::make(const std::vector<int> &dpd_params, int save_log)
     {
       return gnuradio::get_initial_sptr
-        (new postdistorter_impl(dpd_params));
+        (new postdistorter_impl(dpd_params, save_log));
     }
 
     /*
      * The private constructor
      */
-    postdistorter_impl::postdistorter_impl(const std::vector<int> &dpd_params)
+    postdistorter_impl::postdistorter_impl(const std::vector<int> &dpd_params, int save_log)
       : gr::sync_block("postdistorter",
               gr::io_signature::make(1, 1, sizeof(gr_complex)),
               gr::io_signature::make(1, 1, sizeof(gr_complex))),
@@ -66,24 +66,23 @@ namespace gr {
        	      M_b(d_dpd_params[3]),
               L_b(d_dpd_params[4]),
               M(dpd_params[0]*dpd_params[1] + dpd_params[2]*dpd_params[3]*dpd_params[4]),
-              M_bar(dpd_params[0] + dpd_params[2]*dpd_params[3])
+              M_bar(dpd_params[0] + dpd_params[2]*dpd_params[3]),
+              d_save_log(save_log)          
     {
-      // d_init = false;
-      d_ack_predistorter_vec_updated = false;
+      d_ack_predistorter_updated = false;
       d_sample_index_received = -1;
 
-      // setup output message port and 
-      // send predistorted PA input to the Fast-RLS DPD block
+      // setup output message port  
       message_port_register_out(pmt::mp("taps"));
 
-      // Setup Input port
+      // setup input port
       message_port_register_in(pmt::mp("PA_input"));
-      set_msg_handler(pmt::mp("PA_input"),
-                      boost::bind(&postdistorter_impl::get_PA_input, this, _1));
-
-      output_file.open("/home/srikanthp/Documents/gr-dpd/examples/taps.txt", std::ios_base::app);      
-      // PA_output_file.open("/home/srikanthp/Documents/gr-dpd/examples/PA_output_file.txt", std::ios_base::app);
-      // PA_input_file.open("/home/srikanthp/Documents/gr-dpd/examples/PA_input_file.txt", std::ios_base::app);      
+      set_msg_handler(pmt::mp("PA_input"), boost::bind(&postdistorter_impl::get_PA_input, this, _1));
+      
+      current_sample_index = 0; // keep track of the current sample index relative to the OFDM block length
+      current_ofdm_block_index = -1; // keep track of the OFDM block index from which a certain sample is sent       
+      iteration = 1;
+      error = gr_complex(0.1, 0.0);
 
       for (int ii = 0; ii < sreg_len; ii++)   
         sreg[ii]=0.0;
@@ -94,9 +93,10 @@ namespace gr {
         sr2[ii]=gr_complexd(0.0,0.0);
       }
 
-      //constants
-      int k = 18;
+      // constants
+      int k = 12;
       lambda = 1-pow(2, 1-k);
+      one_over_sqrt_lambda = 1.0/sqrt(lambda);
       eta = pow(2, k);
 
       g_vec_iMinus1.set_size(M+M_bar, 1);
@@ -105,13 +105,13 @@ namespace gr {
       w_i.set_size(M, 1);
       w_iMinus1.set_size(M, 1);
 
-      //inverse of square-root of gamm
+      // inverse of square-root of gamma
       inv_sqrt_gamma_iMinus1 = 1;
 
-      //g vector
+      // g vector
       g_vec_iMinus1 = zeros<cx_mat>(M+M_bar, 1);
 
-      //L-bar matrix
+      // L-bar matrix
       cx_mat temp_cx_mat1(L_a+1, 2, fill::zeros);
       temp_cx_mat1(0, 0) = gr_complexd(sqrt(eta*lambda), 0);
       temp_cx_mat1(L_a, 1) = sqrt(eta*lambda)*pow(lambda, 0.5*L_a);
@@ -131,6 +131,28 @@ namespace gr {
       //weight-vector
       w_iMinus1 = zeros<cx_mat>(M, 1);
       w_iMinus1(0,0) = gr_complexd(1.0, 0.0);
+
+      // A and B matrices
+      A_mat.set_size(M+M_bar+1, M_bar*2+1);
+      B_mat.set_size(M+M_bar+1, M_bar*2+1); 
+      
+      yy_cx_fcolvec.set_size(M+M_bar);       
+      yy_cx_frowvec.set_size(M+M_bar);       
+      y.set_size(1, M);    
+      g.set_size(M+M_bar-1, 1);
+
+      if (d_save_log)
+      {
+        // log-file creation
+        time_t rawtime;
+        time (&rawtime);
+        std::string log_filename = ctime(&rawtime);
+        log_filename.erase(std::remove(log_filename.begin(),log_filename.end(),' '),log_filename.end()); // remove spaces
+        log_filename.erase(log_filename.size() - 1); // remove return
+        log_filename = "/tmp/POSTDISTORTER_LOG_"+log_filename+".txt";
+        std::cout << "Writing log messages to " << log_filename << '\n';        
+        log_file.open(log_filename.c_str(), std::ios_base::app);
+      }
     }
 
     /*
@@ -145,58 +167,12 @@ namespace gr {
     {	
       d_ofdm_block_index_received = pmt::to_long(pmt::tuple_ref(P, 0));
       d_pa_input = pmt::to_complex(pmt::tuple_ref(P, 1));
-      d_ack_predistorter_vec_updated = true;
+      d_ack_predistorter_updated = true;
 
       // keep track of the sample index received by the Fast-RLS DPD block
       d_sample_index_received++;
     }
-
-    /*void 
-    postdistorter_impl::init_params(double &lambda, double &eta, double &inv_sqrt_gamma_iMinus1, 
-	cx_mat &g_vec_iMinus1, cx_mat &L_bar_iMinus1, cx_mat &w_iMinus1)
-    {
-      //constants
-      int k = 13;
-      lambda = 1-pow(2, 1-k);
-      eta = pow(2, k);
-
-      g_vec_iMinus1.set_size(M+M_bar, 1);
-      g_vec_i.set_size(M, 1);
-      L_bar_iMinus1.set_size(M+M_bar, M_bar*2);
-      w_i.set_size(M, 1);
-      w_iMinus1.set_size(M, 1);
-
-      //inverse of square-root of gamm
-      inv_sqrt_gamma_iMinus1 = 1;
-
-      //g vector
-      g_vec_iMinus1 = zeros<cx_mat>(M+M_bar, 1);
-
-      //L-bar matrix
-      cx_mat temp_cx_mat1(L_a+1, 2, fill::zeros);
-      temp_cx_mat1(0, 0) = gr_complexd(sqrt(eta*lambda), 0);
-      temp_cx_mat1(L_a, 1) = sqrt(eta*lambda)*pow(lambda, 0.5*L_a);
-      cx_mat eye_K_a(K_a, K_a, fill::eye);
-      cx_mat L_bar_iMinus1_a = kron(eye_K_a, temp_cx_mat1);
-      
-      cx_mat temp_cx_mat2(L_b+1, 2, fill::zeros);
-      temp_cx_mat2(0, 0) = gr_complexd(sqrt(eta*lambda), 0);
-      temp_cx_mat2(L_b, 1) = sqrt(eta*lambda)*pow(lambda, 0.5*L_b);
-      cx_mat eye_K_bM_b(K_b*M_b, K_b*M_b, fill::eye);
-      cx_mat L_bar_iMinus1_b = kron(eye_K_bM_b, temp_cx_mat2);
-      
-      L_bar_iMinus1 = zeros<cx_mat>(K_a*(L_a+1)+K_b*M_b*(L_b+1), (K_a+K_b*M_b)*2);
-      L_bar_iMinus1( span(0, K_a*(L_a+1)-1), span(0, K_a*2-1) ) = L_bar_iMinus1_a;
-      L_bar_iMinus1( span(K_a*(L_a+1), K_a*(L_a+1)+K_b*M_b*(L_b+1)-1), span(K_a*2, (K_a+K_b*M_b)*2-1) ) = L_bar_iMinus1_b;
-      
-      //weight-vector
-      w_iMinus1 = zeros<cx_mat>(M, 1);
-      w_iMinus1(0,0) = gr_complexd(1.0, 0.0);
-
-      //reset init flag
-      d_init = 1;        
-    }*/
-
+    
     int
     postdistorter_impl::work(int noutput_items,
         gr_vector_const_void_star &input_items,
@@ -207,51 +183,20 @@ namespace gr {
 
       // Do <+signal processing+>
       // copy private variables accessed by the asynchronous message handler block
-      long ofdm_block_index_received = d_ofdm_block_index_received;
-      gr_complexd pa_input = d_pa_input;
-      bool ack_predistorter_vec_updated = d_ack_predistorter_vec_updated;
-      int sample_index_received = d_sample_index_received;
-
+      ofdm_block_index_received = d_ofdm_block_index_received;
+      pa_input = d_pa_input;
+      ack_predistorter_updated = d_ack_predistorter_updated;
+      sample_index_received = d_sample_index_received;
       
-      std::ofstream PA_input_file1, PA_input_file2;
-      std::ofstream PA_output_file1, PA_output_file2;
-      PA_input_file1.open("/home/srikanthp/Documents/gr-dpd/examples/PA_input_file1.txt", std::ios_base::app);      
-      PA_input_file2.open("/home/srikanthp/Documents/gr-dpd/examples/PA_input_file2.txt", std::ios_base::app);      
-      PA_output_file1.open("/home/srikanthp/Documents/gr-dpd/examples/PA_output_file1.txt", std::ios_base::app);      
-      PA_output_file2.open("/home/srikanthp/Documents/gr-dpd/examples/PA_output_file2.txt", std::ios_base::app);      
-
-      cx_mat yy_times_L_bar;
-      cx_mat A_mat(M+M_bar+1, M_bar*2+1, fill::zeros);
-      cx_mat B_mat(M+M_bar+1, M_bar*2+1, fill::zeros);
-
-      // Fast-RLS parameter initialization
-      /*if (!d_init) 
-      {
-        init_params(lambda, eta, inv_sqrt_gamma_iMinus1, 
-                    g_vec_iMinus1, L_bar_iMinus1, w_iMinus1);
-
-        d_init = true;
-      }*/
-
-      static int iteration = 1;
       for (int item = 0; item < noutput_items; item++) 
       {
-        // for (int item = history()-1; item < noutput_items+history()-1; item++) {
         // get number of samples consumed since the beginning of time by this block
         // from port 0
         const uint64_t nread = this->nitems_read(0);
         out[item] = in[item];
 
-        // container to hold tags
-        std::vector<gr::tag_t> tags;
-
-        //get tag if the current sample has one
+        // get tag if the current sample has one
         get_tags_in_range(tags, 0, nread+item, nread+item+1);
-
-        // keep track of the current sample index relative to the OFDM block length
-        static int current_sample_index = 0;
-        // keep track of the OFDM block index from which a certain sample is sent
-        static int current_ofdm_block_index = -1;
 
         // current_sample_index = ( tags.size() ) ? 0: current_sample_index+1;
         if (!tags.size()) 
@@ -262,170 +207,64 @@ namespace gr {
           current_ofdm_block_index++;
         }
 
-        // std::cout << "Inside Fast-RLS DPD work function..." r< std::endl;
-        static cx_double error = 0.1;
-        // out[item] = 10.0*log10(pow(abs(error), 2));
-        // std::cout << "current_sample_index: " << current_sample_index << std::endl;
-        // std::cout << "sample_index_received: " << sample_index_received << std::endl;
-        if ( (current_sample_index == sample_index_received) && (current_ofdm_block_index == ofdm_block_index_received) && ack_predistorter_vec_updated ) 
+        if ( (current_sample_index == sample_index_received) && (current_ofdm_block_index == ofdm_block_index_received) && ack_predistorter_updated ) 
         {
           sr1[0] = pa_input;
           gauss_smooth(sr1, pa_input_smooth);
           sr2[0] = in[item];
           gauss_smooth(sr2, pa_output_smooth);
-          // std::cout << "pa_input (received by Fast RLS-DPD): " << pa_input << std::endl;
-          std::cout << "iteration: " << iteration << std::endl;	    
+          std::cout << "Number of samples used for adaptation: " << iteration << std::endl;	    
           iteration++;
 
-          //std::cout << "predistorter_vec_updated: " << predistorter_vec_updated << std::endl;
-          std::cout << "true sample index received: " << nread+item << endl;
-          std::cout << "OFDM block index applied to: " << current_ofdm_block_index << std::endl;
-          std::cout << "relative sample index received: " << sample_index_received << endl;
-          std::cout << "current_sample_index: " << current_sample_index << std::endl;
-
-          int yy_len = M+M_bar;
+          if (d_save_log)
+          {
+            log_file << "PA Input (received by Postdistorter): " << pa_input << std::endl;
+            log_file << "True sample index received: " << nread+item << endl;
+            log_file << "OFDM block index applied to: " << current_ofdm_block_index << std::endl;
+            log_file << "Relative sample index received: " << sample_index_received << endl;            
+          }
 
           // extracting the PA output and arranging into a shift-structured GMP vector
-          vector<gr_complex> temp_out1;
-          temp_out1.reserve(M_bar);         
-          
-          // PA_output_file << in[item] << '\n';
-          // std::cout << real(in[item]) << '\n' << imag(in[item]) << '\n';
-          // std::cout << real(pa_input) << '\n' << imag(pa_input) << '\n';
-          // if ( (iteration > 2) && (iteration < 61) )
-          //   std::cout << "in[" << item << "]:" << in[item] << '\n';
-          sreg[49] = in[item];                    
-          // sreg[49] = pa_output_smooth;                    
-          // if ( (iteration > 2) && (iteration < 11) ) {
-            // std::cout << "iteration: " << iteration << std::endl;	
-            // for (int ii = 0; ii < sreg_len; ii++)
-              // std::cout << "sreg[ii]: " << sreg[ii] << std::endl;
-          // }
-          
-          // gen_GMPvector(in, item, K_a, L_a+1, K_b, M_b, L_b+1, temp_out1);          
-          gen_GMPvector(ptr_sreg, 49, K_a, L_a+1, K_b, M_b, L_b+1, temp_out1);
+          sreg[49] = in[item];                                        
+          gen_GMPvector(ptr_sreg, 49, K_a, L_a+1, K_b, M_b, L_b+1, yy_cx_fcolvec);
+          yy_cx_frowvec = yy_cx_fcolvec.st();
           for (int ii = 1; ii < sreg_len; ii++)
             sreg[ii-1] = sreg[ii];          
-
-          cx_rowvec yy_cx_rowvec(M+M_bar);
-          for (int ii = 0; ii < (M+M_bar); ii++)
-            yy_cx_rowvec(ii) = temp_out1[ii];
-          
-          
-          if ( (iteration >= 2) || (iteration <= 100) ) {
-            // printf("Here\n\n");
-            yy_cx_rowvec.save("/home/srikanthp/Documents/gr-dpd/examples/yy_cx_rowvec.csv", csv_ascii);
-          }
-          
-
-          // yy_times_L_bar = gr_complexd(0.01, 0.0)*yy_cx_rowvec*L_bar_iMinus1;
-          yy_times_L_bar = yy_cx_rowvec*L_bar_iMinus1;
-          /*
-          if (iteration == 2)
-            yy_times_L_bar.save("/home/radio1/Documents/gr-dpd/examples/yy_times_L_bar.csv", csv_ascii);
-          */
-
+     
           // A-matrix
           A_mat.submat(0, 0, 0, 0) = inv_sqrt_gamma_iMinus1;
-          A_mat.submat(0, 1, 0, M_bar*2) = yy_times_L_bar;
+          A_mat.submat(0, 1, 0, M_bar*2) = yy_cx_frowvec*L_bar_iMinus1;
           A_mat.submat(1, 0, M+M_bar, 0) = g_vec_iMinus1;
           A_mat.submat(1, 1, M+M_bar, M_bar*2) = L_bar_iMinus1;
 
           // obtain B-matrix by performing Givens and Hyperbolic rotations
-          apply_rotations(A_mat, B_mat);
+          apply_rotations(A_mat, B_mat);          
           
-          if (iteration >= 1 && iteration < 100) {
-            char numstr[21]; // enough to hold all numbers up to 64-bits
-            sprintf(numstr, "%d", iteration);
-            std::string file_name1, file_name2, file_name3;
-            std::string prefix1 = "/home/srikanthp/Documents/gr-dpd/examples/A_mat";
-            file_name1 = prefix1+numstr+".csv";
-            A_mat.save( file_name1, csv_ascii );
-
-            std::string prefix2 = "/home/srikanthp/Documents/gr-dpd/examples/B_mat";
-            file_name2 = prefix2+numstr+".csv";
-            B_mat.save( file_name2, csv_ascii );
-
-            std::string prefix3 = "/home/srikanthp/Documents/gr-dpd/examples/yy_cx_rowvec";
-            file_name3 = prefix3+numstr+".csv";
-            yy_cx_rowvec.save( file_name3, csv_ascii );
-
-            prefix3 = "/home/srikanthp/Documents/gr-dpd/examples/yy_times_L_bar";
-            file_name3 = prefix3+numstr+".csv";
-            yy_times_L_bar.save( file_name3, csv_ascii );
-
-            prefix3 = "/home/srikanthp/Documents/gr-dpd/examples/g_vec_iMinus1";
-            file_name3 = prefix3+numstr+".csv";
-            g_vec_iMinus1.save( file_name3, csv_ascii );
-
-            prefix3 = "/home/srikanthp/Documents/gr-dpd/examples/L_bar__iMinus1";
-            file_name3 = prefix3+numstr+".csv";
-            L_bar_iMinus1.save( file_name3, csv_ascii );
-          
-            // output_file << inv_sqrt_gamma_iMinus1 << '\n';
-            PA_input_file1 << std::real(pa_input) << '\n' << std::imag(pa_input) << '\n';
-            PA_input_file2 << std::real(pa_input_smooth) << '\n' << std::imag(pa_input_smooth) << '\n';
-            PA_output_file1 << std::real(in[item]) << '\n' << std::imag(in[item]) << '\n';
-            PA_output_file2 << std::real(pa_output_smooth) << '\n' << std::imag(pa_output_smooth) << '\n';
-
-         } 
-			
-          //get time-updates for gamma
-          gr_complexd inv_sqrt_gamma_i = B_mat(0, 0);
-          // std::cout << "gamma_i: " << gamma_i << std::endl;
-          //if (iteration > 1 && iteration < 30) 
-           std::cout << "inv_sqrt_gamma_i: " << inv_sqrt_gamma_i << std::endl;
+          // time-update for inv(sqrt(gamma))
+          inv_sqrt_gamma_iMinus1 = real(B_mat(0, 0));          
 		
-          // get time-updates for g-vector
-          cx_mat g = B_mat(span(1, M+M_bar), 0);    
-          extract_g_vecs(g, g_vec_iMinus1, g_vec_i, K_a, L_a, K_b, M_b, L_b, M, M+M_bar);    
+          // time-update for g-vector
+          g = B_mat(span(1, M+M_bar), 0);    
+          extract_g_vecs(g, g_vec_iMinus1, g_vec_i, K_a, L_a, K_b, M_b, L_b, M, M+M_bar);              
           
           // adjust post-distorted PA output dimensions
-          cx_mat y(1, M, fill::zeros);
-          extract_postdistorted_y(yy_cx_rowvec, y, K_a, L_a, K_b, M_b, L_b, M);
+          extract_postdistorted_y(yy_cx_frowvec, y, K_a, L_a, K_b, M_b, L_b, M);
           
-          //adaptation error
-          gr_complexd postdistorter_op = as_scalar(y*w_iMinus1);
-          // error = gr_complexd(0.01,0.0)*(pa_input - postdistorter_op);	        	
-          error = pa_input - postdistorter_op;	        
-          // error = pa_input_smooth - postdistorter_op;	        
-          // if ( (iteration > 2) && (iteration < 20) )	
-          //   std::cout << "error: " << error << std::endl;
-          // if ( (iteration > 2) && (iteration < 30) )	
-          //  std::cout << "pa_input: " << pa_input << "sreg[49]: " << sreg[49] << std::endl;
-          /* if ( (iteration > 2) && (iteration < 130) )	
-          {
-            // std::cout << "pa_input: " << pa_input << "sreg[49]: " << sreg[49] << std::endl;
-            std::cout << std::real(pa_input) << '\n';
-            std::cout << std::imag(pa_input) << '\n';
-            std::cout << std::real(sreg[49]) << '\n';
-            std::cout << std::imag(sreg[49]) << '\n';
-            PA_output_file << sreg[49] << '\n';
-          }*/
+          // adaptation error
+          error = pa_input - as_scalar(y*w_iMinus1);
 
-          // correction-factor
-          cx_mat c_factor = (error/real(inv_sqrt_gamma_i))*g_vec_i;	  
-
-          // weight-vector
-          w_i = w_iMinus1+c_factor;	    
+          // update weight-vector
+          w_iMinus1 = w_iMinus1+(error/inv_sqrt_gamma_iMinus1)*g_vec_i;	    
 	
-          // prepare quantities for next iteration
-          inv_sqrt_gamma_iMinus1 = inv_sqrt_gamma_i.real();
-          L_bar_iMinus1 = cx_double(1.0/sqrt(lambda), 0.0) * B_mat( span(1, M+M_bar), span(1, 2*M_bar) );
-          w_iMinus1 = w_i;
-
-          // out[item] = 10.0*log10(pow(abs(error), 2));
+          // prepare L_bar_iMinus1 for next iteration
+          L_bar_iMinus1 = gr_complexd(one_over_sqrt_lambda, 0.0) * B_mat( span(1, M+M_bar), span(1, 2*M_bar) );          
 
           // send weight-vector to predistorter block in a message
-          vector<gr_complexd> taps = conv_to< vector<gr_complexd> >::from(w_i);
+          taps = conv_to< vector<gr_complexd> >::from(w_iMinus1);
           pmt::pmt_t P_c32vector_taps = pmt::init_c64vector(M, taps);
           message_port_pub(pmt::mp("taps"), P_c32vector_taps);
-
-          for(vector<gr_complexd>::const_iterator i = taps.begin(); i != taps.end(); ++i) {
-            output_file << *i << '\n';
-          }
  
-          ack_predistorter_vec_updated = false;
+          ack_predistorter_updated = false;
         } 
       }
       // Tell runtime system how many output items we produced.

@@ -18,67 +18,58 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "../include/gen_GMPvector.h"
+#include "gen_GMPvector.h"
 
 void gen_GMPvector(const gr_complex *const in, int item, 
-  int K_a, int L_a, int K_b, int M_b, int L_b, cx_fcolvec &GMP_vector)
+  int K_a, int L_a, int K_b, int M_b, int L_b, vector<gr_complex> &GMP_vector)
 {
+
   /* Signal-and-Aligned Envelope */
   // stacking L_a elements in reverse order
-  cx_fcolvec y_vec_arma1(L_a, fill::zeros); 
+  cx_colvec y_vec_arma1(L_a, fill::zeros); 
   for (int ii = L_a-1; ii >= 0; ii--) 
-    y_vec_arma1(ii) = gr_complex(0.1,0.0)*in[item-ii]; 
-  GMP_vector.rows(0, L_a-1) = y_vec_arma1;  
+    y_vec_arma1(ii) = in[item-ii]; 
 
   //store abs() of y_vec_arma1
-  cx_fcolvec abs_y_vec_arma1( size(y_vec_arma1), fill::zeros );
+  cx_colvec abs_y_vec_arma1( size(y_vec_arma1), fill::zeros );
   abs_y_vec_arma1.set_real( abs(y_vec_arma1) );
 
-  cx_fcolvec yy_temp;
+  GMP_vector.insert(GMP_vector.end(), y_vec_arma1.begin(), y_vec_arma1.end());
+  cx_colvec yy_temp;
   yy_temp = y_vec_arma1%abs_y_vec_arma1;
-  GMP_vector.rows(L_a, 2*L_a-1) = yy_temp;
+  GMP_vector.insert(GMP_vector.end(), yy_temp.begin(), yy_temp.end());
   for (int kk = 2; kk<K_a; kk++) {
     // perform element-wise product using the overloaded % operator
     yy_temp = yy_temp%abs_y_vec_arma1;
   
-    GMP_vector.rows(kk*L_a, (kk+1)*L_a-1) = yy_temp;
+    GMP_vector.insert(GMP_vector.end(), yy_temp.begin(), yy_temp.end());
   }
 
   /* Signal-and-Delayed Envelope */
   // stacking L_b+M_b elements in reverse order
-  cx_fcolvec y_vec_arma23(L_b+M_b, fill::zeros); 
+  cx_colvec y_vec_arma23(L_b+M_b, fill::zeros); 
   for (int ii = L_b+M_b-1; ii >= 0; ii--) 
-    y_vec_arma23(ii) = gr_complex(0.1,0.0)*in[item-ii]; 
+    y_vec_arma23(ii) = in[item-ii]; 
 
   // L_b signal elements
-  cx_fcolvec y_vec_arma2 = y_vec_arma23.rows(0, L_b-1);
+  cx_colvec y_vec_arma2 = y_vec_arma23.rows(0, L_b-1);
 
   // store abs() of y_vec_arma23
-  cx_fcolvec abs_y_vec_arma23( size(y_vec_arma23), fill::zeros );
+  cx_colvec abs_y_vec_arma23( size(y_vec_arma23), fill::zeros );
   abs_y_vec_arma23.set_real( abs(y_vec_arma23) );
 
   for (int mm = 1; mm < M_b+1; mm++) {
     // stacking L_b delayed signal-envelope elements 
-    cx_fcolvec abs_y_vec_arma3 = abs_y_vec_arma23.rows(mm, L_b+mm-1);
+    cx_colvec abs_y_vec_arma3 = abs_y_vec_arma23.rows(mm, L_b+mm-1);
 
-    cx_fcolvec yy_temp;
+    cx_colvec yy_temp;
     yy_temp = y_vec_arma2%abs_y_vec_arma3;
-    GMP_vector.rows(K_a*L_a+(mm-1)*K_b*L_b, K_a*L_a+(mm-1)*K_b*L_b+L_b-1) = yy_temp;
+    GMP_vector.insert(GMP_vector.end(), yy_temp.begin(), yy_temp.end());
     for (int kk = 2; kk<K_b+1; kk++) {
       // perform element-wise product using the overloaded % operator
       yy_temp = yy_temp%abs_y_vec_arma3;
 
-      GMP_vector.rows(K_a*L_a+(mm-1)*K_b*L_b+(kk-1)*L_b, K_a*L_a+(mm-1)*K_b*L_b+kk*L_b-1) = yy_temp;
+      GMP_vector.insert(GMP_vector.end(), yy_temp.begin(), yy_temp.end());
     }
   }
-
-  char numstr[21];
-  static int ii = 1;
-  sprintf(numstr, "%d", ii);
-  std::string prefix1 = "/tmp/GMP_vector_";
-  if (ii > 95000 && ii < 95011) {
-    std::string file_name1 = prefix1+numstr+".csv";
-    GMP_vector.save( file_name1, csv_ascii );    
-  }
-  ii++;
 }

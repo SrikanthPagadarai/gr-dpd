@@ -32,5 +32,6 @@ install(FILES
     signum_func.h
     gain_phase_calibrate.h
     postdistorter.h
-    stream_to_message.h DESTINATION include/dpd
+    stream_to_message.h 
+    phase_calibrate.h DESTINATION include/dpd
 )

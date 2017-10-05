@@ -5,6 +5,7 @@
   <category>[dpd]</category>
   <import>import dpd</import>
   <make>dpd.stream_to_gmp_vector($dpd_params)</make>  
+
   <param>
     <name>DPD Parameters</name>
     <key>dpd_params</key>

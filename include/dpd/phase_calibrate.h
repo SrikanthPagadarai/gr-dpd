@@ -18,40 +18,39 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef INCLUDED_DPD_STREAM_TO_GMP_VECTOR_IMPL_H
-#define INCLUDED_DPD_STREAM_TO_GMP_VECTOR_IMPL_H
 
-#include <dpd/stream_to_gmp_vector.h>
+#ifndef INCLUDED_DPD_PHASE_CALIBRATE_H
+#define INCLUDED_DPD_PHASE_CALIBRATE_H
 
-using std::vector;
+#include <dpd/api.h>
+#include <gnuradio/sync_block.h>
 
 namespace gr {
   namespace dpd {
 
-    class stream_to_gmp_vector_impl : public stream_to_gmp_vector
+    /*!
+     * \brief <+description of block+>
+     * \ingroup dpd
+     *
+     */
+    class DPD_API phase_calibrate : virtual public gr::sync_block
     {
-     private:
-      std::vector<int> d_dpd_params;
-      //consts to be assigned values in the constructor initialization list
-      const int K_a;
-      const int L_a;
-      const int K_b;
-      const int M_b;
-      const int L_b;
-      const int M;      
-     
      public:
-      stream_to_gmp_vector_impl(const std::vector<int> &dpd_params);
-      ~stream_to_gmp_vector_impl();
+      typedef boost::shared_ptr<phase_calibrate> sptr;
 
-      // Where all the action really happens
-      int work(int noutput_items,
-         gr_vector_const_void_star &input_items,
-         gr_vector_void_star &output_items);
+      /*!
+       * \brief Return a shared_ptr to a new instance of dpd::phase_calibrate.
+       *
+       * To avoid accidental use of raw pointers, dpd::phase_calibrate's
+       * constructor is in a private implementation
+       * class. dpd::phase_calibrate::make is the public interface for
+       * creating new instances.
+       */
+      static sptr make(int ref_len);
     };
 
   } // namespace dpd
 } // namespace gr
 
-#endif /* INCLUDED_DPD_STREAM_TO_GMP_VECTOR_IMPL_H */
+#endif /* INCLUDED_DPD_PHASE_CALIBRATE_H */
 

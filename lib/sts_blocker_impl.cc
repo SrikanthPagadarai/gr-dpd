@@ -47,8 +47,6 @@ namespace gr {
       set_tag_propagation_policy(TPP_DONT);
 
       d_expected_peaks = 5;
-      peaks = 0;
-      count = 0;	       
     }
 
     /*
@@ -57,6 +55,7 @@ namespace gr {
     sts_blocker_impl::~sts_blocker_impl()
     {
     }
+
 
     int
     sts_blocker_impl::general_work (int noutput_items,
@@ -73,11 +72,13 @@ namespace gr {
       const uint64_t nread = this->nitems_read(0);
 
       int ninput_items = std::min(ninput_items_[0], noutput_items);
+      static int peaks = 0;
 
       // container to hold tags
       std::vector<gr::tag_t> tags;
 
       int item = 0;
+      static int count = 0;	
       while (item < ninput_items) 
       {
         //get tag if the current sample has one
