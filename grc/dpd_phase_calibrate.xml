@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<block>
+  <name>Phase Calibrate</name>
+  <key>dpd_phase_calibrate</key>
+  <category>[dpd]</category>
+  <import>import dpd</import>
+  <make>dpd.phase_calibrate($ref_len)</make>
+
+  <param>
+    <name>Ref-Signal Length</name>
+    <key>ref_len</key>
+    <type>int</type>
+  </param>
+
+  <sink>
+    <name>samples</name>
+    <type>message</type>
+  </sink>
+
+  <sink>
+    <name>in</name>
+    <type>complex</type>
+  </sink>
+
+  <source>
+    <name>out</name>
+    <type>complex</type>
+  </source>
+</block>

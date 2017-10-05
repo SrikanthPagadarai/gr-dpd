@@ -256,7 +256,7 @@ namespace gr {
           // update weight-vector
           w_iMinus1 = w_iMinus1+(error/inv_sqrt_gamma_iMinus1)*g_vec_i;	    
 	
-          // prepare L_bar_iMinus1 for next iteration
+          // prepare L_bar for next iteration
           L_bar_iMinus1 = gr_complexd(one_over_sqrt_lambda, 0.0) * B_mat( span(1, M+M_bar), span(1, 2*M_bar) );          
 
           // send weight-vector to predistorter block in a message
