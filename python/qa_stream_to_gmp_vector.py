@@ -23,7 +23,7 @@ from gnuradio import gr, gr_unittest
 from gnuradio import blocks
 import dpd_swig as dpd
 
-class qa_polynomial_regressor_vector (gr_unittest.TestCase):
+class qa_stream_to_gmp_vector (gr_unittest.TestCase):
 
     def setUp (self):
         self.tb = gr.top_block ()
@@ -38,4 +38,4 @@ class qa_polynomial_regressor_vector (gr_unittest.TestCase):
 
 
 if __name__ == '__main__':
-    gr_unittest.run(qa_polynomial_regressor_vector, "qa_polynomial_regressor_vector.xml")
+    gr_unittest.run(qa_stream_to_gmp_vector, "qa_stream_to_gmp_vector.xml")
