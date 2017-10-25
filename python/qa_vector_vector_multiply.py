@@ -23,7 +23,7 @@ from gnuradio import gr, gr_unittest
 from gnuradio import blocks
 import dpd_swig as dpd
 
-class qa_predistorter (gr_unittest.TestCase):
+class qa_vector_vector_multiply (gr_unittest.TestCase):
 
     def setUp (self):
         self.tb = gr.top_block ()
@@ -38,4 +38,4 @@ class qa_predistorter (gr_unittest.TestCase):
 
 
 if __name__ == '__main__':
-    gr_unittest.run(qa_predistorter, "qa_predistorter.xml")
+    gr_unittest.run(qa_vector_vector_multiply, "qa_vector_vector_multiply.xml")

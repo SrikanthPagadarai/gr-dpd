@@ -18,37 +18,39 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef INCLUDED_DPD_PHASE_CALIBRATE_IMPL_H
-#define INCLUDED_DPD_PHASE_CALIBRATE_IMPL_H
 
-#include <dpd/phase_calibrate.h>
+#ifndef INCLUDED_DPD_VECTOR_VECTOR_MULTIPLY_H
+#define INCLUDED_DPD_VECTOR_VECTOR_MULTIPLY_H
+
+#include <dpd/api.h>
+#include <gnuradio/sync_block.h>
 
 namespace gr {
   namespace dpd {
 
-    class phase_calibrate_impl : public phase_calibrate
+    /*!
+     * \brief <+description of block+>
+     * \ingroup dpd
+     *
+     */
+    class DPD_API vector_vector_multiply : virtual public gr::sync_block
     {
-     private:
-      bool d_reference_acquired;
-      std::vector<gr_complex> d_reference_samples;
-      int d_ref_len, current_sample_index;
-      bool packet_start;
-      std::vector<gr::tag_t> tags; // container to hold tags
-
      public:
-      phase_calibrate_impl(int ref_len);
-      ~phase_calibrate_impl();
+      typedef boost::shared_ptr<vector_vector_multiply> sptr;
 
-      void get_reference(pmt::pmt_t P); 
-
-      // Where all the action really happens
-      int work(int noutput_items,
-         gr_vector_const_void_star &input_items,
-         gr_vector_void_star &output_items);
+      /*!
+       * \brief Return a shared_ptr to a new instance of dpd::vector_vector_multiply.
+       *
+       * To avoid accidental use of raw pointers, dpd::vector_vector_multiply's
+       * constructor is in a private implementation
+       * class. dpd::vector_vector_multiply::make is the public interface for
+       * creating new instances.
+       */
+      static sptr make(const std::vector<gr_complex> &const_vec, int vec_len);
     };
 
   } // namespace dpd
 } // namespace gr
 
-#endif /* INCLUDED_DPD_PHASE_CALIBRATE_IMPL_H */
+#endif /* INCLUDED_DPD_VECTOR_VECTOR_MULTIPLY_H */
 

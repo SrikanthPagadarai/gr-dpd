@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <block>
-  <name>Predistorter</name>
-  <key>dpd_predistorter</key>
+  <name>Predistorter (Training)</name>
+  <key>dpd_predistorter_training</key>
   <category>[dpd]</category>
   <import>import dpd</import>
-  <make>dpd.predistorter($NFFT, $cp_len, $ovx, $num_zero_syms, $M, $save_log)</make>
+  <make>dpd.predistorter_training($NFFT, $cp_len, $ovx, $num_zero_syms, $M, $save_log)</make>
 
   <param>
     <name>NFFT</name>

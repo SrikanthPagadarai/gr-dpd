@@ -18,39 +18,33 @@
  * Boston, MA 02110-1301, USA.
  */
 
+#ifndef INCLUDED_DPD_VECTOR_VECTOR_MULTIPLY_IMPL_H
+#define INCLUDED_DPD_VECTOR_VECTOR_MULTIPLY_IMPL_H
 
-#ifndef INCLUDED_DPD_PHASE_CALIBRATE_H
-#define INCLUDED_DPD_PHASE_CALIBRATE_H
-
-#include <dpd/api.h>
-#include <gnuradio/sync_block.h>
+#include <dpd/vector_vector_multiply.h>
+#include <armadillo>
 
 namespace gr {
   namespace dpd {
 
-    /*!
-     * \brief <+description of block+>
-     * \ingroup dpd
-     *
-     */
-    class DPD_API phase_calibrate : virtual public gr::sync_block
+    class vector_vector_multiply_impl : public vector_vector_multiply
     {
-     public:
-      typedef boost::shared_ptr<phase_calibrate> sptr;
+     private:
+      arma::cx_rowvec arma_const_vec;
+      int d_vec_len;
 
-      /*!
-       * \brief Return a shared_ptr to a new instance of dpd::phase_calibrate.
-       *
-       * To avoid accidental use of raw pointers, dpd::phase_calibrate's
-       * constructor is in a private implementation
-       * class. dpd::phase_calibrate::make is the public interface for
-       * creating new instances.
-       */
-      static sptr make(int ref_len);
+     public:
+      vector_vector_multiply_impl(const std::vector<gr_complex> &const_vec, int vec_len);
+      ~vector_vector_multiply_impl();
+
+      // Where all the action really happens
+      int work(int noutput_items,
+         gr_vector_const_void_star &input_items,
+         gr_vector_void_star &output_items);
     };
 
   } // namespace dpd
 } // namespace gr
 
-#endif /* INCLUDED_DPD_PHASE_CALIBRATE_H */
+#endif /* INCLUDED_DPD_VECTOR_VECTOR_MULTIPLY_IMPL_H */
 

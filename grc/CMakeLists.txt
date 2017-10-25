@@ -19,9 +19,8 @@
 install(FILES
     dpd_peak_detect.xml
     dpd_sts_blocker.xml
-    dpd_predistorter.xml
+    dpd_predistorter_training.xml
     dpd_stream_to_zero_padded_vector.xml
-    dpd_add_cp.xml
     dpd_Agilent_N1996A.xml
     dpd_stream_to_gmp_vector.xml
     dpd_signum_func.xml
@@ -35,5 +34,6 @@ install(FILES
     dpd_upsample.xml
     dpd_gr_dpd_elliptic_filter.xml
     dpd_stream_to_message.xml
-    dpd_phase_calibrate.xml DESTINATION share/gnuradio/grc/blocks
+    dpd_vector_vector_multiply.xml
+    DESTINATION share/gnuradio/grc/blocks
 )

@@ -24,14 +24,14 @@ install(FILES
     api.h
     peak_detect.h
     sts_blocker.h
-    predistorter.h
+    predistorter_training.h
     stream_to_zero_padded_vector.h
-    add_cp.h
     Agilent_N1996A.h
     stream_to_gmp_vector.h
     signum_func.h
     gain_phase_calibrate.h
     postdistorter.h
     stream_to_message.h 
-    phase_calibrate.h DESTINATION include/dpd
+    vector_vector_multiply.h
+    DESTINATION include/dpd
 )

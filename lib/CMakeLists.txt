@@ -27,16 +27,16 @@ link_directories(${Boost_LIBRARY_DIRS})
 list(APPEND dpd_sources
     peak_detect_impl.cc
     sts_blocker_impl.cc
-    predistorter_impl.cc
+    predistorter_training_impl.cc
     stream_to_zero_padded_vector_impl.cc
-    add_cp_impl.cc
     Agilent_N1996A_impl.cc
     stream_to_gmp_vector_impl.cc
     signum_func_impl.cc
     gain_phase_calibrate_impl.cc
     postdistorter_impl.cc
     stream_to_message_impl.cc
-    phase_calibrate_impl.cc )
+    vector_vector_multiply_impl.cc
+    )
 
 set(dpd_sources "${dpd_sources}" PARENT_SCOPE)
 if(NOT dpd_sources)

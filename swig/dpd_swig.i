@@ -10,16 +10,15 @@
 %{
 #include "dpd/peak_detect.h"
 #include "dpd/sts_blocker.h"
-#include "dpd/predistorter.h"
+#include "dpd/predistorter_training.h"
 #include "dpd/stream_to_zero_padded_vector.h"
-#include "dpd/add_cp.h"
 #include "dpd/Agilent_N1996A.h"
 #include "dpd/stream_to_gmp_vector.h"
 #include "dpd/signum_func.h"
 #include "dpd/gain_phase_calibrate.h"
-#include "dpd/phase_calibrate.h"
 #include "dpd/postdistorter.h"
 #include "dpd/stream_to_message.h"
+#include "dpd/vector_vector_multiply.h"
 %}
 
 
@@ -27,12 +26,11 @@
 GR_SWIG_BLOCK_MAGIC2(dpd, peak_detect);
 %include "dpd/sts_blocker.h"
 GR_SWIG_BLOCK_MAGIC2(dpd, sts_blocker);
-%include "dpd/predistorter.h"
-GR_SWIG_BLOCK_MAGIC2(dpd, predistorter);
+%include "dpd/predistorter_training.h"
+GR_SWIG_BLOCK_MAGIC2(dpd, predistorter_training);
 %include "dpd/stream_to_zero_padded_vector.h"
 GR_SWIG_BLOCK_MAGIC2(dpd, stream_to_zero_padded_vector);
-%include "dpd/add_cp.h"
-GR_SWIG_BLOCK_MAGIC2(dpd, add_cp);
+
 %include "dpd/Agilent_N1996A.h"
 GR_SWIG_BLOCK_MAGIC2(dpd, Agilent_N1996A);
 %include "dpd/stream_to_gmp_vector.h"
@@ -41,9 +39,11 @@ GR_SWIG_BLOCK_MAGIC2(dpd, stream_to_gmp_vector);
 GR_SWIG_BLOCK_MAGIC2(dpd, signum_func);
 %include "dpd/gain_phase_calibrate.h"
 GR_SWIG_BLOCK_MAGIC2(dpd, gain_phase_calibrate);
-%include "dpd/phase_calibrate.h"
-GR_SWIG_BLOCK_MAGIC2(dpd, phase_calibrate);
+
 %include "dpd/postdistorter.h"
 GR_SWIG_BLOCK_MAGIC2(dpd, postdistorter);
 %include "dpd/stream_to_message.h"
 GR_SWIG_BLOCK_MAGIC2(dpd, stream_to_message);
+%include "dpd/vector_vector_multiply.h"
+GR_SWIG_BLOCK_MAGIC2(dpd, vector_vector_multiply);
+
