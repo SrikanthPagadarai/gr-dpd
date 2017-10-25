@@ -1,9 +1,9 @@
 <block>
-  <name>gr-dpd Elliptic Filter</name>
-  <key>gr_dpd_elliptic_filter</key>
+  <name>8x Elliptic Filter</name>
+  <key>eightX_elliptic_filter</key>
   <category>[dpd]</category>
   <import>import dpd</import>
-  <make>dpd.gr_dpd_elliptic_filter()</make>
+  <make>dpd.eightX_elliptic_filter()</make>
   <sink>
     <name>in</name>
     <type>complex</type>

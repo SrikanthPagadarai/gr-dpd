@@ -29,20 +29,20 @@ namespace gr {
   namespace dpd {
 
     peak_detect::sptr
-    peak_detect::make(int peak_cond)
+    peak_detect::make(int peak_thresh)
     {
       return gnuradio::get_initial_sptr
-        (new peak_detect_impl(peak_cond));
+        (new peak_detect_impl(peak_thresh));
     }
 
     /*
      * The private constructor
      */
-    peak_detect_impl::peak_detect_impl(int peak_cond)
+    peak_detect_impl::peak_detect_impl(int peak_thresh)
       : gr::sync_block("peak_detect",
               gr::io_signature::make(1, 2, sizeof(gr_complex)),
               gr::io_signature::make(1, 1, sizeof(gr_complex))),
-              d_peak_cond(peak_cond)
+              d_peak_thresh(peak_thresh)
     {
       prev2_peak = 0.0;
       prev1_peak = 0.0;
@@ -66,42 +66,38 @@ namespace gr {
     	gr_vector_const_void_star &input_items,
     	gr_vector_void_star &output_items)
     {
-        const gr_complex *in_corr = (const gr_complex *) input_items[0];
-        const gr_complex *in = (const gr_complex *) input_items[1];
-        gr_complex *out = (gr_complex *) output_items[0];
+      const gr_complex *in_corr = (const gr_complex *) input_items[0];
+      const gr_complex *in = (const gr_complex *) input_items[1];
+      gr_complex *out = (gr_complex *) output_items[0];
 
-        // Do <+signal processing+>
-        for (int i = 0; i < noutput_items; i++) 
-        {
-            out[i] = in[i];
+      // Do <+signal processing+>
+      for (int i = 0; i < noutput_items; i++) 
+      {
+        out[i] = in[i];
     
-            curr_peak = std::abs(std::real(in_corr[i]));
-            if( ( curr_peak > d_peak_cond ) && (peak_count < 5) )
-            { 
-               if ( (prev2_peak < prev1_peak) && (curr_peak < prev1_peak) )
-               { 
-                 /*              
-                 std::cout << "prev2_peak: " << prev2_peak << std::endl;
-                 std::cout << "prev1_peak: " << prev1_peak << std::endl;
-                 std::cout << "curr_peak: " << curr_peak << std::endl;*/
-                 GR_LOG_DEBUG(d_logger, boost::format("Detected peak on sample %1%")%(nitems_written(0)+i-1));                 
-                 peak_count++;
+        curr_peak = std::abs(std::real(in_corr[i]));
+        if ( ( curr_peak > d_peak_thresh ) && (peak_count < 5) )
+        { 
+          if ( (prev2_peak < prev1_peak) && (curr_peak < prev1_peak) )
+          { 
+            peak_count++;
+            std::cout << std::endl;
+            std::cout << "Estimate Integer Delay: Peak #" << peak_count << " detected on sample #" << nitems_written(0)+i-1 << std::endl;                             
   
-                 tag_t tag;
-                 tag.offset = nitems_written(0)+i;
-                 tag.key = pmt::mp("STS found");
-                 tag.value = pmt::from_long(peak_count);
-                 add_item_tag(0, tag);
-               }
-               prev2_peak = prev1_peak;
-               prev1_peak = curr_peak;               
-            } 
-        }
+            tag_t tag;
+            tag.offset = nitems_written(0)+i;
+            tag.key = pmt::mp("STS found");
+            tag.value = pmt::from_long(peak_count);
+            add_item_tag(0, tag);
+          }
+          prev2_peak = prev1_peak;
+          prev1_peak = curr_peak;               
+        } 
+      }
 
-        // Tell runtime system how many output items we produced.
-        return noutput_items;
+      // Tell runtime system how many output items we produced.
+      return noutput_items;
     }
-
   } /* namespace dpd */
 } /* namespace gr */
 

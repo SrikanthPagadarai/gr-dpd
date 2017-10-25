@@ -32,7 +32,8 @@ install(FILES
     dpd_basic_qpskofdm_tx_withoutCP.xml
     dpd_STS_generator_withoutCP.xml
     dpd_upsample.xml
-    dpd_gr_dpd_elliptic_filter.xml
+    dpd_sixX_elliptic_filter.xml
+    dpd_eightX_elliptic_filter.xml
     dpd_stream_to_message.xml
     dpd_vector_vector_multiply.xml
     DESTINATION share/gnuradio/grc/blocks

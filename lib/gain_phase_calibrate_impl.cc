@@ -45,6 +45,11 @@ namespace gr {
               gr::io_signature::make(1, 1, sizeof(gr_complex))),
               d_ref_len(ref_len)
     { 
+      previous_cfactor = gr_complex(0.0, 0.0);
+
+      relative_sample_index = 0; 
+      packet_start = false;        
+
       // don't propagate upstream tags
       set_tag_propagation_policy(TPP_DONT);
 
@@ -54,9 +59,7 @@ namespace gr {
       // Setup input port
       message_port_register_in(pmt::mp("samples"));
       set_msg_handler(pmt::mp("samples"),
-      boost::bind(&gain_phase_calibrate_impl::set_reference, this, _1));
-
-      output_file.open("/home/radio1/Documents/gr-dpd/examples/current_cfactor.txt", std::ios_base::app);
+      boost::bind(&gain_phase_calibrate_impl::set_reference, this, _1));      
     }
 
     /*
@@ -87,65 +90,62 @@ namespace gr {
       gr_complex *out = (gr_complex *) output_items[0];
 
       // Do <+signal processing+>
-      gr_complex current_cfactor;
-      // copy private variables accessed by the asynchronous message handler block
-      bool reference_acquired = d_reference_acquired;
-      std::vector<gr_complex> reference_samples = d_reference_samples;
-
       static bool gain_phase_calibrated;
-      	
+      // copy private variables accessed by the asynchronous message handler block
+      reference_acquired = d_reference_acquired;
+      reference_samples = d_reference_samples;
+
       // get number of samples consumed since the beginning of time by this block
       // from port 0
-      const uint64_t nread = this->nitems_read(0);
-      int ninput_items = std::min(ninput_items_[0], noutput_items);
-      int item = 0; 
-      int nitems_to_skip = 0; 
-      while (item < ninput_items) {
-
-        // keep track of the current sample index relative to the OFDM block length
-        static int current_sample_index = 0;
-        static bool packet_start = false;
-
-        // container to hold tags
-        std::vector<gr::tag_t> tags;
-        //get tag if the current sample has one
+      nread = this->nitems_read(0);
+      ninput_items = std::min(ninput_items_[0], noutput_items);
+      item = 0; 
+      nitems_to_skip = 0; 
+      while (item < ninput_items) 
+      {  
+        // get tag if the current sample has one
         get_tags_in_range(tags, 0, nread+item, nread+item+1);
 
-        if (!tags.size()) {
-          current_sample_index++; 
-        }
-        else {
+        // keep track of the relative sample index
+        if (!tags.size()) 
+          relative_sample_index++;         
+        else 
+        {
           packet_start = true;
-          current_sample_index = 0;	
+          relative_sample_index = 0; 
         }
+ 
+        if (gain_phase_calibrated) 
+        {
 
-        static gr_complex cfactor;
-        static gr_complex previous_cfactor = gr_complex(0.0, 0.0);
+          /*current_cfactor = reference_samples[relative_sample_index]/in[item];
+          cfactor = gr_complex(0.5, 0.0)*(previous_cfactor + current_cfactor); */
 
-	 	
-        if (gain_phase_calibrated) {
+          if ( !almost_equals_zero(std::real(in[item]), 5) && !almost_equals_zero(std::imag(in[item]), 5) )
+            previous_cfactor = cfactor;
+
           out[item-nitems_to_skip] = cfactor*in[item];
           item++;
         }
-        else {          
-          if ( reference_acquired && packet_start && (current_sample_index < d_ref_len) ) 
+        else 
+        {       
+          if ( reference_acquired && packet_start && (relative_sample_index < d_ref_len) ) 
           {
-            current_cfactor = reference_samples[current_sample_index]/in[item];
-            cfactor = ( gr_complex(current_sample_index, 0.0)*previous_cfactor + current_cfactor )/gr_complex(current_sample_index+1, 0.0); 
+            current_cfactor = reference_samples[relative_sample_index]/in[item];
+            cfactor = ( gr_complex(relative_sample_index, 0.0)*previous_cfactor + current_cfactor )/gr_complex(relative_sample_index+1, 0.0); 
 
-            if ( !almost_equals_zero(std::real(in[item]), 4) && !almost_equals_zero(std::imag(in[item]), 4) )
+            if ( !almost_equals_zero(std::real(in[item]), 5) && !almost_equals_zero(std::imag(in[item]), 5) )
               previous_cfactor = cfactor;
+
             item++;
             nitems_to_skip++;
 
-            // output_file << std::real(cfactor) << '\n' << std::real(in[item]) << '\n';
-            output_file << current_sample_index << '\n';
-            
-            if (current_sample_index == d_ref_len-1) {
+            if (relative_sample_index == d_ref_len-1) 
+            {
               gain_phase_calibrated = true;
 
               std::cout << std::endl;
-              std::cout << "Gain/phase calibration factor applied: " << cfactor << std::endl;
+              std::cout << "Complex gain applied: " << cfactor << std::endl;
               std::cout << "Gain/phase calibration begin... " << std::endl;
               std::cout << std::endl;             
             }
@@ -156,22 +156,17 @@ namespace gr {
       // consume all regardless of items copied
       consume_each(ninput_items);
 
-      if (gain_phase_calibrated) {
+      if (gain_phase_calibrated) 
+      {
         // Tell runtime system how many output items we produced.
-        if (nitems_to_skip > 0) {
-          // std::cout << "nitems_to_skip: " << nitems_to_skip << std::endl;
+        if (nitems_to_skip > 0) 
           return (ninput_items-nitems_to_skip);
-        }
         else 
-          return (ninput_items);
-		
+          return (ninput_items);		
       }
-      else {
-        // std::cout << "gain_phase_calibrated: " << gain_phase_calibrated << std::endl;
+      else 
         return 0;
-      }
     }
-
   } /* namespace dpd */
 } /* namespace gr */
 

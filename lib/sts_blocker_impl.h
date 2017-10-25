@@ -29,8 +29,10 @@ namespace gr {
     class sts_blocker_impl : public sts_blocker
     {
      private:
-      int d_cp_len;
-      int d_expected_peaks;
+      int d_expected_peaks, peaks, items_to_copy;
+      std::vector<gr::tag_t> tags; // container to hold tags
+      const char *iptr;
+      char *optr;
 
      public:
       sts_blocker_impl();

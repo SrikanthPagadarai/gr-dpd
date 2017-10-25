@@ -4,14 +4,20 @@
   <category>[dpd]</category>
   <import>import dpd</import>
   <make>dpd.pa_wiener_model()</make>
+
   <sink>
     <name>in</name>
     <type>complex</type>
     <vlen>1</vlen>
   </sink>
+
   <source>
     <name>out</name>
     <type>complex</type>
     <vlen>1</vlen>
   </source>
+
+  <doc>
+This block non-linearly distorts an input signal according to the Wiener Model. The coefficients are based on a Class AB power amplifier as reported in Lei Ding, "Digital Predistortion of Power Amplifiers for Wireless Applications", PhD thesis, Georgia Institute of Technology, March 2004.
+  </doc>
 </block>

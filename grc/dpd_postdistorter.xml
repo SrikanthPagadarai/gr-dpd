@@ -38,12 +38,7 @@
   </sink>
 
   <source>
-	<name>taps</name>
-	<type>message</type>
-  </source>
-
-  <source>
-    <name>out</name>
-    <type>complex</type>
+    <name>taps</name>
+    <type>message</type>
   </source>
 </block>

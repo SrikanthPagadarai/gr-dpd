@@ -27,7 +27,7 @@ void gen_GMPvector(const gr_complex *const in, int item,
   // stacking L_a elements in reverse order
   cx_fcolvec y_vec_arma1(L_a, fill::zeros); 
   for (int ii = L_a-1; ii >= 0; ii--) 
-    y_vec_arma1(ii) = gr_complex(0.1,0.0)*in[item-ii]; 
+    y_vec_arma1(ii) = in[item-ii]; 
   GMP_vector.rows(0, L_a-1) = y_vec_arma1;  
 
   //store abs() of y_vec_arma1
@@ -48,7 +48,7 @@ void gen_GMPvector(const gr_complex *const in, int item,
   // stacking L_b+M_b elements in reverse order
   cx_fcolvec y_vec_arma23(L_b+M_b, fill::zeros); 
   for (int ii = L_b+M_b-1; ii >= 0; ii--) 
-    y_vec_arma23(ii) = gr_complex(0.1,0.0)*in[item-ii]; 
+    y_vec_arma23(ii) = in[item-ii]; 
 
   // L_b signal elements
   cx_fcolvec y_vec_arma2 = y_vec_arma23.rows(0, L_b-1);
@@ -71,14 +71,4 @@ void gen_GMPvector(const gr_complex *const in, int item,
       GMP_vector.rows(K_a*L_a+(mm-1)*K_b*L_b+(kk-1)*L_b, K_a*L_a+(mm-1)*K_b*L_b+kk*L_b-1) = yy_temp;
     }
   }
-
-  char numstr[21];
-  static int ii = 1;
-  sprintf(numstr, "%d", ii);
-  std::string prefix1 = "/tmp/GMP_vector_";
-  if (ii > 95000 && ii < 95011) {
-    std::string file_name1 = prefix1+numstr+".csv";
-    GMP_vector.save( file_name1, csv_ascii );    
-  }
-  ii++;
 }

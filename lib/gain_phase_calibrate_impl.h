@@ -22,7 +22,6 @@
 #define INCLUDED_DPD_GAIN_PHASE_CALIBRATE_IMPL_H
 
 #include <dpd/gain_phase_calibrate.h>
-#include <fstream>
 
 namespace gr {
   namespace dpd {
@@ -30,10 +29,12 @@ namespace gr {
     class gain_phase_calibrate_impl : public gain_phase_calibrate
     {
      private:
-       bool d_reference_acquired;
-       std::vector<gr_complex> d_reference_samples;
-       int d_ref_len;
-       std::ofstream output_file;
+       gr_complex cfactor, previous_cfactor, current_cfactor;    
+       int relative_sample_index, ninput_items, d_ref_len, item, nitems_to_skip;    
+       uint64_t nread;
+       bool d_reference_acquired, reference_acquired, packet_start;
+       std::vector<gr::tag_t> tags; // container to hold tags        
+       std::vector<gr_complex> d_reference_samples, reference_samples;
 
      public:
       gain_phase_calibrate_impl(int ref_len);

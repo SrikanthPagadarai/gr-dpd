@@ -1,0 +1,17 @@
+<block>
+  <name>6x Elliptic Filter</name>
+  <key>sixX_elliptic_filter</key>
+  <category>[dpd]</category>
+  <import>import dpd</import>
+  <make>dpd.sixX_elliptic_filter()</make>
+  <sink>
+    <name>in</name>
+    <type>complex</type>
+    <vlen>1</vlen>
+  </sink>
+  <source>
+    <name>out</name>
+    <type>complex</type>
+    <vlen>1</vlen>
+  </source>  
+</block>

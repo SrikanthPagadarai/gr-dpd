@@ -47,6 +47,7 @@ namespace gr {
       set_tag_propagation_policy(TPP_DONT);
 
       d_expected_peaks = 5;
+      peaks = 0;
     }
 
     /*
@@ -55,7 +56,6 @@ namespace gr {
     sts_blocker_impl::~sts_blocker_impl()
     {
     }
-
 
     int
     sts_blocker_impl::general_work (int noutput_items,
@@ -71,58 +71,40 @@ namespace gr {
       // from port 0
       const uint64_t nread = this->nitems_read(0);
 
-      int ninput_items = std::min(ninput_items_[0], noutput_items);
-      static int peaks = 0;
-
-      // container to hold tags
-      std::vector<gr::tag_t> tags;
-
+      int ninput_items = std::min(ninput_items_[0], noutput_items);                
       int item = 0;
-      static int count = 0;	
       while (item < ninput_items) 
-      {
-        //get tag if the current sample has one
-        get_tags_in_range(tags, 0, nread+item, nread+item+1);
-
-        if (tags.size()) 
+      {        	
+        if (peaks == d_expected_peaks) 
         {
-          peaks++;
-          std::cout << "peaks detected at STS-Blocker: " << peaks << std::endl;
-
-          for (int k = 0; k<tags.size(); k++) 
-            std::cout<<"Key: "<<pmt::symbol_to_string(tags[k].key)<<std::endl;
-
-          if (peaks == d_expected_peaks) 
-          {
-            std::cout << "peaks: " << peaks << std::endl;
-            item++;
-          }
-        }
-
-		
-        if (peaks < d_expected_peaks) 
-        {
-          item++;
-        }
-        else 
-        {
-          if (count == 0) 
-          {
-            std::cout << "nread+item: " << nread+item << std::endl;
-            count++;
-          }
-
-          int n_to_copy = ninput_items - item;
-
-          const char *iptr = (const char *)&(in[item]);
-          char *optr = (char *)&(out[0]);
-          memcpy(optr, iptr, n_to_copy*sizeof(gr_complex));
+          items_to_copy = ninput_items-item;
+          iptr = (const char *)&(in[item]);                    
+          optr = (char *)&(out[0]);
+          memcpy(optr, iptr, items_to_copy*sizeof(gr_complex));          
 
           // consume all regardless of items copied
           consume_each(ninput_items);
           // Tell runtime system how many output items we produced.
-          return n_to_copy;
+          return items_to_copy;
         }
+        else 
+        {
+          // get tag if the current sample has one
+          get_tags_in_range(tags, 0, nread+item, nread+item+1);
+
+          // tag indicates correlation peak on the previous sample
+          if (tags.size()) 
+          {
+            peaks++;
+            std::cout << "STS-Blocker: Peak #" << peaks << " detected on sample #" << nread+item-1 << std::endl;          
+
+            // upon detecting the expected number of peaks,
+            // the one-sample delay needs to be taken into account
+            if (peaks == d_expected_peaks) 
+              item--;
+          }
+          item++;
+        }            	
       }
 
       // Tell runtime system how many input items we consumed on
