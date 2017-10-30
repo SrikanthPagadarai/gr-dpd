@@ -46,7 +46,7 @@ namespace gr {
        * class. dpd::postdistorter::make is the public interface for
        * creating new instances.
        */
-      static sptr make(const std::vector<int> &dpd_params, int save_log);
+      static sptr make(const std::vector<int> &dpd_params, int iter_limit, int save_log);
     };
 
   } // namespace dpd

@@ -677,7 +677,7 @@
     </param>
     <param>
       <key>value4</key>
-      <value>100e6/128.0</value>
+      <value>100e6/100.0</value>
     </param>
     <param>
       <key>value1</key>
@@ -762,7 +762,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>210</value>
+      <value>200</value>
     </param>
   </block>
   <block>
@@ -867,7 +867,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(184, 812)</value>
+      <value>(304, 812)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1071,7 +1071,7 @@
     </param>
     <param>
       <key>file</key>
-      <value>/tmp/ofdm_input.bin</value>
+      <value>/tmp/ofdm_input_working.bin</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -1759,6 +1759,10 @@
     <param>
       <key>id</key>
       <value>dpd_postdistorter_0</value>
+    </param>
+    <param>
+      <key>iter_limit</key>
+      <value>1000</value>
     </param>
     <param>
       <key>maxoutbuf</key>

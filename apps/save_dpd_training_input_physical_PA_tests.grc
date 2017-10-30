@@ -343,7 +343,7 @@
     </param>
     <param>
       <key>value7</key>
-      <value>30</value>
+      <value>15</value>
     </param>
     <param>
       <key>value2</key>
@@ -596,7 +596,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1104, 184)</value>
+      <value>(1112, 184)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -647,7 +647,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(896, 260)</value>
+      <value>(880, 284)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -698,11 +698,11 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1048, 316)</value>
+      <value>(952, 548)</value>
     </param>
     <param>
       <key>_rotation</key>
-      <value>0</value>
+      <value>180</value>
     </param>
     <param>
       <key>id</key>
@@ -745,11 +745,62 @@
     </param>
     <param>
       <key>file</key>
+      <value>/tmp/ofdm_no_cp_input.bin</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(248, 492)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>blocks_file_sink_0_0_1</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>complex</value>
+    </param>
+    <param>
+      <key>unbuffered</key>
+      <value>False</value>
+    </param>
+    <param>
+      <key>vlen</key>
+      <value>TxParams.NFFT</value>
+    </param>
+  </block>
+  <block>
+    <key>blocks_file_sink</key>
+    <param>
+      <key>append</key>
+      <value>False</value>
+    </param>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>file</key>
       <value>/tmp/ofdm_gmp_input.bin</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(808, 448)</value>
+      <value>(464, 448)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -894,11 +945,11 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1056, 396)</value>
+      <value>(960, 468)</value>
     </param>
     <param>
       <key>_rotation</key>
-      <value>0</value>
+      <value>180</value>
     </param>
     <param>
       <key>id</key>
@@ -1059,11 +1110,11 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>1</value>
+      <value>True</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(888, 204)</value>
+      <value>(864, 204)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1071,7 +1122,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>dpd_stream_to_gmp_vector_0_0</value>
+      <value>dpd_stream_to_gmp_vector_0</value>
     </param>
     <param>
       <key>maxoutbuf</key>
@@ -1106,7 +1157,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1040, 468)</value>
+      <value>(720, 468)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1212,84 +1263,6 @@
     </param>
   </block>
   <block>
-    <key>eightX_elliptic_filter</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(680, 208)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>eightX_elliptic_filter_0</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-  </block>
-  <block>
-    <key>eightX_elliptic_filter</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(816, 400)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>eightX_elliptic_filter_1</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-  </block>
-  <block>
     <key>sixX_elliptic_filter</key>
     <param>
       <key>alias</key>
@@ -1309,7 +1282,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(680, 128)</value>
+      <value>(680, 208)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1348,7 +1321,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(808, 344)</value>
+      <value>(928, 400)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1370,6 +1343,12 @@
   <connection>
     <source_block_id>STS_generator_withoutCP_0</source_block_id>
     <sink_block_id>digital_ofdm_cyclic_prefixer_0_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>basic_qpskofdm_tx_withoutCP_0</source_block_id>
+    <sink_block_id>blocks_file_sink_0_0_1</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
@@ -1410,7 +1389,7 @@
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>dpd_stream_to_gmp_vector_0_0</source_block_id>
+    <source_block_id>dpd_stream_to_gmp_vector_0</source_block_id>
     <sink_block_id>blocks_file_sink_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
@@ -1423,19 +1402,7 @@
   </connection>
   <connection>
     <source_block_id>dpd_upsample_0</source_block_id>
-    <sink_block_id>eightX_elliptic_filter_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>dpd_upsample_0</source_block_id>
     <sink_block_id>sixX_elliptic_filter_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>dpd_upsample_0_0</source_block_id>
-    <sink_block_id>eightX_elliptic_filter_1</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
@@ -1446,30 +1413,6 @@
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>eightX_elliptic_filter_0</source_block_id>
-    <sink_block_id>blocks_file_sink_0_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>eightX_elliptic_filter_0</source_block_id>
-    <sink_block_id>dpd_stream_to_gmp_vector_0_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>eightX_elliptic_filter_1</source_block_id>
-    <sink_block_id>blocks_file_sink_0_0_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>eightX_elliptic_filter_1</source_block_id>
-    <sink_block_id>blocks_throttle_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
     <source_block_id>sixX_elliptic_filter_0</source_block_id>
     <sink_block_id>blocks_file_sink_0_0</sink_block_id>
     <source_key>0</source_key>
@@ -1477,7 +1420,7 @@
   </connection>
   <connection>
     <source_block_id>sixX_elliptic_filter_0</source_block_id>
-    <sink_block_id>dpd_stream_to_gmp_vector_0_0</sink_block_id>
+    <sink_block_id>dpd_stream_to_gmp_vector_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>

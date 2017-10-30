@@ -47,7 +47,7 @@ namespace gr {
       std::vector<gr_complexd> taps;
       int relative_sample_index, current_ofdm_block_index;       
       std::ofstream log_file; 
-      int d_save_log, iteration;      
+      int d_save_log, iteration, d_iter_limit;      
 
       // Fast-RLS parameter declaration
       double lambda, one_over_sqrt_lambda, eta, inv_sqrt_gamma_iMinus1;
@@ -57,7 +57,7 @@ namespace gr {
       cx_fmat y;      
 
      public:
-      postdistorter_impl(const std::vector<int> &dpd_params, int save_log);
+      postdistorter_impl(const std::vector<int> &dpd_params, int iter_limit, int save_log);
       ~postdistorter_impl();
 
       void get_PA_input(pmt::pmt_t P);

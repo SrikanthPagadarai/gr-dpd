@@ -4,13 +4,18 @@
   <key>dpd_postdistorter</key>
   <category>[dpd]</category>
   <import>import dpd</import>
-  <make>dpd.postdistorter($dpd_params, $save_log)</make>
+  <make>dpd.postdistorter($dpd_params, $iter_limit, $save_log)</make>
 
   <param>
     <name>DPD Parameters</name>
     <key>dpd_params</key>
     <value>(0,0,0,0,0)</value>
     <type>raw</type>
+  </param>
+  <param>
+    <name>Iteration Limit</name>
+    <key>iter_limit</key>
+    <type>int</type>
   </param>
   <param>
     <name>Save log file?</name>

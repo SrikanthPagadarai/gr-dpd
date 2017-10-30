@@ -118,8 +118,8 @@ namespace gr {
         if (gain_phase_calibrated) 
         {
 
-          /*current_cfactor = reference_samples[relative_sample_index]/in[item];
-          cfactor = gr_complex(0.5, 0.0)*(previous_cfactor + current_cfactor); */
+          current_cfactor = reference_samples[relative_sample_index]/in[item];
+          cfactor = gr_complex(0.5, 0.0)*(previous_cfactor + current_cfactor); 
 
           if ( !almost_equals_zero(std::real(in[item]), 5) && !almost_equals_zero(std::imag(in[item]), 5) )
             previous_cfactor = cfactor;
@@ -146,6 +146,7 @@ namespace gr {
 
               std::cout << std::endl;
               std::cout << "Complex gain applied: " << cfactor << std::endl;
+              std::cout << "Absolute value of complex gain applied: " << std::abs(cfactor) << std::endl;
               std::cout << "Gain/phase calibration begin... " << std::endl;
               std::cout << std::endl;             
             }

@@ -66,7 +66,7 @@ namespace gr {
       relative_sample_index = 0; 
       sent_sample_index = 0;
       current_ofdm_block_index = -1*d_num_zero_syms-2;     
-      nskip = (d_NFFT+d_cp_len)*d_ovx*d_num_zero_syms + (d_NFFT+d_cp_len)*d_ovx;    
+      nskip = (d_NFFT+d_cp_len)*d_ovx*d_num_zero_syms + (d_NFFT+d_cp_len)*d_ovx*2;    
 
       // don't propagate upstream tags
       set_tag_propagation_policy(TPP_DONT);

@@ -46,16 +46,16 @@ namespace gr {
   namespace dpd {
 
     postdistorter::sptr
-    postdistorter::make(const std::vector<int> &dpd_params, int save_log)
+    postdistorter::make(const std::vector<int> &dpd_params, int iter_limit, int save_log)
     {
       return gnuradio::get_initial_sptr
-        (new postdistorter_impl(dpd_params, save_log));
+        (new postdistorter_impl(dpd_params, iter_limit, save_log));
     }
 
     /*
      * The private constructor
      */
-    postdistorter_impl::postdistorter_impl(const std::vector<int> &dpd_params, int save_log)
+    postdistorter_impl::postdistorter_impl(const std::vector<int> &dpd_params, int iter_limit, int save_log)
       : gr::sync_block("postdistorter",
               gr::io_signature::make(1, 1, sizeof(gr_complex)),
               gr::io_signature::make(0, 0, 0)),
@@ -67,6 +67,7 @@ namespace gr {
               L_b(d_dpd_params[4]),
               M(dpd_params[0]*dpd_params[1] + dpd_params[2]*dpd_params[3]*dpd_params[4]),
               M_bar(dpd_params[0] + dpd_params[2]*dpd_params[3]),
+              d_iter_limit(iter_limit), 
               d_save_log(save_log)          
     {
       d_ack_predistorter_updated = false;
@@ -81,8 +82,7 @@ namespace gr {
       
       relative_sample_index = 0; // keep track of the current sample index relative to the OFDM block length
       current_ofdm_block_index = -1; // keep track of the OFDM block index from which a certain sample is sent       
-      iteration = 1;
-      error = gr_complex(0.1, 0.0);
+      iteration = 1;      
 
       for (int ii = 0; ii < sreg_len; ii++)   
         sreg[ii]=0.0;
@@ -218,8 +218,7 @@ namespace gr {
           gauss_smooth(sr1, pa_input_smooth);
           sr2[0] = in[item];
           gauss_smooth(sr2, pa_output_smooth);
-          std::cout << "Iteration Number: " << iteration << std::endl;	    
-          iteration++;
+          std::cout << "Iteration Number: " << iteration << std::endl;	              
 
 
 
@@ -258,7 +257,7 @@ namespace gr {
     
           // time-update for 1/sqrt(gamma)
           inv_sqrt_gamma_iMinus1 = real(B_mat(0, 0)); // imag(B_mat(0, 0)) will be ~= 0.0          
-          // std::cout << "inv_sqrt_gamma_iMinus1: " << inv_sqrt_gamma_iMinus1 << std::endl;
+          std::cout << "inv_sqrt_gamma_iMinus1: " << inv_sqrt_gamma_iMinus1 << std::endl;
           	
           // time-update for g-vector
           g = B_mat(span(1, M+M_bar), 0);    
@@ -281,8 +280,13 @@ namespace gr {
           pmt::pmt_t P_c32vector_taps = pmt::init_c64vector(M, taps);
           message_port_pub(pmt::mp("taps"), P_c32vector_taps);
 
-          w_iMinus1.save( "/tmp/predistorter_taps.csv", csv_ascii );
- 
+          iteration++;
+          if ( iteration == d_iter_limit ) 
+          {
+            w_iMinus1.save( "/tmp/predistorter_taps.csv", csv_ascii );
+            return(-1);
+          }
+          
           ack_predistorter_updated = false;
         } 
       }

@@ -253,15 +253,15 @@
     </param>
     <param>
       <key>value1</key>
-      <value>7</value>
+      <value>3</value>
     </param>
     <param>
       <key>value4</key>
-      <value>1</value>
+      <value>3</value>
     </param>
     <param>
       <key>value3</key>
-      <value>5</value>
+      <value>3</value>
     </param>
   </block>
   <block>
@@ -568,7 +568,7 @@
     </param>
     <param>
       <key>const</key>
-      <value>23</value>
+      <value>15</value>
     </param>
     <param>
       <key>affinity</key>
@@ -893,7 +893,7 @@
     </param>
     <param>
       <key>const_vec</key>
-      <value>predistorter.taps</value>
+      <value>[0.770478081630342 - 0.0358047143326525j,-0.139064720768163 + 0.0761033546294798j,-0.115983390553668 - 0.0396552355925782j,-0.168507285276028 + 0.00312028903286864j,-0.704731996015752 + 0.167183504823824j,0.497851855103730 + 0.0527436800377912j,0.383731763311656 - 0.141237662928213j,0.170292752117374 - 0.0308958329913596j,0.104957401726190 + 0.0108343818204405j,0.0714101835078802 - 0.0256830428407858j,0.0353183391564805 - 0.00856162739973423j,0.0117741313563801 - 0.000458126787214519j,0.00935770721013742 - 0.00335431498122289j,0.00460588320503560 - 0.00129989894431385j,0.00103928460619311 - 0.000257022689605434j,0.785933467229666 - 0.222103499609500j,-0.572133680920166 - 0.128109097277676j,0.190955023737689 - 0.0246451661588450j,0.190359499699951 - 0.103486776182189j,-0.0132697507065035 - 0.00305500734595877j,0.0138141073399991 + 0.0186353855082855j,0.0374210060155578 - 0.0160433663991537j,0.00499983629039154 - 0.00172324851051302j,-0.000360086570041187 + 0.000151549376623183j,0.00492802323075394 - 0.00197632397856947j,0.000725407140847972 - 0.000366669802781261j,-0.000328111423995048 - 0.000244803698703770j,0.000556771184976838 - 0.000221113741905687j,6.92199496747395e-05 - 5.37035632363670e-05j,-6.29187172059319e-05 - 4.99594253441116e-05j,0.386735494967634 + 0.153433103807025j,-0.626723794723398 - 0.164684987531127j,-0.0108990242402296 + 0.0981156293099466j,-0.0634457923618570 - 0.00353184319348384j,-0.138606709848077 + 0.0235946064851100j,-0.00988182226876176 + 0.0213457030504691j,0.000618746021737094 - 0.00237168132153859j,-0.0126974531084076 + 0.00146201778697220j,-0.000828431155418910 - 0.00143324011002298j,0.000489967514004037 - 0.000422686831977056j,-0.00123947538046307 - 7.96660642572176e-05j,-8.59338939484030e-05 - 0.000525356921987954j,6.14885656236474e-05 - 5.62968074960112e-05j,-0.000130278227263365 - 3.15295092206467e-05j,-8.35412500151646e-06 - 8.50727294213695e-05j,0.339146287929211 + 0.183650682203281j,-0.0504488003439475 - 0.119131568900829j,0.0874095272782240 + 0.00806547650024812j,-0.228919294561375 + 0.0418448128323198j,-0.132375620216377 + 0.0154379544796199j,0.0475343482623094 + 0.00774041380909729j,-0.0222594673900341 + 0.00332044891217522j,-0.0130813664711999 - 0.00104584543838592j,0.00705200980935314 - 0.00330385569521466j,-0.00198563726312418 + 0.000133427530428467j,-0.00113979077389907 - 0.000435319617021959j,0.000888937756919476 - 0.000670396987761847j,-0.000184792816847669 - 7.18382839239312e-06j,-9.80417633473140e-05 - 7.30845328636418e-05j,0.000104396377801044 - 9.03322152912916e-05j]</value>
     </param>
     <param>
       <key>affinity</key>
@@ -939,8 +939,33 @@
       <value># this module will be imported in the into your flowgraph
 import numpy as np
 
-taps = np.genfromtxt('/tmp/predistorter_taps.csv', converters={0: lambda x: x.replace('i','j')},dtype=str)
-taps = np.complex_(taps)
+taps1 = np.genfromtxt('/tmp/predistorter_taps1.csv', converters={0: lambda x: x.replace('i','j')},dtype=str)
+taps1 = np.complex_(taps1)
+
+taps2 = np.genfromtxt('/tmp/predistorter_taps.csv', converters={0: lambda x: x.replace('i','j')},dtype=str)
+taps2 = np.complex_(taps2)
+
+taps3 = np.genfromtxt('/tmp/predistorter_taps3.csv', converters={0: lambda x: x.replace('i','j')},dtype=str)
+taps3 = np.complex_(taps3)
+
+taps4 = np.genfromtxt('/tmp/predistorter_taps4.csv', converters={0: lambda x: x.replace('i','j')},dtype=str)
+taps4 = np.complex_(taps4)
+
+taps5 = np.genfromtxt('/tmp/predistorter_taps5.csv', converters={0: lambda x: x.replace('i','j')},dtype=str)
+taps5 = np.complex_(taps5)
+
+taps6 = np.genfromtxt('/tmp/predistorter_taps6.csv', converters={0: lambda x: x.replace('i','j')},dtype=str)
+taps6 = np.complex_(taps6)
+
+taps7 = np.genfromtxt('/tmp/predistorter_taps7.csv', converters={0: lambda x: x.replace('i','j')},dtype=str)
+taps7 = np.complex_(taps7)
+
+taps8 = np.genfromtxt('/tmp/predistorter_taps8.csv', converters={0: lambda x: x.replace('i','j')},dtype=str)
+taps8 = np.complex_(taps8)
+
+taps_sum = taps1+taps2+taps3+taps4+taps5+taps6+taps7+taps8
+taps = [x * 0.125 for x in taps_sum]
+taps = taps2
 </value>
     </param>
     <param>
@@ -949,7 +974,7 @@ taps = np.complex_(taps)
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>

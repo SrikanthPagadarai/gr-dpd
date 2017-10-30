@@ -93,7 +93,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(384, 12)</value>
+      <value>(544, 12)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -260,7 +260,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(8, 84)</value>
+      <value>(200, 12)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -272,7 +272,7 @@
     </param>
     <param>
       <key>value5</key>
-      <value>30</value>
+      <value>150</value>
     </param>
     <param>
       <key>value0</key>
@@ -284,7 +284,7 @@
     </param>
     <param>
       <key>value4</key>
-      <value>100e6/256.0</value>
+      <value>100e6/512.0</value>
     </param>
     <param>
       <key>value1</key>
@@ -303,7 +303,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(288, 12)</value>
+      <value>(448, 12)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -330,7 +330,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(200, 12)</value>
+      <value>(360, 12)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -342,7 +342,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>10e6</value>
+      <value>20e6</value>
     </param>
   </block>
   <block>
@@ -357,7 +357,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(648, 12)</value>
+      <value>(808, 12)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -384,7 +384,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(480, 12)</value>
+      <value>(640, 12)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -415,11 +415,11 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(232, 128)</value>
+      <value>(248, 248)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -458,7 +458,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>1</value>
     </param>
     <param>
       <key>NFFT</key>
@@ -470,7 +470,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(296, 204)</value>
+      <value>(32, 324)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -517,15 +517,15 @@
     </param>
     <param>
       <key>file</key>
-      <value>/home/radio1/Documents/gr-dpd/examples/ofdm_corr_out.bin</value>
+      <value>/tmp/ofdm_corr_out.bin</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(680, 412)</value>
+      <value>(304, 748)</value>
     </param>
     <param>
       <key>_rotation</key>
-      <value>0</value>
+      <value>180</value>
     </param>
     <param>
       <key>id</key>
@@ -572,7 +572,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1112, 416)</value>
+      <value>(312, 912)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -619,15 +619,15 @@
     </param>
     <param>
       <key>file</key>
-      <value>/home/radio1/Documents/gr-dpd/examples/ofdm_PA_out.bin</value>
+      <value>/tmp/ofdm_PA_out.bin</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1112, 532)</value>
+      <value>(632, 732)</value>
     </param>
     <param>
       <key>_rotation</key>
-      <value>0</value>
+      <value>180</value>
     </param>
     <param>
       <key>id</key>
@@ -670,15 +670,15 @@
     </param>
     <param>
       <key>file</key>
-      <value>/home/radio1/Documents/gr-dpd/examples/ofdm_PA_in.bin</value>
+      <value>/tmp/ofdm_PA_in.bin</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(304, 356)</value>
+      <value>(184, 540)</value>
     </param>
     <param>
       <key>_rotation</key>
-      <value>0</value>
+      <value>180</value>
     </param>
     <param>
       <key>id</key>
@@ -721,7 +721,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1080, 308)</value>
+      <value>(896, 436)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -749,53 +749,6 @@
     </param>
   </block>
   <block>
-    <key>blocks_null_sink</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>bus_conns</key>
-      <value>[[0,],]</value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(1136, 656)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>blocks_null_sink_0</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>complex</value>
-    </param>
-    <param>
-      <key>num_inputs</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>vlen</key>
-      <value>1</value>
-    </param>
-  </block>
-  <block>
     <key>blocks_repeat</key>
     <param>
       <key>alias</key>
@@ -815,7 +768,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(520, 212)</value>
+      <value>(288, 332)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -828,57 +781,6 @@
     <param>
       <key>interp</key>
       <value>TxParams.N</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>complex</value>
-    </param>
-    <param>
-      <key>vlen</key>
-      <value>TxParams.NFFT</value>
-    </param>
-  </block>
-  <block>
-    <key>blocks_repeat</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(424, 116)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>blocks_repeat_0_0</value>
-    </param>
-    <param>
-      <key>interp</key>
-      <value>2</value>
     </param>
     <param>
       <key>maxoutbuf</key>
@@ -913,11 +815,11 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(176, 620)</value>
+      <value>(712, 660)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -925,7 +827,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>blocks_skiphead_0_0</value>
+      <value>blocks_skiphead_0</value>
     </param>
     <param>
       <key>maxoutbuf</key>
@@ -968,7 +870,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(512, 372)</value>
+      <value>(712, 580)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -976,7 +878,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>blocks_skiphead_0_0_0</value>
+      <value>blocks_skiphead_0_0</value>
     </param>
     <param>
       <key>maxoutbuf</key>
@@ -988,58 +890,7 @@
     </param>
     <param>
       <key>num_items</key>
-      <value>(TxParams.NFFT+TxParams.CPlen)*TxParams.Ovx*5</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>complex</value>
-    </param>
-    <param>
-      <key>vlen</key>
-      <value>1</value>
-    </param>
-  </block>
-  <block>
-    <key>blocks_skiphead</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(920, 604)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>blocks_skiphead_0_0_0_0</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>num_items</key>
-      <value>(TxParams.NFFT+TxParams.CPlen)*TxParams.Ovx-1000</value>
+      <value>(TxParams.NFFT+TxParams.CPlen)*TxParams.Ovx*7</value>
     </param>
     <param>
       <key>type</key>
@@ -1070,7 +921,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1112, 48)</value>
+      <value>(896, 168)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1082,7 +933,7 @@
     </param>
     <param>
       <key>lengths</key>
-      <value>5, 2, TxParams.N</value>
+      <value>5, 1, TxParams.N</value>
     </param>
     <param>
       <key>maxoutbuf</key>
@@ -1125,7 +976,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(352, 612)</value>
+      <value>(896, 652)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1180,7 +1031,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(904, 220)</value>
+      <value>(688, 340)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1231,7 +1082,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(856, 124)</value>
+      <value>(640, 244)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1282,7 +1133,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(832, 24)</value>
+      <value>(616, 144)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1341,7 +1192,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1236, 144)</value>
+      <value>(1052, 264)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1400,7 +1251,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(696, 200)</value>
+      <value>(480, 320)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1455,7 +1306,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(640, 104)</value>
+      <value>(424, 224)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1506,7 +1357,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(856, 408)</value>
+      <value>(56, 904)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1557,15 +1408,15 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>1</value>
+      <value>True</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(712, 592)</value>
+      <value>(920, 736)</value>
     </param>
     <param>
       <key>_rotation</key>
-      <value>0</value>
+      <value>180</value>
     </param>
     <param>
       <key>id</key>
@@ -1581,7 +1432,7 @@
     </param>
     <param>
       <key>ref_len</key>
-      <value>1000</value>
+      <value>(TxParams.NFFT+TxParams.CPlen)*TxParams.Ovx</value>
     </param>
   </block>
   <block>
@@ -1604,7 +1455,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(688, 516)</value>
+      <value>(960, 580)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1643,11 +1494,11 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(488, 480)</value>
+      <value>(560, 664)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1655,7 +1506,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>dpd_sts_blocker_0_0</value>
+      <value>dpd_sts_blocker_0</value>
     </param>
     <param>
       <key>maxoutbuf</key>
@@ -1686,7 +1537,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(712, 308)</value>
+      <value>(752, 436)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1733,11 +1584,11 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(248, 472)</value>
+      <value>(304, 656)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1765,7 +1616,7 @@
     </param>
   </block>
   <block>
-    <key>gr_dpd_elliptic_filter</key>
+    <key>sixX_elliptic_filter</key>
     <param>
       <key>alias</key>
       <value></value>
@@ -1784,7 +1635,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(448, 304)</value>
+      <value>(560, 440)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1792,7 +1643,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>gr_dpd_elliptic_filter_0</value>
+      <value>sixX_elliptic_filter_0</value>
     </param>
     <param>
       <key>maxoutbuf</key>
@@ -1827,7 +1678,7 @@
     </param>
     <param>
       <key>gain0</key>
-      <value>9</value>
+      <value>10</value>
     </param>
     <param>
       <key>ant10</key>
@@ -2475,7 +2326,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(24, 296)</value>
+      <value>(168, 424)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -3810,7 +3661,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(24, 472)</value>
+      <value>(80, 656)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -3967,7 +3818,7 @@
   </block>
   <connection>
     <source_block_id>STS_generator_withoutCP_0</source_block_id>
-    <sink_block_id>blocks_repeat_0_0</sink_block_id>
+    <sink_block_id>digital_ofdm_cyclic_prefixer_0_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
@@ -3990,32 +3841,14 @@
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>blocks_repeat_0_0</source_block_id>
-    <sink_block_id>digital_ofdm_cyclic_prefixer_0_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>blocks_skiphead_0_0</source_block_id>
+    <source_block_id>blocks_skiphead_0</source_block_id>
     <sink_block_id>blocks_stream_to_tagged_stream_0_0_1</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>blocks_skiphead_0_0_0</source_block_id>
+    <source_block_id>blocks_skiphead_0_0</source_block_id>
     <sink_block_id>dpd_stream_to_message_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>blocks_skiphead_0_0_0_0</source_block_id>
-    <sink_block_id>blocks_file_sink_0_0_1</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>blocks_skiphead_0_0_0_0</source_block_id>
-    <sink_block_id>blocks_null_sink_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
@@ -4075,7 +3908,7 @@
   </connection>
   <connection>
     <source_block_id>dpd_gain_phase_calibrate_0</source_block_id>
-    <sink_block_id>blocks_skiphead_0_0_0_0</sink_block_id>
+    <sink_block_id>blocks_file_sink_0_0_1</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
@@ -4086,14 +3919,14 @@
     <sink_key>samples</sink_key>
   </connection>
   <connection>
-    <source_block_id>dpd_sts_blocker_0_0</source_block_id>
-    <sink_block_id>blocks_skiphead_0_0</sink_block_id>
+    <source_block_id>dpd_sts_blocker_0</source_block_id>
+    <sink_block_id>blocks_skiphead_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
   <connection>
     <source_block_id>dpd_upsample_0</source_block_id>
-    <sink_block_id>gr_dpd_elliptic_filter_0</sink_block_id>
+    <sink_block_id>sixX_elliptic_filter_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
@@ -4105,24 +3938,24 @@
   </connection>
   <connection>
     <source_block_id>estimate_integer_delay_0</source_block_id>
-    <sink_block_id>dpd_sts_blocker_0_0</sink_block_id>
+    <sink_block_id>dpd_sts_blocker_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>gr_dpd_elliptic_filter_0</source_block_id>
+    <source_block_id>sixX_elliptic_filter_0</source_block_id>
     <sink_block_id>blocks_file_sink_0_0_1_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>gr_dpd_elliptic_filter_0</source_block_id>
-    <sink_block_id>blocks_skiphead_0_0_0</sink_block_id>
+    <source_block_id>sixX_elliptic_filter_0</source_block_id>
+    <sink_block_id>blocks_skiphead_0_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>gr_dpd_elliptic_filter_0</source_block_id>
+    <source_block_id>sixX_elliptic_filter_0</source_block_id>
     <sink_block_id>uhd_usrp_sink_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>

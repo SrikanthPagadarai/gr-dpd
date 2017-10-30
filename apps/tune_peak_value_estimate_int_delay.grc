@@ -272,7 +272,7 @@
     </param>
     <param>
       <key>value5</key>
-      <value>200</value>
+      <value>20</value>
     </param>
     <param>
       <key>value0</key>
@@ -280,7 +280,7 @@
     </param>
     <param>
       <key>value3</key>
-      <value>8</value>
+      <value>6</value>
     </param>
     <param>
       <key>value4</key>
@@ -369,7 +369,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>170</value>
+      <value>200</value>
     </param>
   </block>
   <block>
@@ -698,61 +698,6 @@
     </param>
   </block>
   <block>
-    <key>blocks_file_source</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>file</key>
-      <value>/tmp/sts_input.bin</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(56, 492)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>blocks_file_source_0_1</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>complex</value>
-    </param>
-    <param>
-      <key>repeat</key>
-      <value>False</value>
-    </param>
-    <param>
-      <key>vlen</key>
-      <value>1</value>
-    </param>
-  </block>
-  <block>
     <key>blocks_multiply_const_vxx</key>
     <param>
       <key>alias</key>
@@ -764,7 +709,7 @@
     </param>
     <param>
       <key>const</key>
-      <value>25</value>
+      <value>20</value>
     </param>
     <param>
       <key>affinity</key>
@@ -925,7 +870,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(656, 620)</value>
+      <value>(656, 492)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1027,7 +972,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(648, 460)</value>
+      <value>(624, 372)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1047,7 +992,7 @@
     </param>
     <param>
       <key>num_items</key>
-      <value>(TxParams.NFFT+TxParams.CPlen)*TxParams.Ovx*7</value>
+      <value>(TxParams.NFFT+TxParams.CPlen)*TxParams.Ovx*6</value>
     </param>
     <param>
       <key>type</key>
@@ -1569,45 +1514,6 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1080, 400)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>dpd_gain_phase_calibrate_0</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>ref_len</key>
-      <value>(TxParams.NFFT+TxParams.CPlen)*TxParams.Ovx</value>
-    </param>
-  </block>
-  <block>
-    <key>dpd_phase_calibrate</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
       <value>(1080, 504)</value>
     </param>
     <param>
@@ -1616,11 +1522,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>dpd_phase_calibrate_0</value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
+      <value>dpd_gain_phase_calibrate_0</value>
     </param>
     <param>
       <key>maxoutbuf</key>
@@ -1655,7 +1557,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(840, 500)</value>
+      <value>(800, 372)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1758,45 +1660,6 @@
     <param>
       <key>ovx</key>
       <value>TxParams.Ovx</value>
-    </param>
-  </block>
-  <block>
-    <key>eightX_elliptic_filter</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(616, 312)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>180</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>eightX_elliptic_filter_0</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
     </param>
   </block>
   <block>
@@ -2151,6 +2014,45 @@
     <param>
       <key>units</key>
       <value>dB</value>
+    </param>
+  </block>
+  <block>
+    <key>sixX_elliptic_filter</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(624, 312)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>180</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>sixX_elliptic_filter_0</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
     </param>
   </block>
   <block>
@@ -4328,12 +4230,6 @@
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>blocks_file_source_0_1</source_block_id>
-    <sink_block_id>dpd_stream_to_message_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
     <source_block_id>blocks_multiply_const_vxx_0</source_block_id>
     <sink_block_id>dpd_upsample_0</sink_block_id>
     <source_key>0</source_key>
@@ -4388,12 +4284,6 @@
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>blocks_stream_to_tagged_stream_0_0_1</source_block_id>
-    <sink_block_id>dpd_phase_calibrate_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
     <source_block_id>blocks_stream_to_vector_0</source_block_id>
     <sink_block_id>blocks_stream_mux_0</sink_block_id>
     <source_key>0</source_key>
@@ -4442,20 +4332,8 @@
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>dpd_phase_calibrate_0</source_block_id>
-    <sink_block_id>blocks_skiphead_0_0_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
     <source_block_id>dpd_stream_to_message_0</source_block_id>
     <sink_block_id>dpd_gain_phase_calibrate_0</sink_block_id>
-    <source_key>samples</source_key>
-    <sink_key>samples</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>dpd_stream_to_message_0</source_block_id>
-    <sink_block_id>dpd_phase_calibrate_0</sink_block_id>
     <source_key>samples</source_key>
     <sink_key>samples</sink_key>
   </connection>
@@ -4473,25 +4351,7 @@
   </connection>
   <connection>
     <source_block_id>dpd_upsample_0</source_block_id>
-    <sink_block_id>eightX_elliptic_filter_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>eightX_elliptic_filter_0</source_block_id>
-    <sink_block_id>blocks_file_sink_0_0_1_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>eightX_elliptic_filter_0</source_block_id>
-    <sink_block_id>blocks_skiphead_1</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>eightX_elliptic_filter_0</source_block_id>
-    <sink_block_id>uhd_usrp_sink_0</sink_block_id>
+    <sink_block_id>sixX_elliptic_filter_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
@@ -4504,6 +4364,24 @@
   <connection>
     <source_block_id>estimate_integer_delay_0</source_block_id>
     <sink_block_id>dpd_sts_blocker_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>sixX_elliptic_filter_0</source_block_id>
+    <sink_block_id>blocks_file_sink_0_0_1_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>sixX_elliptic_filter_0</source_block_id>
+    <sink_block_id>blocks_skiphead_1</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>sixX_elliptic_filter_0</source_block_id>
+    <sink_block_id>uhd_usrp_sink_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
