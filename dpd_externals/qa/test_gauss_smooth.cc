@@ -1,6 +1,7 @@
 /* -*- c++ -*- */
 /* 
- * Copyright 2017 <+YOU OR YOUR COMPANY+>.
+ * Copyright 2016 
+ * Srikanth Pagadarai <srikanth.pagadarai@gmail.com>
  * 
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
