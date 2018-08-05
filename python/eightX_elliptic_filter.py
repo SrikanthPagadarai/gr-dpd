@@ -2,7 +2,7 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: gr-dpd Elliptic Filter
-# Generated: Sun Sep  3 17:05:17 2017
+# Author: Srikanth Pagadarai
 ##################################################
 
 from gnuradio import filter

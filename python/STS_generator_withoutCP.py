@@ -2,7 +2,7 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: STS without CP
-# Generated: Thu Aug 17 17:16:05 2017
+# Author: Srikanth Pagadarai
 ##################################################
 
 from gnuradio import analog

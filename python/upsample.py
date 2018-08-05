@@ -2,7 +2,7 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: Upsample
-# Generated: Sun Sep  3 16:26:29 2017
+# Author: Srikanth Pagadarai
 ##################################################
 
 from gnuradio import analog

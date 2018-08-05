@@ -1,6 +1,7 @@
 /* -*- c++ -*- */
 /*
- * Copyright 2012 Free Software Foundation, Inc.
+ * Copyright 2016
+ * Srikanth Pagadarai <srikanth.pagadarai@gmail.com>
  *
  * This file is part of GNU Radio
  *

@@ -2,7 +2,7 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: Amplitude Difference
-# Generated: Thu Aug 17 17:03:21 2017
+# Author: Srikanth Pagadarai
 ##################################################
 
 from gnuradio import blocks

@@ -2,7 +2,7 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: Wiener Power Amplifier
-# Generated: Sun Sep  3 14:47:31 2017
+# Author: Srikanth Pagadarai
 ##################################################
 
 from gnuradio import analog

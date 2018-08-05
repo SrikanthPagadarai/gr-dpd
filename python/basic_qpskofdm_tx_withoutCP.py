@@ -2,7 +2,7 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: Basic QPSK-OFDM Tx
-# Generated: Thu Aug 17 17:04:41 2017
+# Author: Srikanth Pagadarai
 ##################################################
 
 from gnuradio import blocks
